@@ -11,7 +11,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.kotlinx.serialization.asConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Singleton
 
 @Module

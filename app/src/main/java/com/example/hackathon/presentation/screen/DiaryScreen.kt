@@ -17,3 +17,5 @@ fun DiaryScreen(modifier: Modifier = Modifier) {
     }
 }
 
+
+
