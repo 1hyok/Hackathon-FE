@@ -6,6 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -17,7 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.hackathon.presentation.navigation.BottomNavItem
 import com.example.hackathon.presentation.navigation.KuitNavGraph
@@ -33,12 +37,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             HackathonTheme {
                 val navController = rememberNavController()
-                var selectedRoute by remember { mutableStateOf(Route.Home.route) }
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
 
                 val bottomNavItems = listOf(
-                    BottomNavItem("홈", Route.Home.route, R.drawable.ic_launcher_foreground),
-                    BottomNavItem("일기", Route.Diary.route, R.drawable.ic_launcher_foreground),
-                    BottomNavItem("마이페이지", Route.My.route, R.drawable.ic_launcher_foreground)
+                    BottomNavItem("홈", Route.Home.route, Icons.Default.Home),
+                    BottomNavItem("등록", Route.Create.route, Icons.Default.Add),
+                    BottomNavItem("마이페이지", Route.My.route, Icons.Default.Person)
                 )
 
                 Scaffold(
@@ -46,9 +51,8 @@ class MainActivity : ComponentActivity() {
                         NavigationBar {
                             bottomNavItems.forEach { item ->
                                 NavigationBarItem(
-                                    selected = selectedRoute == item.route,
+                                    selected = currentRoute == item.route,
                                     onClick = {
-                                        selectedRoute = item.route
                                         navController.navigate(item.route) {
                                             launchSingleTop = true
                                             restoreState = true
@@ -59,7 +63,7 @@ class MainActivity : ComponentActivity() {
                                     },
                                     icon = {
                                         Icon(
-                                            painter = painterResource(id = item.icon),
+                                            imageVector = item.icon,
                                             contentDescription = item.label
                                         )
                                     },

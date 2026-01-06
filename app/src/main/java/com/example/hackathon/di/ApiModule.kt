@@ -1,5 +1,6 @@
 package com.example.hackathon.di
 
+import com.example.hackathon.data.service.CombinationService
 import com.example.hackathon.data.service.HomeService
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,11 @@ object ApiModule {
     @Singleton
     fun providesHomeService(retrofit: Retrofit): HomeService =
         retrofit.create(HomeService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesCombinationService(retrofit: Retrofit): CombinationService =
+        retrofit.create(CombinationService::class.java)
 }
 
 

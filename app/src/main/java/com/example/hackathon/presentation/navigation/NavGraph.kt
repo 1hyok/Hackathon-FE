@@ -3,11 +3,14 @@ package com.example.hackathon.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.presentation.screen.HomeScreen
 import com.example.hackathon.presentation.screen.DiaryScreen
+import com.example.hackathon.presentation.screen.CreateCombinationScreen
 import com.example.hackathon.presentation.screen.MyScreen
 
 @Composable
@@ -20,13 +23,40 @@ fun KuitNavGraph(
         startDestination = Route.Home.route,
     ){
         composable(route = Route.Home.route) {
-            HomeScreen(modifier = modifier)
+            HomeScreen(
+                modifier = modifier,
+                onCombinationClick = { id ->
+                    navController.navigate(Route.Detail.createRoute(id))
+                },
+                onCreateClick = {
+                    navController.navigate(Route.Create.route)
+                }
+            )
         }
-        composable(route = Route.Diary.route) {
-            DiaryScreen(modifier = modifier)
+        composable(
+            route = Route.Detail.route,
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: ""
+            DiaryScreen(
+                modifier = modifier,
+                combinationId = id,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        composable(route = Route.Create.route) {
+            CreateCombinationScreen(
+                modifier = modifier,
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
         composable(route = Route.My.route) {
-            MyScreen(modifier = modifier)
+            MyScreen(
+                modifier = modifier,
+                onCombinationClick = { id ->
+                    navController.navigate(Route.Detail.createRoute(id))
+                }
+            )
         }
     }
 }
