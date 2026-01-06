@@ -102,7 +102,6 @@ detekt {
 
 // Ktlint 설정
 ktlint {
-    version.set("1.2.1")
     android.set(true)
     ignoreFailures.set(false)
     reporters {
@@ -114,3 +113,22 @@ ktlint {
         exclude("**/generated/**")
     }
 }
+
+// 코드 품질 검사 통합 Task
+tasks.register("codeQualityCheck") {
+    group = "verification"
+    description = "Runs all code quality checks (Ktlint + Detekt)"
+    
+    dependsOn("ktlintCheck", "detekt")
+    
+    doLast {
+        println("✅ All code quality checks completed!")
+    }
+}
+
+// 빌드 전 자동으로 코드 품질 검사 실행
+tasks.named("preBuild") {
+    dependsOn("ktlintFormat")
+}
+
+// 빌드 전 검사는 preBuild에서만 실행

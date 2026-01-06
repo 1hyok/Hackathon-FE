@@ -1,0 +1,37 @@
+#!/bin/bash
+# Bash 스크립트: 코드 품질 검사 자동화 (Git Bash / Linux / Mac)
+# 사용법: ./scripts/check-code-quality.sh
+
+echo "🔍 Running code quality checks..."
+
+# Ktlint 포맷팅
+echo ""
+echo "📝 Running Ktlint Format..."
+./gradlew ktlintFormat
+if [ $? -ne 0 ]; then
+    echo "❌ Ktlint formatting failed!"
+    exit 1
+fi
+
+# Ktlint 검사
+echo ""
+echo "📝 Running Ktlint Check..."
+./gradlew ktlintCheck
+if [ $? -ne 0 ]; then
+    echo "❌ Ktlint check failed! Please fix the issues."
+    exit 1
+fi
+
+# Detekt 검사
+echo ""
+echo "🔎 Running Detekt..."
+./gradlew detekt
+if [ $? -ne 0 ]; then
+    echo "❌ Detekt found issues! Please fix them."
+    exit 1
+fi
+
+echo ""
+echo "✅ All code quality checks passed!"
+exit 0
+
