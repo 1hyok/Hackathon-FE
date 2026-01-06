@@ -105,7 +105,7 @@ private fun CombinationCardPreview() {
             steps = listOf("빵 선택", "베이컨 추가", "치즈 추가"),
             author = User(id = "1", nickname = "테스트유저", profileImageUrl = null),
             likeCount = 42,
-            createdAt = System.currentTimeMillis()
+            createdAt = System.currentTimeMillis().toString()
         ),
         onClick = {}
     )
