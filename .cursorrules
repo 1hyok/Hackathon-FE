@@ -1,0 +1,151 @@
+# Project Context & Tech Stack
+- Project Type: Android Native App
+- Language: Kotlin (Latest Stable)
+- UI Framework: Jetpack Compose (Material 3)
+- Build System: Gradle (Kotlin DSL / .kts)
+- Dependency Management: Version Catalog (libs.versions.toml)
+
+# Architecture Guidelines
+- Pattern: MVVM (Model-View-ViewModel)
+  - **Model**: Entity, Repository (Domain + Data layers)
+  - **View**: Compose Screen (Presentation layer)
+  - **ViewModel**: State management and business logic
+- Architecture: Clean Architecture (Presentation -> Domain -> Data)
+  - **data**: Data sources (API, Local DB)
+  - **domain**: Business logic (Entities, Repository interfaces)
+  - **presentation**: UI layer (Screens, ViewModels)
+- State Management: Unidirectional Data Flow (UDF) using StateFlow/SharedFlow
+- DI: Hilt (Dagger)
+- Async: Coroutines & Flow
+
+# Key Libraries & Versions
+- Image Loading: Coil 3.x (Note: Use `coil3` package, NOT `coil` package)
+  - Import: `import coil3.compose.AsyncImage`
+  - Do NOT use: `import coil.compose.AsyncImage` (Coil 2, deprecated)
+- Networking: Retrofit2 + OkHttp + Kotlinx Serialization
+- Serialization: Kotlin Serialization (not Gson)
+
+# Coding Standards
+
+## Compose UI
+1. Always use `@Composable` annotation properly.
+2. Use `Modifier` as the first optional parameter in Composable functions.
+3. Separate UI state from UI implementation (State Hoisting).
+4. For Experimental Material3 APIs (TopAppBar, Scaffold topBar, etc.), always add:
+   ```kotlin
+   @OptIn(ExperimentalMaterial3Api::class)
+   @Composable
+   fun MyScreen(...) { ... }
+   ```
+5. Use `@Preview` for UI components when possible.
+
+## Kotlin Conventions
+1. Prefer `val` over `var`.
+2. Use `when` expressions for exhaustiveness.
+3. Avoid `!!` (double-bang) operator; use safe calls (`?.`) or `let`.
+4. **Smart Cast for Delegated Properties**: 
+   - Do NOT rely on smart casts for delegated properties (e.g., `by collectAsState()`, `by viewModels()`).
+   - Always assign to a local variable (snapshot) before checking nullability:
+   ```kotlin
+   // ❌ Wrong
+   if (uiState.error != null) {
+       Text(text = uiState.error) // Smart cast impossible
+   }
+   
+   // ✅ Correct
+   val errorMessage = uiState.error ?: "오류가 발생했습니다"
+   if (errorMessage != null) {
+       Text(text = errorMessage)
+   }
+   // OR
+   uiState.error?.let { error ->
+       Text(text = error)
+   }
+   ```
+5. Follow [Kotlin Official Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html).
+6. Use Android Studio auto-formatting: `Ctrl + Alt + L` (Windows) before committing.
+
+## Naming Conventions
+- **File/Class names**: PascalCase (e.g., `HomeScreen.kt`, `CombinationCard.kt`, `HomeViewModel`)
+- **Variable names**: camelCase (e.g., `selectedCategory`, `isLoading`)
+- **Function names**: camelCase (e.g., `loadCombinations()`, `updateSearchQuery()`)
+- **Constants**: UPPER_SNAKE_CASE (e.g., `BASE_URL`, `MAX_RETRY_COUNT`)
+
+## Dependency Management
+1. Do NOT hardcode versions in `build.gradle.kts`.
+2. Add new libraries to `gradle/libs.versions.toml` first:
+   ```toml
+   [versions]
+   myLibrary = "1.0.0"
+   
+   [libraries]
+   my-library = { group = "com.example", name = "mylib", version.ref = "myLibrary" }
+   ```
+3. Then reference them in `build.gradle.kts` using `libs.my.library`.
+
+## File Naming & Structure
+- Screen files: `*Screen.kt` (e.g., `HomeScreen.kt`, `DetailScreen.kt`)
+- ViewModel files: `*ViewModel.kt` (e.g., `HomeViewModel.kt`)
+- Component files: `*Card.kt`, `*Chip.kt`, etc.
+- Use descriptive names, avoid abbreviations like "Diary" for "Detail".
+
+## Package Structure (Clean Architecture)
+```
+com.example.hackathon/
+├── data/                    # 데이터 레이어
+│   ├── dto/                # Request/Response 모델
+│   ├── mapper/              # Entity ↔ DTO 변환
+│   ├── repositoryimpl/     # Repository 구현
+│   └── service/            # API 인터페이스
+├── domain/                  # 도메인 레이어
+│   ├── entity/             # 비즈니스 엔티티
+│   └── repository/          # Repository 인터페이스
+├── presentation/            # 프레젠테이션 레이어
+│   ├── navigation/         # 네비게이션
+│   ├── route/              # 라우트 정의
+│   ├── screen/             # 화면 컴포저블
+│   └── viewmodel/          # ViewModel
+├── core/                    # 공통
+│   └── component/          # 공통 컴포넌트
+├── di/                      # 의존성 주입
+└── ui/theme/               # 테마 설정
+```
+
+## Error Handling
+- Wrap network calls in `runCatching` or `try-catch` blocks within Repository.
+- Use `Result<T>` type for repository methods:
+  ```kotlin
+  suspend fun getData(): Result<List<Item>> {
+      return runCatching {
+          // API call
+      }
+  }
+  ```
+- Expose UI states as data classes with nullable error field:
+  ```kotlin
+  data class UiState(
+      val data: List<Item> = emptyList(),
+      val isLoading: Boolean = false,
+      val error: String? = null
+  )
+  ```
+- Handle errors in ViewModel using `fold()`:
+  ```kotlin
+  repository.getData().fold(
+      onSuccess = { data -> /* update state */ },
+      onFailure = { error -> /* set error state */ }
+  )
+  ```
+
+## Documentation
+- Add KDoc for complex business logic.
+- Keep function names descriptive.
+- Add `// 담당자: 이름` comment at the top of files for hackathon collaboration.
+- Add `// TODO: 내용` for future improvements.
+
+# Project-Specific Rules
+- This is a hackathon project (2 days prep + 1 day event).
+- Focus on working code over perfect code.
+- Use dummy data when server API is not ready.
+- All team members work on both design and development.
+
