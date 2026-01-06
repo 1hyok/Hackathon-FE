@@ -9,12 +9,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.presentation.screen.HomeScreen
-import com.example.hackathon.presentation.screen.DiaryScreen
+import com.example.hackathon.presentation.screen.DetailScreen
 import com.example.hackathon.presentation.screen.CreateCombinationScreen
 import com.example.hackathon.presentation.screen.MyScreen
 
 @Composable
-fun KuitNavGraph(
+fun AppNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
@@ -38,7 +38,7 @@ fun KuitNavGraph(
             arguments = listOf(navArgument("id") { type = NavType.StringType })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id") ?: ""
-            DiaryScreen(
+            DetailScreen(
                 modifier = modifier,
                 combinationId = id,
                 onNavigateBack = { navController.popBackStack() }

@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.hackathon.presentation.navigation.BottomNavItem
-import com.example.hackathon.presentation.navigation.KuitNavGraph
+import com.example.hackathon.presentation.navigation.AppNavGraph
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.ui.theme.HackathonTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { innerPadding ->
-                    KuitNavGraph(
+                    AppNavGraph(
                         navController = navController,
                         modifier = Modifier.padding(innerPadding)
                     )

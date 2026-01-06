@@ -80,13 +80,14 @@ fun HomeScreen(
                 }
             }
             uiState.error != null -> {
+                val errorMessage = uiState.error ?: "오류가 발생했습니다"
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = uiState.error,
+                        text = errorMessage,
                         color = MaterialTheme.colorScheme.error
                     )
                     Spacer(modifier = Modifier.height(16.dp))

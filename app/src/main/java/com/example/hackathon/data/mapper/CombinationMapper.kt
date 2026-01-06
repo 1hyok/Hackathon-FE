@@ -1,5 +1,6 @@
 package com.example.hackathon.data.mapper
 
+import com.example.hackathon.data.dto.request.CreateCombinationRequest
 import com.example.hackathon.data.dto.response.CombinationResponse
 import com.example.hackathon.data.dto.response.UserResponse
 import com.example.hackathon.domain.entity.Category
