@@ -1,0 +1,48 @@
+# Detekt 설정 파일
+# 해커톤 프로젝트용 간소화된 설정
+
+build:
+  maxIssues: 100
+  weights:
+    complexity: 2
+    LongParameterList: 1
+    style: 1
+    comments: 1
+
+complexity:
+  active: true
+  TooManyFunctions:
+    active: true
+    thresholdInFiles: 20
+    thresholdInClasses: 15
+  LongMethod:
+    active: true
+    threshold: 60
+  LongParameterList:
+    active: true
+    threshold: 6
+
+style:
+  active: true
+  MagicNumber:
+    active: false  # 해커톤에서는 허용
+  MaxLineLength:
+    active: true
+    maxLineLength: 120
+
+comments:
+  active: true
+  CommentOverPrivateFunction:
+    active: false  # 해커톤에서는 선택적
+
+potential-bugs:
+  active: true
+  UnusedPrivateMember:
+    active: true
+    ignoreAnnotated: ["Composable"]
+
+performance:
+  active: true
+  ForEachOnRange:
+    active: true
+
