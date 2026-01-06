@@ -185,3 +185,22 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/kotlin,android,androidstudio
+
+### Code Quality Tools ###
+# Detekt reports
+build/reports/detekt/
+**/build/reports/detekt/
+
+# Ktlint reports
+build/reports/ktlint/
+**/build/reports/ktlint/
+.ktlint/
+
+# Detekt baseline (기존 baseline은 커밋하되, 새로 생성되는 리포트는 무시)
+# config/detekt-baseline.xml은 커밋에 포함됨
+
+### Project-specific ###
+# 웹 관련 파일 (프로젝트와 무관한 파일)
+index.html
+script.js
+styles.css
