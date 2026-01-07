@@ -47,20 +47,21 @@ data class HackathonColors(
     val background: Color,
     val surface: Color,
     val success: Color,
-    val error: Color
+    val error: Color,
 )
 
-val defaultHackathonColors = HackathonColors(
-    primary = Primary,
-    black = Black,
-    white = White,
-    gray50 = Gray50,
-    gray700 = Gray700,
-    gray900 = Gray900,
-    background = Background,
-    surface = Surface,
-    success = Success,
-    error = Error
-)
+val defaultHackathonColors =
+    HackathonColors(
+        primary = Primary,
+        black = Black,
+        white = White,
+        gray50 = Gray50,
+        gray700 = Gray700,
+        gray900 = Gray900,
+        background = Background,
+        surface = Surface,
+        success = Success,
+        error = Error,
+    )
 
-val LocalHackathonColors: HackathonColors = staticCompositionLocalOf { defaultHackathonColors }
+val LocalHackathonColors = staticCompositionLocalOf { defaultHackathonColors }

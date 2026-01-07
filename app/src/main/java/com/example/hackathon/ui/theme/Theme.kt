@@ -66,14 +66,14 @@ fun HackathonTheme(
     )
 }
 
-object HackathonTheme{
+object HackathonTheme {
     val colors: HackathonColors
         @Composable
         @ReadOnlyComposable
-        get() = LocalHackathonColors
+        get() = LocalHackathonColors.current
 
     val typography: HackathonTypography
         @Composable
         @ReadOnlyComposable
-        get() = LocalHackathonTypography
+        get() = LocalHackathonTypography.current
 }
