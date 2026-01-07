@@ -10,8 +10,8 @@ import androidx.navigation.navArgument
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.presentation.screen.CreateCombinationScreen
 import com.example.hackathon.presentation.screen.DetailScreen
-import com.example.hackathon.presentation.screen.HomeScreen
 import com.example.hackathon.presentation.screen.MyScreen
+import com.example.hackathon.presentation.screen.home.screen.HomeScreen
 
 @Composable
 fun AppNavGraph(
