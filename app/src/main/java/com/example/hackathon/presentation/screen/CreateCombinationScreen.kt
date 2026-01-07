@@ -69,7 +69,6 @@ fun CreateCombinationScreen(
     // 해시태그 입력 UI 상태 (로컬)
     val tagInput = rememberSaveable { mutableStateOf("") }
     val tags = remember { mutableStateListOf<String>() }
-    val quantity = rememberSaveable { mutableStateOf(1) }
 
     Scaffold(
         topBar = {
@@ -199,12 +198,68 @@ fun CreateCombinationScreen(
                         }
                     }
 
-                    // 수량 스텝퍼
-                    QuantityStepper(
-                        quantity = quantity.value,
-                        onIncrease = { quantity.value += 1 },
-                        onDecrease = { if (quantity.value > 1) quantity.value -= 1 },
-                    )
+                    // 공개 여부 토글
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(
+                            text = "공개 여부",
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            // 공개 버튼
+                            if (uiState.isPublic) {
+                                Button(
+                                    onClick = { viewModel.updateIsPublic(true) },
+                                    modifier = Modifier.weight(1f),
+                                    colors =
+                                        ButtonDefaults.buttonColors(
+                                            containerColor = Primary,
+                                            contentColor = Color.White,
+                                        ),
+                                ) {
+                                    Text("공개")
+                                }
+                            } else {
+                                OutlinedButton(
+                                    onClick = { viewModel.updateIsPublic(true) },
+                                    modifier = Modifier.weight(1f),
+                                    colors =
+                                        ButtonDefaults.outlinedButtonColors(
+                                            contentColor = Primary,
+                                        ),
+                                ) {
+                                    Text("공개")
+                                }
+                            }
+                            // 비공개 버튼
+                            if (!uiState.isPublic) {
+                                Button(
+                                    onClick = { viewModel.updateIsPublic(false) },
+                                    modifier = Modifier.weight(1f),
+                                    colors =
+                                        ButtonDefaults.buttonColors(
+                                            containerColor = Primary,
+                                            contentColor = Color.White,
+                                        ),
+                                ) {
+                                    Text("비공개")
+                                }
+                            } else {
+                                OutlinedButton(
+                                    onClick = { viewModel.updateIsPublic(false) },
+                                    modifier = Modifier.weight(1f),
+                                    colors =
+                                        ButtonDefaults.outlinedButtonColors(
+                                            contentColor = Primary,
+                                        ),
+                                ) {
+                                    Text("비공개")
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -212,7 +267,7 @@ fun CreateCombinationScreen(
             OutlinedTextField(
                 value = uiState.ingredients,
                 onValueChange = viewModel::updateIngredients,
-                label = { Text("재료 (쉼표로 구분)") },
+                label = { Text("재료") },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 3,
             )
@@ -221,7 +276,7 @@ fun CreateCombinationScreen(
             OutlinedTextField(
                 value = uiState.steps,
                 onValueChange = viewModel::updateSteps,
-                label = { Text("만드는 방법 (줄바꿈으로 구분)") },
+                label = { Text("만드는 방법") },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 4,
             )
@@ -318,37 +373,5 @@ private fun TagChip(
                 )
             },
         )
-    }
-}
-
-@Composable
-private fun QuantityStepper(
-    quantity: Int,
-    onIncrease: () -> Unit,
-    onDecrease: () -> Unit,
-) {
-    Row(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .background(Color.White, RoundedCornerShape(12.dp))
-                .border(1.dp, Gray50, RoundedCornerShape(12.dp))
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Text(text = "수량", style = MaterialTheme.typography.titleMedium)
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            IconButton(onClick = onDecrease) {
-                Text(text = "-", style = MaterialTheme.typography.titleLarge)
-            }
-            Text(text = quantity.toString(), style = MaterialTheme.typography.titleMedium)
-            IconButton(onClick = onIncrease) {
-                Text(text = "+", style = MaterialTheme.typography.titleLarge)
-            }
-        }
     }
 }

@@ -22,8 +22,20 @@ class MyPageViewModel
         private val _uiState = MutableStateFlow(MyPageUiState())
         val uiState: StateFlow<MyPageUiState> = _uiState.asStateFlow()
 
+        private val _selectedTab = MutableStateFlow(MyPageTab.MY_COMBINATIONS)
+        val selectedTab: StateFlow<MyPageTab> = _selectedTab.asStateFlow()
+
         init {
             loadMyCombinations()
+        }
+
+        fun selectTab(tab: MyPageTab) {
+            _selectedTab.value = tab
+            if (tab == MyPageTab.MY_COMBINATIONS) {
+                loadMyCombinations()
+            } else {
+                // TODO: 좋아요한 조합 로드
+            }
         }
 
         fun loadMyCombinations() {
@@ -54,8 +66,14 @@ class MyPageViewModel
         }
     }
 
+enum class MyPageTab {
+    MY_COMBINATIONS,
+    LIKED_COMBINATIONS,
+}
+
 data class MyPageUiState(
     val myCombinations: List<Combination> = emptyList(),
+    val likedCombinations: List<Combination> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
 )

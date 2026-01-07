@@ -12,7 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,6 +22,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -46,7 +48,15 @@ fun MyScreen(
     onCombinationClick: (String) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val myCombinations = uiState.myCombinations
+    val likedCombinations = uiState.likedCombinations
+    val currentCombinations =
+        if (selectedTab == com.example.hackathon.presentation.viewmodel.MyPageTab.MY_COMBINATIONS) {
+            myCombinations
+        } else {
+            likedCombinations
+        }
 
     Scaffold(
         topBar = {
@@ -60,7 +70,7 @@ fun MyScreen(
                 navigationIcon = {
                     IconButton(onClick = { /* TODO: 뒤로가기 연결 필요시 구현 */ }) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "뒤로가기",
                             tint = MaterialTheme.colorScheme.onPrimary,
                         )
@@ -131,11 +141,28 @@ fun MyScreen(
                 }
             }
 
-            // 내가 등록한 조합 목록
-            Text(
-                text = "내가 등록한 조합",
-                style = MaterialTheme.typography.titleLarge,
-            )
+            // 탭
+            TabRow(
+                selectedTabIndex =
+                    if (selectedTab == com.example.hackathon.presentation.viewmodel.MyPageTab.MY_COMBINATIONS) {
+                        0
+                    } else {
+                        1
+                    },
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface,
+            ) {
+                Tab(
+                    selected = selectedTab == com.example.hackathon.presentation.viewmodel.MyPageTab.MY_COMBINATIONS,
+                    onClick = { viewModel.selectTab(com.example.hackathon.presentation.viewmodel.MyPageTab.MY_COMBINATIONS) },
+                    text = { Text("내가 등록한 조합") },
+                )
+                Tab(
+                    selected = selectedTab == com.example.hackathon.presentation.viewmodel.MyPageTab.LIKED_COMBINATIONS,
+                    onClick = { viewModel.selectTab(com.example.hackathon.presentation.viewmodel.MyPageTab.LIKED_COMBINATIONS) },
+                    text = { Text("좋아요한 조합") },
+                )
+            }
 
             when {
                 uiState.isLoading -> {
@@ -164,12 +191,19 @@ fun MyScreen(
                     }
                 }
 
-                myCombinations.isEmpty() -> {
+                currentCombinations.isEmpty() -> {
                     Box(
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Text("등록한 조합이 없습니다")
+                        Text(
+                            text =
+                                if (selectedTab == com.example.hackathon.presentation.viewmodel.MyPageTab.MY_COMBINATIONS) {
+                                    "등록한 조합이 없습니다"
+                                } else {
+                                    "좋아요한 조합이 없습니다"
+                                },
+                        )
                     }
                 }
 
@@ -177,7 +211,7 @@ fun MyScreen(
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        items(myCombinations) { combination ->
+                        items(currentCombinations) { combination ->
                             CombinationCard(
                                 combination = combination,
                                 onClick = { onCombinationClick(combination.id) },
