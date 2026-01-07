@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.ui.theme.HackathonTheme
 
@@ -32,11 +31,9 @@ fun FilterBar(
                 modifier
                     .fillMaxWidth()
                     .shadow(
-                        elevation = 0.5.dp,
+                        elevation = 12.dp,
                         shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp),
                         clip = false,
-                        ambientColor = Color.Black.copy(alpha = 0.6f),
-                        spotColor = Color.Black.copy(alpha = 0.9f),
                     )
                     .background(
                         color = HackathonTheme.colors.primary,
