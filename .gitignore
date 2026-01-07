@@ -204,3 +204,12 @@ build/reports/ktlint/
 index.html
 script.js
 styles.css
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini

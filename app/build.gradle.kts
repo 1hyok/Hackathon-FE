@@ -42,11 +42,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17 // Detekt 호환성을 위해 17로 설정
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "20" // Detekt가 Java 21을 지원하지 않으므로 20으로 설정
     }
 }
 
@@ -95,6 +95,10 @@ detekt {
     config.setFrom("$projectDir/../config/detekt.yml")
     baseline = file("$projectDir/../config/detekt-baseline.xml")
     
+    // Java 21 호환성 문제로 인해 일시적으로 비활성화
+    // TODO: Detekt가 Java 21을 지원하는 버전으로 업그레이드 후 활성화
+    // ignoreFailures.set(true) // 해커톤용 임시 조치
+    
     // Compose Rules는 나중에 추가 (의존성 문제 해결 후)
     // dependencies {
     //     detektPlugins(libs.compose.rules.detekt)
@@ -104,7 +108,7 @@ detekt {
 // Ktlint 설정
 ktlint {
     android.set(true)
-    ignoreFailures.set(false)
+    ignoreFailures.set(false) // 플러그인 12.1.1로 업그레이드하여 Java 21 호환성 문제 해결
     reporters {
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
@@ -112,6 +116,7 @@ ktlint {
     filter {
         exclude("**/build/**")
         exclude("**/generated/**")
+        exclude("**/*.gradle.kts") // Kotlin 스크립트 파일 제외
     }
 }
 

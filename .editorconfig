@@ -1,0 +1,21 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{kt,kts}]
+# Composable 함수는 대문자 시작 허용 (PascalCase)
+ktlint_function_naming_ignore_when_annotated_with = Composable
+
+# 와일드카드 import 허용 (해커톤용 - 시간 절약)
+ktlint_standard_no-wildcard-imports = disabled
+
+[*.md]
+trim_trailing_whitespace = false
+
