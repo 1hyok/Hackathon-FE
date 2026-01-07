@@ -24,9 +24,7 @@ private val LightColorScheme =
     )
 
 @Composable
-fun HackathonTheme(
-    content: @Composable () -> Unit,
-) {
+fun HackathonTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = LightColorScheme,
         typography = Typography,
