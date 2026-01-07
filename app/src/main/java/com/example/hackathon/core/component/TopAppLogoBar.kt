@@ -3,7 +3,6 @@ package com.example.hackathon.core.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -21,16 +20,14 @@ fun TopAppLogoBar(modifier: Modifier = Modifier) {
         modifier =
             modifier
                 .fillMaxWidth()
-                .height(52.dp)
                 .background(HackathonTheme.colors.white)
-                .padding(start = 20.dp),
+                .padding(start = 20.dp, top = 14.dp, bottom = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_logo),
             contentDescription = "logo",
             tint = HackathonTheme.colors.primary,
-            modifier = modifier.height(52.dp),
         )
     }
 }
