@@ -2,7 +2,6 @@ package com.example.hackathon.presentation.screen.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,24 +19,22 @@ import com.example.hackathon.R
 import com.example.hackathon.ui.theme.HackathonTheme
 
 @Composable
-fun SearchComponent(
-    modifier: Modifier = Modifier,
-    onSearch: (String) -> Unit,
-) {
+fun SearchComponent(modifier: Modifier = Modifier) {
     Row(
         modifier =
             modifier
                 .size(width = 300.dp, height = 35.dp)
                 .border(
                     color = HackathonTheme.colors.primary,
-                    width = 1.5.dp, shape = RoundedCornerShape(30.dp)
+                    width = 1.5.dp,
+                    shape = RoundedCornerShape(30.dp),
                 )
                 .background(
                     HackathonTheme.colors.white,
                     shape = RoundedCornerShape(30.dp),
                 )
                 .padding(start = 14.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_search),
@@ -54,6 +51,6 @@ fun SearchComponent(
 
 @Preview
 @Composable
-private fun SearchComponentPreview(){
-    SearchComponent(onSearch = {})
+private fun SearchComponentPreview() {
+    SearchComponent()
 }

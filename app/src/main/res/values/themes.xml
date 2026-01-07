@@ -2,4 +2,18 @@
 <resources>
 
     <style name="Theme.Hackathon" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Splash Screen 전용 테마 -->
+    <style name="Theme.ArchiveatProject.Splash"
+        parent="Theme.SplashScreen">
+
+        <item name="windowSplashScreenBackground">#FF3700B3</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_inset</item>
+
+        <item name="postSplashScreenTheme">
+            @style/Theme.Hackathon
+        </item>
+
+    </style>
 </resources>
