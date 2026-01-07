@@ -1,0 +1,26 @@
+<problems>
+<problem>
+  <file>file://$PROJECT_DIR$/gradle/libs.versions.toml</file>
+  <line>19</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/gradle/libs.versions.toml" />
+  <problem_class id="UnusedVersionCatalogEntry" severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">Unused version catalog entry</problem_class>
+  <description>Version reference 'hiltManager' is not used in build scripts</description>
+  <highlighted_element>hiltManager</highlighted_element>
+  <language>TOML</language>
+  <offset>0</offset>
+  <length>11</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/gradle/libs.versions.toml</file>
+  <line>51</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/gradle/libs.versions.toml" />
+  <problem_class id="UnusedVersionCatalogEntry" severity="WARNING" attribute_key="NOT_USED_ELEMENT_ATTRIBUTES">Unused version catalog entry</problem_class>
+  <description>Dependency alias 'compose-rules-detekt' is not used in build scripts</description>
+  <highlighted_element>compose-rules-detekt</highlighted_element>
+  <language>TOML</language>
+  <offset>0</offset>
+  <length>20</length>
+</problem>
+</problems>

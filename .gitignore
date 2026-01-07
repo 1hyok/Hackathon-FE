@@ -215,7 +215,7 @@ Thumbs.db
 desktop.ini
 
 # Android Studio Inspect Code results (XML exports)
-# 루트 디렉토리의 Inspect Code 결과 파일들
+# 루트 디렉토리의 Inspect Code 결과 파일들은 무시 (inspection/ 폴더로 이동됨)
 AndroidLint*.xml
 ControlFlowWithEmptyBody.xml
 EditorConfigKeyCorrectness.xml
@@ -232,4 +232,6 @@ UnusedSymbol.xml
 UnusedVersionCatalogEntry.xml
 XmlUnusedNamespaceDeclaration.xml
 .descriptions.xml
-.xml
+# inspection/ 폴더의 파일들은 추적 (예외 처리)
+!inspection/
+!inspection/*.xml

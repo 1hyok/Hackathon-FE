@@ -1,0 +1,15 @@
+<problems>
+<problem>
+  <file>file://$PROJECT_DIR$/app/src/main/java/com/example/hackathon/data/service/HomeService.kt</file>
+  <line>7</line>
+  <module>Hackathon.app.main</module>
+  <package>com.example.hackathon.data.service</package>
+  <entry_point TYPE="method" FQNAME="com.example.hackathon.data.service.HomeService java.lang.Object getHome(kotlin.coroutines.Continuation&lt;? super kotlin.Unit&gt; $completion)" />
+  <problem_class id="RedundantUnitReturnType" severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Redundant 'Unit' return type</problem_class>
+  <description>Redundant 'Unit' return type</description>
+  <highlighted_element>Unit</highlighted_element>
+  <language>kotlin</language>
+  <offset>27</offset>
+  <length>4</length>
+</problem>
+</problems>

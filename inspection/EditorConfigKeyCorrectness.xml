@@ -1,0 +1,26 @@
+<problems>
+<problem>
+  <file>file://$PROJECT_DIR$/.editorconfig</file>
+  <line>14</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/.editorconfig" />
+  <problem_class id="EditorConfigKeyCorrectness" severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Unknown property</problem_class>
+  <description>The property is not supported</description>
+  <highlighted_element>ktlint_function_naming_ignore_when_annotated_with</highlighted_element>
+  <language>EditorConfig</language>
+  <offset>0</offset>
+  <length>49</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/.editorconfig</file>
+  <line>17</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/.editorconfig" />
+  <problem_class id="EditorConfigKeyCorrectness" severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Unknown property</problem_class>
+  <description>The property is not supported</description>
+  <highlighted_element>ktlint_standard_no-wildcard-imports</highlighted_element>
+  <language>EditorConfig</language>
+  <offset>0</offset>
+  <length>35</length>
+</problem>
+</problems>

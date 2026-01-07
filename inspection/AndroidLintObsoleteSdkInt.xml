@@ -1,0 +1,16 @@
+<problems>
+<problem>
+  <file>file://$PROJECT_DIR$/app/src/main/java/com/example/hackathon/ui/theme/Theme.kt</file>
+  <line>49</line>
+  <module>Hackathon.app.main</module>
+  <package>com.example.hackathon.ui.theme</package>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/src/main/java/com/example/hackathon/ui/theme/Theme.kt" />
+  <problem_class id="AndroidLintObsoleteSdkInt" severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Obsolete SDK_INT Version Check</problem_class>
+  <hints />
+  <description>&lt;html&gt;Unnecessary; &lt;code&gt;SDK_INT&lt;/code&gt; is always &gt;= 36&lt;/html&gt;</description>
+  <highlighted_element>Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.S</highlighted_element>
+  <language>kotlin</language>
+  <offset>28</offset>
+  <length>46</length>
+</problem>
+</problems>

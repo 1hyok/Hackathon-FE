@@ -1,0 +1,15 @@
+<problems>
+<problem>
+  <file>file://$PROJECT_DIR$/app/src/main/java/com/example/hackathon/presentation/screen/DetailScreen.kt</file>
+  <line>104</line>
+  <module>Hackathon.app.main</module>
+  <package>com.example.hackathon.presentation.screen</package>
+  <entry_point TYPE="method" FQNAME="com.example.hackathon.presentation.screen.DetailScreenKt void DetailScreen(androidx.compose.ui.Modifier modifier, java.lang.String combinationId, com.example.hackathon.presentation.viewmodel.DetailViewModel viewModel, kotlin.jvm.functions.Function0&lt;kotlin.Unit&gt; onNavigateBack)" />
+  <problem_class id="ControlFlowWithEmptyBody" severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Control flow with empty body</problem_class>
+  <description>'if' has empty body</description>
+  <highlighted_element>if</highlighted_element>
+  <language>kotlin</language>
+  <offset>20</offset>
+  <length>2</length>
+</problem>
+</problems>

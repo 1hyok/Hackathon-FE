@@ -1,0 +1,34 @@
+<problems>
+<problem>
+  <file>file://$PROJECT_DIR$/app/src/main/java/com/example/hackathon/core/component/SearchBar.kt</file>
+  <line>17</line>
+  <module>Hackathon.app.main</module>
+  <package>com.example.hackathon.core.component</package>
+  <entry_point TYPE="method" FQNAME="com.example.hackathon.core.component.SearchBarKt void SearchBar(java.lang.String query, kotlin.jvm.functions.Function1&lt;? super java.lang.String,kotlin.Unit&gt; onQueryChange, kotlin.jvm.functions.Function0&lt;kotlin.Unit&gt; onSearch, androidx.compose.ui.Modifier modifier, java.lang.String placeholder)" />
+  <problem_class id="unused" severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Unused declaration</problem_class>
+  <hints>
+    <hint value="onSearch" />
+  </hints>
+  <description>Parameter &lt;code&gt;onSearch&lt;/code&gt; is not used</description>
+  <highlighted_element>onSearch</highlighted_element>
+  <language>kotlin</language>
+  <offset>4</offset>
+  <length>8</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/app/src/main/java/com/example/hackathon/data/repositoryimpl/CombinationRepositoryImpl.kt</file>
+  <line>96</line>
+  <module>Hackathon.app.main</module>
+  <package>com.example.hackathon.data.repositoryimpl</package>
+  <entry_point TYPE="method" FQNAME="com.example.hackathon.data.repositoryimpl.CombinationRepositoryImpl java.lang.Object likeCombination(java.lang.String id, kotlin.coroutines.Continuation&lt;? super kotlin.Result&lt;? extends kotlin.Unit&gt;&gt; $completion)" />
+  <problem_class id="unused" severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Unused declaration</problem_class>
+  <hints>
+    <hint value="id" />
+  </hints>
+  <description>Parameter &lt;code&gt;id&lt;/code&gt; is not used</description>
+  <highlighted_element>id</highlighted_element>
+  <language>kotlin</language>
+  <offset>45</offset>
+  <length>2</length>
+</problem>
+</problems>

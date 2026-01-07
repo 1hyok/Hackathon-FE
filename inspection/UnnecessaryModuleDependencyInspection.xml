@@ -1,0 +1,26 @@
+<problems>
+<problem>
+  <file>Hackathon.app.unitTest</file>
+  <module>Hackathon.app.unitTest</module>
+  <entry_point TYPE="module" FQNAME="Hackathon.app.unitTest" />
+  <problem_class id="UnnecessaryModuleDependencyInspection" severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Unnecessary module dependency</problem_class>
+  <hints>
+    <hint value="Hackathon.app.main" />
+  </hints>
+  <description>Module 'Hackathon.app.unitTest' sources do not depend on module 'Hackathon.app.main' sources</description>
+  <highlighted_element />
+  <language />
+</problem>
+<problem>
+  <file>Hackathon.app.androidTest</file>
+  <module>Hackathon.app.androidTest</module>
+  <entry_point TYPE="module" FQNAME="Hackathon.app.androidTest" />
+  <problem_class id="UnnecessaryModuleDependencyInspection" severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Unnecessary module dependency</problem_class>
+  <hints>
+    <hint value="Hackathon.app.main" />
+  </hints>
+  <description>Module 'Hackathon.app.androidTest' sources do not depend on module 'Hackathon.app.main' sources</description>
+  <highlighted_element />
+  <language />
+</problem>
+</problems>

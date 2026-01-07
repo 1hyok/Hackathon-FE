@@ -1,0 +1,15 @@
+<problems>
+<problem>
+  <file>file://$PROJECT_DIR$/app/src/main/java/com/example/hackathon/MainActivity.kt</file>
+  <line>18</line>
+  <module>Hackathon.app.main</module>
+  <package>com.example.hackathon</package>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/src/main/java/com/example/hackathon/MainActivity.kt" />
+  <problem_class id="KotlinUnusedImport" severity="WARNING" attribute_key="WARNING_ATTRIBUTES">Unused import directive</problem_class>
+  <description>Unused import directive</description>
+  <highlighted_element>import androidx.compose.runtime.setValue</highlighted_element>
+  <language>kotlin</language>
+  <offset>0</offset>
+  <length>40</length>
+</problem>
+</problems>

@@ -2,27 +2,33 @@ package com.example.hackathon.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+// Figma Design System Colors
 // Primary Colors
-val Primary = Color(0xFFFF8A3D) // 주황
-val PrimaryDark = Color(0xFFE67A2E)
+val Primary = Color(0xFFE10818) // 빨간색 (Figma Primary)
+val PrimaryDark = Color(0xFFC10714)
 
-// Secondary Colors
-val Secondary = Color(0xFF1F2A44) // 다크 네이비
-val SecondaryLight = Color(0xFF2A3A5A)
+// Neutral Colors (Figma Design System)
+val Black = Color(0xFF000000)
+val White = Color(0xFFFFFFFF)
+val Gray50 = Color(0xFFE0DCDC)
+val Gray700 = Color(0xFF383838)
+val Gray900 = Color(0xFF202020)
 
 // Background Colors
-val Background = Color(0xFFFFF4E8) // 베이지
+val Background = Color(0xFFFFFFFF) // White background
 val Surface = Color(0xFFFFFFFF)
 
 // Text Colors
-val TextPrimary = Color(0xFF1F2A44)
-val TextSecondary = Color(0xFF6B7280)
+val TextPrimary = Color(0xFF000000) // Black
+val TextSecondary = Color(0xFF383838) // Gray700
 
 // Accent Colors
 val Success = Color(0xFF2ECC71)
-val Error = Color(0xFFE74C3C)
+val Error = Color(0xFFE10818) // Primary red for errors
 
-// Legacy colors (for compatibility)
+// Legacy colors (for compatibility - deprecated)
+val Secondary = Color(0xFF1F2A44)
+val SecondaryLight = Color(0xFF2A3A5A)
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)

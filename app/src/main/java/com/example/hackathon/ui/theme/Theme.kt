@@ -26,14 +26,18 @@ private val DarkColorScheme =
 private val LightColorScheme =
     lightColorScheme(
         primary = Primary,
-        secondary = Secondary,
+        secondary = Gray900,
         tertiary = Success,
-        background = Background,
-        surface = Surface,
-        onPrimary = androidx.compose.ui.graphics.Color.White,
-        onSecondary = androidx.compose.ui.graphics.Color.White,
-        onBackground = TextPrimary,
-        onSurface = TextPrimary,
+        // Figma: White background
+        background = White,
+        surface = White,
+        onPrimary = White,
+        onSecondary = White,
+        // Figma: Black text
+        onBackground = Black,
+        onSurface = Black,
+        error = Error,
+        onError = White,
     )
 
 @Composable

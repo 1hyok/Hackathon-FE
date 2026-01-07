@@ -1,0 +1,317 @@
+<problems>
+<problem>
+  <file>file://$PROJECT_DIR$/.cursorrules</file>
+  <line>97</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/.cursorrules" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'mylib'</description>
+  <highlighted_element>mylib</highlighted_element>
+  <language>TEXT</language>
+  <offset>49</offset>
+  <length>5</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/.cursorrules</file>
+  <line>113</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/.cursorrules" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'repositoryimpl'</description>
+  <highlighted_element>repositoryimpl</highlighted_element>
+  <language>TEXT</language>
+  <offset>8</offset>
+  <length>14</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/ACTION_PLAN.md</file>
+  <line>110</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/ACTION_PLAN.md" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'KUIT'</description>
+  <highlighted_element>KUIT</highlighted_element>
+  <language>Markdown</language>
+  <offset>17</offset>
+  <length>4</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/CONVENTION.md</file>
+  <line>27</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/CONVENTION.md" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'yeowon'</description>
+  <highlighted_element>yeowon</highlighted_element>
+  <language>Markdown</language>
+  <offset>4</offset>
+  <length>6</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/CONVENTION.md</file>
+  <line>28</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/CONVENTION.md" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'ilhyeok'</description>
+  <highlighted_element>ilhyeok</highlighted_element>
+  <language>Markdown</language>
+  <offset>4</offset>
+  <length>7</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/GIT_STRATEGY.md</file>
+  <line>104</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/GIT_STRATEGY.md" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'yeowon'</description>
+  <highlighted_element>yeowon</highlighted_element>
+  <language>Markdown</language>
+  <offset>8</offset>
+  <length>6</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/GIT_STRATEGY.md</file>
+  <line>109</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/GIT_STRATEGY.md" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'ilhyeok'</description>
+  <highlighted_element>ilhyeok</highlighted_element>
+  <language>Markdown</language>
+  <offset>8</offset>
+  <length>7</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/PROJECT_MEMO.md</file>
+  <line>158</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/PROJECT_MEMO.md" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'KUIT'</description>
+  <highlighted_element>KUIT</highlighted_element>
+  <language>Markdown</language>
+  <offset>4</offset>
+  <length>4</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/PROJECT_MEMO.md</file>
+  <line>163</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/PROJECT_MEMO.md" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'KUIT'</description>
+  <highlighted_element>KUIT</highlighted_element>
+  <language>Markdown</language>
+  <offset>4</offset>
+  <length>4</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/PROJECT_MEMO.md</file>
+  <line>310</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/PROJECT_MEMO.md" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'KUIT'</description>
+  <highlighted_element>KUIT</highlighted_element>
+  <language>Markdown</language>
+  <offset>4</offset>
+  <length>4</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/PROJECT_MEMO.md</file>
+  <line>311</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/PROJECT_MEMO.md" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'KUIT'</description>
+  <highlighted_element>KUIT</highlighted_element>
+  <language>Markdown</language>
+  <offset>4</offset>
+  <length>4</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/README.md</file>
+  <line>101</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/README.md" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'cursorrules'</description>
+  <highlighted_element>cursorrules</highlighted_element>
+  <language>Markdown</language>
+  <offset>4</offset>
+  <length>11</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/app/build.gradle.kts</file>
+  <line>108</line>
+  <module>Hackathon.app</module>
+  <package>&lt;default&gt;</package>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/app/build.gradle.kts" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'Ktlint'</description>
+  <highlighted_element>Ktlint</highlighted_element>
+  <language>kotlin</language>
+  <offset>3</offset>
+  <length>6</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/app/src/main/java/com/example/hackathon/domain/entity/Category.kt</file>
+  <line>5</line>
+  <module>Hackathon.app.main</module>
+  <package>com.example.hackathon.domain.entity</package>
+  <entry_point TYPE="field" FQNAME="com.example.hackathon.domain.entity.Category HAIDILAO" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'HAIDILAO'</description>
+  <highlighted_element>HAIDILAO</highlighted_element>
+  <language>kotlin</language>
+  <offset>4</offset>
+  <length>8</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/app/src/main/java/com/example/hackathon/ui/theme/Type.kt</file>
+  <line>10</line>
+  <module>Hackathon.app.main</module>
+  <package>com.example.hackathon.ui.theme</package>
+  <entry_point TYPE="field" FQNAME="file://$PROJECT_DIR$/app/src/main/java/com/example/hackathon/ui/theme/Type.kt Typography" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'pretendard'</description>
+  <highlighted_element>pretendard</highlighted_element>
+  <language>kotlin</language>
+  <offset>30</offset>
+  <length>10</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/gradlew.bat</file>
+  <line>16</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/gradlew.bat" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'SPDX'</description>
+  <highlighted_element>SPDX</highlighted_element>
+  <language>textmate</language>
+  <offset>5</offset>
+  <length>4</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/gradlew.bat</file>
+  <line>27</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/gradlew.bat" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'setlocal'</description>
+  <highlighted_element>setlocal</highlighted_element>
+  <language>textmate</language>
+  <offset>24</offset>
+  <length>8</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/scripts/check-code-quality.ps1</file>
+  <line>6</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/scripts/check-code-quality.ps1" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'Ktlint'</description>
+  <highlighted_element>Ktlint</highlighted_element>
+  <language>textmate</language>
+  <offset>2</offset>
+  <length>6</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/scripts/check-code-quality.ps1</file>
+  <line>8</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/scripts/check-code-quality.ps1" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'ktlint'</description>
+  <highlighted_element>ktlint</highlighted_element>
+  <language>textmate</language>
+  <offset>16</offset>
+  <length>6</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/scripts/check-code-quality.ps1</file>
+  <line>9</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/scripts/check-code-quality.ps1" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'LASTEXITCODE'</description>
+  <highlighted_element>LASTEXITCODE</highlighted_element>
+  <language>textmate</language>
+  <offset>5</offset>
+  <length>12</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/scripts/check-code-quality.sh</file>
+  <line>7</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/scripts/check-code-quality.sh" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'Ktlint'</description>
+  <highlighted_element>Ktlint</highlighted_element>
+  <language>Shell Script</language>
+  <offset>2</offset>
+  <length>6</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/scripts/check-code-quality.sh</file>
+  <line>9</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/scripts/check-code-quality.sh" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'Ktlint'</description>
+  <highlighted_element>Ktlint</highlighted_element>
+  <language>Shell Script</language>
+  <offset>17</offset>
+  <length>6</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/scripts/check-code-quality.sh</file>
+  <line>12</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/scripts/check-code-quality.sh" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'Ktlint'</description>
+  <highlighted_element>Ktlint</highlighted_element>
+  <language>Shell Script</language>
+  <offset>12</offset>
+  <length>6</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/scripts/check-code-quality.sh</file>
+  <line>16</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/scripts/check-code-quality.sh" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'Ktlint'</description>
+  <highlighted_element>Ktlint</highlighted_element>
+  <language>Shell Script</language>
+  <offset>2</offset>
+  <length>6</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/scripts/check-code-quality.sh</file>
+  <line>18</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/scripts/check-code-quality.sh" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'Ktlint'</description>
+  <highlighted_element>Ktlint</highlighted_element>
+  <language>Shell Script</language>
+  <offset>17</offset>
+  <length>6</length>
+</problem>
+<problem>
+  <file>file://$PROJECT_DIR$/scripts/check-code-quality.sh</file>
+  <line>21</line>
+  <module>Hackathon</module>
+  <entry_point TYPE="file" FQNAME="file://$PROJECT_DIR$/scripts/check-code-quality.sh" />
+  <problem_class id="SpellCheckingInspection" severity="TYPO" attribute_key="TYPO">Typo</problem_class>
+  <description>Typo: In word 'Ktlint'</description>
+  <highlighted_element>Ktlint</highlighted_element>
+  <language>Shell Script</language>
+  <offset>12</offset>
+  <length>6</length>
+</problem>
+</problems>
