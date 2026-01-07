@@ -24,7 +24,10 @@ private val LightColorScheme =
     )
 
 @Composable
-fun HackathonTheme(content: @Composable () -> Unit) {
+fun HackathonTheme(
+    // 다크 모드 미지원 - 항상 라이트 모드만 사용
+    content: @Composable () -> Unit,
+) {
     MaterialTheme(
         colorScheme = LightColorScheme,
         typography = Typography,

@@ -43,6 +43,10 @@ class CreateCombinationViewModel
             _uiState.value = _uiState.value.copy(steps = steps)
         }
 
+        fun updateIsPublic(isPublic: Boolean) {
+            _uiState.value = _uiState.value.copy(isPublic = isPublic)
+        }
+
         fun createCombination(onSuccess: (Combination) -> Unit) {
             val state = _uiState.value
 
@@ -102,6 +106,7 @@ data class CreateCombinationUiState(
     val category: Category = Category.SUBWAY,
     val ingredients: String = "",
     val steps: String = "",
+    val isPublic: Boolean = true,
     val isLoading: Boolean = false,
     val error: String? = null,
 )

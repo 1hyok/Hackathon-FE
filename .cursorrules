@@ -166,3 +166,31 @@ com.example.hackathon/
 - Use dummy data when server API is not ready.
 - All team members work on both design and development.
 
+# Git Branch Strategy
+- **CRITICAL**: Always work on your own branch, NOT on main branch.
+- **Branch naming**: Use your name as branch name (e.g., `ilhyuk`, `yewon`).
+- **Role-based branches**:
+  - **ilhyuk (일혁)**: 
+    - CreateCombinationScreen (조합 등록 화면)
+    - MyScreen (마이페이지)
+    - Related ViewModels (CreateCombinationViewModel, MyPageViewModel)
+  - **yewon (예원)**:
+    - HomeScreen (홈 화면)
+    - DetailScreen (조합 상세 화면)
+    - Related ViewModels (HomeViewModel, DetailViewModel)
+- **MANDATORY: Check current branch before starting work**:
+  - **ALWAYS** check current branch with `git branch --show-current` or `git status` before making any code changes.
+  - If you're working on ilhyuk's tasks (CreateCombinationScreen, MyScreen), you MUST be on `ilhyuk` branch.
+  - If you're working on yewon's tasks (HomeScreen, DetailScreen), you MUST be on `yewon` branch.
+  - If on wrong branch, switch to correct branch first: `git checkout ilhyuk` or `git checkout yewon`.
+  - **NEVER** work on `main` branch for personal tasks.
+- **Workflow**:
+  1. **FIRST**: Check current branch with `git branch --show-current`
+  2. If wrong branch, switch: `git checkout ilhyuk` (or your branch name)
+  3. Pull latest changes: `git pull origin main` (if needed)
+  4. Make changes on your branch
+  5. Commit and push to your branch: `git push origin ilhyuk`
+  6. Merge to main only after review/approval
+- **NEVER commit directly to main branch** for personal work.
+- **Common code** (shared components, theme, navigation) can go to main after team discussion.
+
