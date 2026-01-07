@@ -6,11 +6,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.core.component.CategoryChip
 import com.example.hackathon.presentation.viewmodel.CreateCombinationViewModel
 
@@ -20,20 +19,21 @@ import com.example.hackathon.presentation.viewmodel.CreateCombinationViewModel
 fun CreateCombinationScreen(
     modifier: Modifier = Modifier,
     viewModel: CreateCombinationViewModel = hiltViewModel(),
-    onNavigateBack: () -> Unit = {}
+    onNavigateBack: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
     ) {
         // 제목
         Text(
             text = "조합 등록",
-            style = MaterialTheme.typography.displaySmall
+            style = MaterialTheme.typography.displaySmall,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -42,7 +42,7 @@ fun CreateCombinationScreen(
         Button(
             onClick = { /* TODO: 이미지 업로드 */ },
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(12.dp),
         ) {
             Text("이미지 업로드")
         }
@@ -55,7 +55,7 @@ fun CreateCombinationScreen(
             onValueChange = viewModel::updateTitle,
             label = { Text("제목") },
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -63,11 +63,11 @@ fun CreateCombinationScreen(
         // 카테고리 선택
         Text(
             text = "카테고리",
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             com.example.hackathon.domain.entity.Category.values()
                 .filter { it != com.example.hackathon.domain.entity.Category.ALL }
@@ -75,7 +75,7 @@ fun CreateCombinationScreen(
                     CategoryChip(
                         category = category,
                         isSelected = category == uiState.category,
-                        onClick = { viewModel.updateCategory(category) }
+                        onClick = { viewModel.updateCategory(category) },
                     )
                 }
         }
@@ -88,7 +88,7 @@ fun CreateCombinationScreen(
             onValueChange = viewModel::updateIngredients,
             label = { Text("재료 (쉼표로 구분)") },
             modifier = Modifier.fillMaxWidth(),
-            minLines = 3
+            minLines = 3,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -99,7 +99,7 @@ fun CreateCombinationScreen(
             onValueChange = viewModel::updateSteps,
             label = { Text("만드는 방법 (줄바꿈으로 구분)") },
             modifier = Modifier.fillMaxWidth(),
-            minLines = 5
+            minLines = 5,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -110,7 +110,7 @@ fun CreateCombinationScreen(
             onValueChange = viewModel::updateDescription,
             label = { Text("설명") },
             modifier = Modifier.fillMaxWidth(),
-            minLines = 3
+            minLines = 3,
         )
 
         // 에러 메시지
@@ -119,7 +119,7 @@ fun CreateCombinationScreen(
             Text(
                 text = error,
                 color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
             )
         }
 
@@ -133,12 +133,12 @@ fun CreateCombinationScreen(
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = !uiState.isLoading && uiState.title.isNotBlank() && uiState.description.isNotBlank()
+            enabled = !uiState.isLoading && uiState.title.isNotBlank() && uiState.description.isNotBlank(),
         ) {
             if (uiState.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(20.dp),
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.onPrimary,
                 )
             } else {
                 Text("등록하기")
@@ -146,4 +146,3 @@ fun CreateCombinationScreen(
         }
     }
 }
-

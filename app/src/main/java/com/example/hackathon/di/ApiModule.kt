@@ -14,14 +14,9 @@ import javax.inject.Singleton
 object ApiModule {
     @Provides
     @Singleton
-    fun providesHomeService(retrofit: Retrofit): HomeService =
-        retrofit.create(HomeService::class.java)
+    fun providesHomeService(retrofit: Retrofit): HomeService = retrofit.create(HomeService::class.java)
 
     @Provides
     @Singleton
-    fun providesCombinationService(retrofit: Retrofit): CombinationService =
-        retrofit.create(CombinationService::class.java)
+    fun providesCombinationService(retrofit: Retrofit): CombinationService = retrofit.create(CombinationService::class.java)
 }
-
-
-

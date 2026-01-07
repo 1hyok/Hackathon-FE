@@ -9,11 +9,11 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.core.component.CombinationCard
 import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 
@@ -23,50 +23,51 @@ import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 fun MyScreen(
     modifier: Modifier = Modifier,
     viewModel: MyPageViewModel = hiltViewModel(),
-    onCombinationClick: (String) -> Unit = {}
+    onCombinationClick: (String) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val myCombinations = uiState.myCombinations
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(16.dp),
     ) {
         // 프로필 섹션
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 Surface(
                     modifier = Modifier.size(64.dp),
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primaryContainer
+                    color = MaterialTheme.colorScheme.primaryContainer,
                 ) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = "일혁".take(1),
-                            style = MaterialTheme.typography.titleLarge
+                            style = MaterialTheme.typography.titleLarge,
                         )
                     }
                 }
                 Column {
                     Text(
                         text = "일혁",
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
                     )
                     Text(
                         text = "내가 등록한 조합 ${myCombinations.size}개",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                     )
                 }
             }
@@ -74,7 +75,7 @@ fun MyScreen(
             IconButton(onClick = { /* TODO: 설정 화면 */ }) {
                 Icon(
                     imageVector = Icons.Default.Settings,
-                    contentDescription = "설정"
+                    contentDescription = "설정",
                 )
             }
         }
@@ -84,7 +85,7 @@ fun MyScreen(
         // 내가 등록한 조합 목록
         Text(
             text = "내가 등록한 조합",
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -93,7 +94,7 @@ fun MyScreen(
             uiState.isLoading -> {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     CircularProgressIndicator()
                 }
@@ -102,11 +103,11 @@ fun MyScreen(
                 val errorMessage = uiState.error ?: "오류가 발생했습니다"
                 Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = errorMessage,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = { viewModel.refresh() }) {
@@ -117,19 +118,19 @@ fun MyScreen(
             myCombinations.isEmpty() -> {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text("등록한 조합이 없습니다")
                 }
             }
             else -> {
                 LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     items(myCombinations) { combination ->
                         CombinationCard(
                             combination = combination,
-                            onClick = { onCombinationClick(combination.id) }
+                            onClick = { onCombinationClick(combination.id) },
                         )
                     }
                 }
@@ -137,6 +138,3 @@ fun MyScreen(
         }
     }
 }
-
-
-

@@ -8,17 +8,17 @@ import retrofit2.http.*
 interface CombinationService {
     @GET("combinations")
     suspend fun getCombinations(
-        @Query("category") category: String? = null
+        @Query("category") category: String? = null,
     ): BaseResponse<List<CombinationResponse>>
 
     @GET("combinations/{id}")
     suspend fun getCombinationById(
-        @Path("id") id: String
+        @Path("id") id: String,
     ): BaseResponse<CombinationResponse>
 
     @POST("combinations")
     suspend fun createCombination(
-        @Body request: CreateCombinationRequest
+        @Body request: CreateCombinationRequest,
     ): BaseResponse<CombinationResponse>
 
     @GET("users/me/combinations")
@@ -26,7 +26,6 @@ interface CombinationService {
 
     @POST("combinations/{id}/like")
     suspend fun likeCombination(
-        @Path("id") id: String
+        @Path("id") id: String,
     ): BaseResponse<Unit>
 }
-

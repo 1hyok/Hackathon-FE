@@ -1,18 +1,15 @@
 package com.example.hackathon.presentation.route
 
 sealed class Route(
-    val route: String
+    val route: String,
 ) {
-    data object Home: Route(route = "home")
+    data object Home : Route(route = "home")
 
-    data object Detail: Route(route = "detail/{id}") {
+    data object Detail : Route(route = "detail/{id}") {
         fun createRoute(id: String) = "detail/$id"
     }
 
-    data object Create: Route(route = "create")
+    data object Create : Route(route = "create")
 
-    data object My: Route(route = "my")
+    data object My : Route(route = "my")
 }
-
-
-

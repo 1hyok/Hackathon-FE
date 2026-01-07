@@ -22,28 +22,30 @@ import com.example.hackathon.domain.entity.User
 fun CombinationCard(
     combination: Combination,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
         ) {
             // 이미지
             if (combination.imageUrl != null) {
                 AsyncImage(
                     model = combination.imageUrl,
                     contentDescription = combination.title,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    contentScale = ContentScale.Crop
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                    contentScale = ContentScale.Crop,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
             }
@@ -53,7 +55,7 @@ fun CombinationCard(
                 text = combination.title,
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -64,7 +66,7 @@ fun CombinationCard(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -73,18 +75,18 @@ fun CombinationCard(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = combination.author.nickname,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                 )
 
                 Text(
                     text = "❤️ ${combination.likeCount}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
         }
@@ -95,19 +97,19 @@ fun CombinationCard(
 @Composable
 private fun CombinationCardPreview() {
     CombinationCard(
-        combination = Combination(
-            id = "1",
-            title = "서브웨이 꿀조합",
-            description = "이탈리안 비엠티에 베이컨 추가하면 완벽해요!",
-            imageUrl = null,
-            category = Category.SUBWAY,
-            ingredients = listOf("이탈리안 비엠티", "베이컨", "치즈"),
-            steps = listOf("빵 선택", "베이컨 추가", "치즈 추가"),
-            author = User(id = "1", nickname = "테스트유저", profileImageUrl = null),
-            likeCount = 42,
-            createdAt = System.currentTimeMillis().toString()
-        ),
-        onClick = {}
+        combination =
+            Combination(
+                id = "1",
+                title = "서브웨이 꿀조합",
+                description = "이탈리안 비엠티에 베이컨 추가하면 완벽해요!",
+                imageUrl = null,
+                category = Category.SUBWAY,
+                ingredients = listOf("이탈리안 비엠티", "베이컨", "치즈"),
+                steps = listOf("빵 선택", "베이컨 추가", "치즈 추가"),
+                author = User(id = "1", nickname = "테스트유저", profileImageUrl = null),
+                likeCount = 42,
+                createdAt = System.currentTimeMillis().toString(),
+            ),
+        onClick = {},
     )
 }
-

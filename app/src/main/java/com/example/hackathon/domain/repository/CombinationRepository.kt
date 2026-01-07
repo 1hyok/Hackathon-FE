@@ -5,15 +5,18 @@ import com.example.hackathon.domain.entity.Combination
 
 interface CombinationRepository {
     suspend fun getCombinations(category: Category? = null): Result<List<Combination>>
+
     suspend fun getCombinationById(id: String): Result<Combination>
+
     suspend fun createCombination(
         title: String,
         description: String,
         category: Category,
         ingredients: List<String>,
-        steps: List<String>
+        steps: List<String>,
     ): Result<Combination>
+
     suspend fun getMyCombinations(): Result<List<Combination>>
+
     suspend fun likeCombination(id: String): Result<Unit>
 }
-

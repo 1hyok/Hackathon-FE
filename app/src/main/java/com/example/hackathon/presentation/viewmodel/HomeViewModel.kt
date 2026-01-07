@@ -15,71 +15,74 @@ import javax.inject.Inject
 // 담당자: 예원
 // TODO: 디자인 확인 후 UI 조정 필요
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val repository: CombinationRepository
-) : ViewModel() {
+class HomeViewModel
+    @Inject
+    constructor(
+        private val repository: CombinationRepository,
+    ) : ViewModel() {
+        private val _uiState = MutableStateFlow(HomeUiState())
+        val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    private val _uiState = MutableStateFlow(HomeUiState())
-    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+        private val _searchQuery = MutableStateFlow("")
+        val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+        private val _selectedCategory = MutableStateFlow<Category>(Category.ALL)
+        val selectedCategory: StateFlow<Category> = _selectedCategory.asStateFlow()
 
-    private val _selectedCategory = MutableStateFlow<Category>(Category.ALL)
-    val selectedCategory: StateFlow<Category> = _selectedCategory.asStateFlow()
+        init {
+            loadCombinations()
+        }
 
-    init {
-        loadCombinations()
-    }
+        fun loadCombinations() {
+            viewModelScope.launch {
+                _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
-    fun loadCombinations() {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-            
-            val category = if (_selectedCategory.value == Category.ALL) null else _selectedCategory.value
-            repository.getCombinations(category).fold(
-                onSuccess = { combinations ->
-                    val filtered = if (_searchQuery.value.isBlank()) {
-                        combinations
-                    } else {
-                        combinations.filter {
-                            it.title.contains(_searchQuery.value, ignoreCase = true) ||
-                            it.description.contains(_searchQuery.value, ignoreCase = true)
-                        }
-                    }
-                    _uiState.value = _uiState.value.copy(
-                        combinations = filtered,
-                        isLoading = false
-                    )
-                },
-                onFailure = { error ->
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        error = error.message ?: "오류가 발생했습니다"
-                    )
-                }
-            )
+                val category = if (_selectedCategory.value == Category.ALL) null else _selectedCategory.value
+                repository.getCombinations(category).fold(
+                    onSuccess = { combinations ->
+                        val filtered =
+                            if (_searchQuery.value.isBlank()) {
+                                combinations
+                            } else {
+                                combinations.filter {
+                                    it.title.contains(_searchQuery.value, ignoreCase = true) ||
+                                        it.description.contains(_searchQuery.value, ignoreCase = true)
+                                }
+                            }
+                        _uiState.value =
+                            _uiState.value.copy(
+                                combinations = filtered,
+                                isLoading = false,
+                            )
+                    },
+                    onFailure = { error ->
+                        _uiState.value =
+                            _uiState.value.copy(
+                                isLoading = false,
+                                error = error.message ?: "오류가 발생했습니다",
+                            )
+                    },
+                )
+            }
+        }
+
+        fun updateSearchQuery(query: String) {
+            _searchQuery.value = query
+            loadCombinations()
+        }
+
+        fun selectCategory(category: Category) {
+            _selectedCategory.value = category
+            loadCombinations()
+        }
+
+        fun refresh() {
+            loadCombinations()
         }
     }
-
-    fun updateSearchQuery(query: String) {
-        _searchQuery.value = query
-        loadCombinations()
-    }
-
-    fun selectCategory(category: Category) {
-        _selectedCategory.value = category
-        loadCombinations()
-    }
-
-    fun refresh() {
-        loadCombinations()
-    }
-}
 
 data class HomeUiState(
     val combinations: List<Combination> = emptyList(),
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
 )
-

@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -15,16 +14,13 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.hackathon.presentation.navigation.BottomNavItem
 import com.example.hackathon.presentation.navigation.AppNavGraph
+import com.example.hackathon.presentation.navigation.BottomNavItem
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.ui.theme.HackathonTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,11 +36,12 @@ class MainActivity : ComponentActivity() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 
-                val bottomNavItems = listOf(
-                    BottomNavItem("홈", Route.Home.route, Icons.Default.Home),
-                    BottomNavItem("등록", Route.Create.route, Icons.Default.Add),
-                    BottomNavItem("마이페이지", Route.My.route, Icons.Default.Person)
-                )
+                val bottomNavItems =
+                    listOf(
+                        BottomNavItem("홈", Route.Home.route, Icons.Default.Home),
+                        BottomNavItem("등록", Route.Create.route, Icons.Default.Add),
+                        BottomNavItem("마이페이지", Route.My.route, Icons.Default.Person),
+                    )
 
                 Scaffold(
                     bottomBar = {
@@ -64,22 +61,22 @@ class MainActivity : ComponentActivity() {
                                     icon = {
                                         Icon(
                                             imageVector = item.icon,
-                                            contentDescription = item.label
+                                            contentDescription = item.label,
                                         )
                                     },
                                     label = {
                                         Text(
-                                            text = item.label
+                                            text = item.label,
                                         )
-                                    }
+                                    },
                                 )
                             }
                         }
-                    }
+                    },
                 ) { innerPadding ->
                     AppNavGraph(
                         navController = navController,
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
                     )
                 }
             }

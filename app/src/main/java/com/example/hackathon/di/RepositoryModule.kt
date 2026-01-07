@@ -13,10 +13,5 @@ import javax.inject.Singleton
 abstract class RepositoryModule {
     @Binds
     @Singleton
-    abstract fun bindCombinationRepository(
-        combinationRepositoryImpl: CombinationRepositoryImpl
-    ): CombinationRepository
+    abstract fun bindCombinationRepository(combinationRepositoryImpl: CombinationRepositoryImpl): CombinationRepository
 }
-
-
-

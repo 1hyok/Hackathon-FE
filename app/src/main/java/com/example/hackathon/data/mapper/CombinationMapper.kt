@@ -18,7 +18,7 @@ fun CombinationResponse.toEntity(): Combination {
         steps = steps,
         author = author.toEntity(),
         likeCount = likeCount,
-        createdAt = createdAt
+        createdAt = createdAt,
     )
 }
 
@@ -26,11 +26,10 @@ fun UserResponse.toEntity(): User {
     return User(
         id = id,
         nickname = nickname,
-        profileImageUrl = profileImageUrl
+        profileImageUrl = profileImageUrl,
     )
 }
 
 fun CreateCombinationRequest.toCategoryString(): String {
     return category.uppercase()
 }
-

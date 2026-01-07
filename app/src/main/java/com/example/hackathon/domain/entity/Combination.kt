@@ -10,6 +10,5 @@ data class Combination(
     val steps: List<String>,
     val author: User,
     val likeCount: Int,
-    val createdAt: String
+    val createdAt: String,
 )
-

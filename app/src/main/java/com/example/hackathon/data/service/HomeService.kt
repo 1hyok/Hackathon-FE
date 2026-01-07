@@ -6,6 +6,3 @@ interface HomeService {
     @GET("home")
     suspend fun getHome(): Unit
 }
-
-
-
