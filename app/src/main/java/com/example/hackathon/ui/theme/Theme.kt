@@ -7,6 +7,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme =
@@ -63,4 +64,16 @@ fun HackathonTheme(
         typography = Typography,
         content = content,
     )
+}
+
+object HackathonTheme{
+    val colors: HackathonColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalHackathonColors
+
+    val typography: HackathonTypography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalHackathonTypography
 }

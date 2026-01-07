@@ -1,5 +1,6 @@
 package com.example.hackathon.ui.theme
 
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 // Figma Design System Colors
@@ -35,3 +36,31 @@ val Pink80 = Color(0xFFEFB8C8)
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
+
+data class HackathonColors(
+    val primary: Color,
+    val black: Color,
+    val white: Color,
+    val gray50: Color,
+    val gray700: Color,
+    val gray900: Color,
+    val background: Color,
+    val surface: Color,
+    val success: Color,
+    val error: Color
+)
+
+val defaultHackathonColors = HackathonColors(
+    primary = Primary,
+    black = Black,
+    white = White,
+    gray50 = Gray50,
+    gray700 = Gray700,
+    gray900 = Gray900,
+    background = Background,
+    surface = Surface,
+    success = Success,
+    error = Error
+)
+
+val LocalHackathonColors: HackathonColors = staticCompositionLocalOf { defaultHackathonColors }

@@ -1,6 +1,7 @@
 package com.example.hackathon.ui.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -8,116 +9,111 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.hackathon.R
 
-// 담당자: 일혁
-// TODO: Pretendard 폰트 리소스를 추가한 뒤 FontFamily를 교체해야 함.
-// 현재는 시스템 기본 폰트(FontFamily.Default)를 사용.
+// Figma Design System Typography
+// TODO: Pretendard 폰트 파일 추가 후 FontFamily 적용
+// 예시: FontFamily(Font(R.font.pretendard_bold, FontWeight.Bold))
+// 현재는 시스템 기본 폰트 사용
 
-val PretendardFontFamily =
-    FontFamily(
-        Font(R.font.pretendard_regular, FontWeight.Normal),
-        Font(R.font.pretendard_medium, FontWeight.Medium),
-        Font(R.font.pretendard_semibold, FontWeight.SemiBold),
-        Font(R.font.pretendard_bold, FontWeight.Bold),
+val FontBold = FontFamily(Font(R.font.pretendard_bold))
+val FontSemiBold = FontFamily(Font(R.font.pretendard_semibold))
+val FontMedium = FontFamily(Font(R.font.pretendard_medium))
+
+data class HackathonTypography(
+    val Head1_bold: TextStyle,
+    val Head1_semibold: TextStyle,
+    val Head2_bold: TextStyle,
+    val Head2_semibold: TextStyle,
+    val Sub1_semibold: TextStyle,
+    val Sub1_medium: TextStyle,
+    val Sub2_semibold: TextStyle,
+    val Sub2_medium: TextStyle,
+    val Body_semibold: TextStyle,
+    val Body_medium: TextStyle,
+    val Caption_medium: TextStyle
+)
+
+val defaultHackathonTypography = HackathonTypography(
+    Head1_bold = TextStyle(
+        fontFamily = FontBold,
+        fontSize = 24.sp,
+        lineHeight = 28.sp
+    ),
+    Head1_semibold = TextStyle(
+        fontFamily = FontSemiBold,
+        fontSize = 24.sp,
+        lineHeight = 28.sp
+    ),
+    Head2_bold = TextStyle(
+        fontFamily = FontBold,
+        fontSize = 22.sp,
+        lineHeight = 24.sp
+    ),
+    Head2_semibold = TextStyle(
+        fontFamily = FontSemiBold,
+        fontSize = 22.sp,
+        lineHeight = 24.sp
+    ),
+    Sub1_semibold = TextStyle(
+        fontFamily = FontSemiBold,
+        fontSize = 18.sp,
+        lineHeight = 20.sp
+    ),
+    Sub1_medium = TextStyle(
+        fontFamily = FontMedium,
+        fontSize = 18.sp,
+        lineHeight = 20.sp
+    ),
+    Sub2_semibold = TextStyle(
+        fontFamily = FontSemiBold,
+        fontSize = 24.sp,
+        lineHeight = 28.sp
+    ),
+    Sub2_medium = TextStyle(
+        fontFamily = FontBold,
+        fontSize = 16.sp,
+        lineHeight = 18.sp
+    ),
+    Body_semibold = TextStyle(
+        fontFamily = FontSemiBold,
+        fontSize = 14.sp,
+        lineHeight = 16.sp
+    ),
+    Body_medium = TextStyle(
+        fontFamily = FontMedium,
+        fontSize = 14.sp,
+        lineHeight = 16.sp
+    ),
+    Caption_medium = TextStyle(
+        fontFamily = FontMedium,
+        fontSize = 12.sp,
+        lineHeight = 14.sp
+    ),
+)
+
+val LocalHackathonTypography: HackathonTypography = staticCompositionLocalOf { defaultHackathonTypography }
+
+val Typography = Typography(
+    bodyLarge = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
     )
-
-// Figma 명칭과 1:1로 매핑된 스타일 세트
-object FigmaTypography {
-    val Head1Bold =
-        TextStyle(
-            fontFamily = PretendardFontFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
-            lineHeight = 28.sp,
-        )
-    val Head1Semibold =
-        TextStyle(
-            fontFamily = PretendardFontFamily,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 24.sp,
-            lineHeight = 28.sp,
-        )
-    val Head2Bold =
-        TextStyle(
-            fontFamily = PretendardFontFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
-            lineHeight = 24.sp,
-        )
-    val Head2Semibold =
-        TextStyle(
-            fontFamily = PretendardFontFamily,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 22.sp,
-            lineHeight = 24.sp,
-        )
-    val Sub1Semibold =
-        TextStyle(
-            fontFamily = PretendardFontFamily,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 18.sp,
-            lineHeight = 20.sp,
-        )
-    val Sub1Medium =
-        TextStyle(
-            fontFamily = PretendardFontFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 18.sp,
-            lineHeight = 20.sp,
-        )
-    val Sub2Semibold =
-        TextStyle(
-            fontFamily = PretendardFontFamily,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp,
-            lineHeight = 18.sp,
-        )
-    val Sub2Medium =
-        TextStyle(
-            fontFamily = PretendardFontFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 16.sp,
-            lineHeight = 18.sp,
-        )
-    val BodySemibold =
-        TextStyle(
-            fontFamily = PretendardFontFamily,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 14.sp,
-            lineHeight = 16.sp,
-        )
-    val BodyMedium =
-        TextStyle(
-            fontFamily = PretendardFontFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 14.sp,
-            lineHeight = 16.sp,
-        )
-    val CaptionMedium =
-        TextStyle(
-            fontFamily = PretendardFontFamily,
-            fontWeight = FontWeight.Medium,
-            fontSize = 12.sp,
-            lineHeight = 14.sp,
-        )
-}
-
-// Material3 Typography에 기본 맵핑 (가장 가까운 Figma 이름으로 대응)
-val Typography =
-    Typography(
-        // Head1_bold (24 Bold)
-        displaySmall = FigmaTypography.Head1Bold,
-        // Head2_bold (22 Bold)
-        titleLarge = FigmaTypography.Head2Bold,
-        // Sub1_semibold (18 SemiBold)
-        titleMedium = FigmaTypography.Sub1Semibold,
-        // Sub2_semibold (16 SemiBold)
-        titleSmall = FigmaTypography.Sub2Semibold,
-        // Sub2_medium (16 Medium)
-        bodyLarge = FigmaTypography.Sub2Medium,
-        // Body_semibold (14 SemiBold)
-        bodyMedium = FigmaTypography.BodySemibold,
-        // Body_medium (14 Medium)
-        labelLarge = FigmaTypography.BodyMedium,
-        // caption_medium (12 Medium)
-        labelMedium = FigmaTypography.CaptionMedium,
+    /* Other default text styles to override
+    titleLarge = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Medium,
+        fontSize = 11.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
     )
+    */
+)
