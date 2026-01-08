@@ -2,6 +2,7 @@ package com.example.hackathon.di
 
 import com.example.hackathon.data.service.CombinationService
 import com.example.hackathon.data.service.HomeService
+import com.example.hackathon.data.service.UserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,4 +20,8 @@ object ApiModule {
     @Provides
     @Singleton
     fun providesCombinationService(retrofit: Retrofit): CombinationService = retrofit.create(CombinationService::class.java)
+
+    @Provides
+    @Singleton
+    fun providesUserService(retrofit: Retrofit): UserService = retrofit.create(UserService::class.java)
 }

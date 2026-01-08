@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hackathon.data.local.DummyData
 import com.example.hackathon.domain.entity.Combination
+import com.example.hackathon.domain.entity.User
 import com.example.hackathon.domain.repository.CombinationRepository
+import com.example.hackathon.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,12 +15,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 // 담당자: 일혁
-// TODO: 사용자 정보 API 연동 필요
 @HiltViewModel
 class MyPageViewModel
     @Inject
     constructor(
-        private val repository: CombinationRepository,
+        private val combinationRepository: CombinationRepository,
+        private val userRepository: UserRepository,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(MyPageUiState())
         val uiState: StateFlow<MyPageUiState> = _uiState.asStateFlow()
@@ -27,7 +29,21 @@ class MyPageViewModel
         val selectedTab: StateFlow<MyPageTab> = _selectedTab.asStateFlow()
 
         init {
+            loadProfile()
             loadMyCombinations()
+        }
+
+        fun loadProfile() {
+            viewModelScope.launch {
+                userRepository.getProfile().fold(
+                    onSuccess = { user ->
+                        _uiState.value = _uiState.value.copy(user = user)
+                    },
+                    onFailure = {
+                        // 에러 발생 시에도 계속 진행 (기본값 사용)
+                    },
+                )
+            }
         }
 
         fun selectTab(tab: MyPageTab) {
@@ -43,7 +59,7 @@ class MyPageViewModel
             viewModelScope.launch {
                 _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
-                repository.getLikedCombinations().fold(
+                combinationRepository.getLikedCombinations().fold(
                     onSuccess = { combinations ->
                         _uiState.value =
                             _uiState.value.copy(
@@ -66,7 +82,7 @@ class MyPageViewModel
             viewModelScope.launch {
                 _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
-                repository.getMyCombinations().fold(
+                combinationRepository.getMyCombinations().fold(
                     onSuccess = { combinations ->
                         _uiState.value =
                             _uiState.value.copy(
@@ -96,7 +112,7 @@ class MyPageViewModel
         fun toggleLike(combinationId: String) {
             viewModelScope.launch {
                 // 서버에 좋아요 상태 동기화 (먼저 실행)
-                repository.likeCombination(combinationId).fold(
+                combinationRepository.likeCombination(combinationId).fold(
                     onSuccess = {
                         // 현재 조합의 좋아요 상태 확인
                         val currentCombination =
@@ -172,6 +188,7 @@ enum class MyPageTab {
 }
 
 data class MyPageUiState(
+    val user: User? = null,
     val myCombinations: List<Combination> = emptyList(),
     val likedCombinations: List<Combination> = emptyList(),
     val isLoading: Boolean = false,
