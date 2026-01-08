@@ -1,0 +1,65 @@
+﻿name: Build and Release APK (GitHub Releases)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Build APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug
+
+      - name: Get version info
+        id: version
+        run: |
+          echo "DATE=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+          echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: build-${{ steps.version.outputs.DATE }}
+          name: Auto Build ${{ steps.version.outputs.DATE }}
+          body: |
+            자동 빌드
+            커밋: ${{ steps.version.outputs.SHA }}
+            메시지: ${{ github.event.head_commit.message }}
+          files: app/build/outputs/apk/debug/app-debug.apk
+          draft: false
+          prerelease: false
+
+      - name: Notify Discord
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          text: |
+            새 APK가 릴리즈되었습니다!
+            다운로드 링크: ${{ steps.create_release.outputs.upload_url }}
+
+      - name: Notify Discord on failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+          severity: error
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          text: |
+            APK 빌드 실패!
+            작성자: ${{ github.actor }}
