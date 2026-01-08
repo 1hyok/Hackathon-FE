@@ -16,6 +16,9 @@ class CombinationRepositoryImpl
         // 임시로 새로 등록한 조합을 저장하는 리스트 (서버 API 연동 전까지 사용)
         private val createdCombinations = mutableListOf<Combination>()
 
+        // 좋아요한 조합 ID를 저장하는 Set (서버 API 연동 전까지 사용)
+        private val likedCombinationIds = mutableSetOf<String>()
+
         // TODO: 서버 API 연동 시 실제 API 호출로 변경
         override suspend fun getCombinations(category: Category?): Result<List<Combination>> {
             return try {
@@ -116,12 +119,29 @@ class CombinationRepositoryImpl
             }
         }
 
-        override suspend fun likeCombination(id: String): Result<Unit> {
+        override suspend fun getLikedCombinations(): Result<List<Combination>> {
             return try {
                 delay(300)
-                // TODO: 실제 API 호출
-                // combinationService.likeCombination(id)
-                // id 파라미터는 실제 API 호출 시 사용 예정
+                val allCombinations = DummyData.dummyCombinations + createdCombinations
+                val likedCombinations =
+                    allCombinations
+                        .filter { likedCombinationIds.contains(it.id) }
+                        .map { it.copy(isLiked = true) }
+                Result.success(likedCombinations)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+
+        override suspend fun likeCombination(id: String): Result<Unit> {
+            return try {
+                delay(100)
+                // 좋아요 토글 로직
+                if (likedCombinationIds.contains(id)) {
+                    likedCombinationIds.remove(id)
+                } else {
+                    likedCombinationIds.add(id)
+                }
                 Result.success(Unit)
             } catch (e: Exception) {
                 Result.failure(e)

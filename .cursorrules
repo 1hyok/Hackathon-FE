@@ -93,7 +93,22 @@ When stuck, provide a working workaround before investigating the perfect soluti
 1. Prefer `val` over `var`.
 2. Use `when` expressions for exhaustiveness.
 3. Avoid `!!` (double-bang) operator; use safe calls (`?.`) or `let`.
-4. **KtLint Compliance (CRITICAL - Prevents Build Failures)**:
+4. **KtLint Pre-Compliance (WRITE CODE CORRECTLY FROM THE START)**:
+   - **NEVER write code that violates KtLint rules. Check BEFORE writing, not after.**
+   - **Comments in parameter lists**: ALWAYS put comments on a SEPARATE LINE above the parameter, never inline.
+     ```kotlin
+     // ❌ Wrong - causes build failure
+     fun example(
+         param: String, // this is a comment
+     )
+
+     // ✅ Correct
+     fun example(
+         // this is a comment
+         param: String,
+     )
+     ```
+5. **KtLint Compliance (CRITICAL - Prevents Build Failures)**:
    - **⚠️ IMPORTANT**: KtLint violations cause build failures. Always follow these rules when writing code.
    - **Max Line Length**: Keep lines under 120 characters. If a line exceeds this, break it into multiple lines:
      ```kotlin
