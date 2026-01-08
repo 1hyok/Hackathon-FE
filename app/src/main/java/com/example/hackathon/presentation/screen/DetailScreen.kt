@@ -1,17 +1,23 @@
 package com.example.hackathon.presentation.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -19,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.example.hackathon.core.component.CategoryChip
 import com.example.hackathon.core.component.TopAppLogoBar
+import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.presentation.viewmodel.DetailViewModel
 import com.example.hackathon.ui.theme.HackathonTheme
 
@@ -47,7 +55,8 @@ fun DetailScreen(
                 .fillMaxSize(),
     ) {
         TopAppLogoBar()
-        /** Top Bar */
+
+        // Top Bar
         TopAppBar(
             title = {
                 Text(
@@ -67,7 +76,7 @@ fun DetailScreen(
             windowInsets = WindowInsets(0),
         )
 
-        /** Content */
+        // Content
         Column(
             modifier =
                 Modifier
@@ -90,7 +99,7 @@ fun DetailScreen(
                 }
 
                 else -> {
-                    // Todo: Combination ID 에 해당하는 url로 그냥 교체
+                    // TODO: Combination ID 에 해당하는 url로 교체
                     val imageUrls =
                         listOf(
                             "https://picsum.photos/600/600?1",
@@ -101,7 +110,7 @@ fun DetailScreen(
                     val pagerState = rememberPagerState { imageUrls.size }
 
                     Column {
-                        /** 이미지 슬라이더 */
+                        // 이미지 슬라이더
                         HorizontalPager(
                             state = pagerState,
                             modifier =
@@ -123,7 +132,7 @@ fun DetailScreen(
 
                         Spacer(modifier = Modifier.height(12.dp))
 
-                        /** 페이지 인디케이터 (점) */
+                        // 페이지 인디케이터
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.Center,
@@ -149,7 +158,70 @@ fun DetailScreen(
                         }
                     }
 
-                    /** 해시태그 및 좋아요 **/
+                    // 좋아요 Row
+                    Row(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            imageVector =
+                                if (combination?.isLiked == true) {
+                                    Icons.Filled.Favorite
+                                } else {
+                                    Icons.Outlined.FavoriteBorder
+                                },
+                            contentDescription = "좋아요",
+                            tint =
+                                if (combination?.isLiked == true) {
+                                    HackathonTheme.colors.primary
+                                } else {
+                                    HackathonTheme.colors.gray50
+                                },
+                            modifier =
+                                Modifier
+                                    .size(20.dp)
+                                    .clickable(
+                                        enabled = combination != null,
+                                    ) {
+                                        viewModel.toggleLike()
+                                    },
+                        )
+
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        Text(
+                            text = combination?.likeCount?.toString() ?: "0",
+                            style = HackathonTheme.typography.Body_medium,
+                            color = HackathonTheme.colors.gray700,
+                        )
+                    }
+
+                    // TODO: 나중에 카테고리가 아닌 해시태그로 교체
+                    val categories: List<Category> =
+                        listOf(
+                            Category.HAIDILAO,
+                            Category.SUBWAY,
+                            Category.CONVENIENCE,
+                        )
+
+                    LazyRow(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, bottom = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        items(categories) { category ->
+                            CategoryChip(
+                                category = category,
+                                isSelected = true,
+                                onClick = {},
+                            )
+                        }
+                    }
                 }
             }
         }

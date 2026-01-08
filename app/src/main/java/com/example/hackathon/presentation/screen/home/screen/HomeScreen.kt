@@ -14,7 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.hackathon.core.component.TopAppLogoBar
 import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.presentation.screen.home.component.FilterBar
 import com.example.hackathon.presentation.screen.home.component.SearchComponent
@@ -37,11 +36,11 @@ fun HomeScreen(
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
-        TopAppLogoBar()
-
         SearchComponent(
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
+
+        // TopAppLogoBar()
 
         FilterBar(
             modifier = Modifier.padding(top = 20.dp),
@@ -52,13 +51,7 @@ fun HomeScreen(
             },
         )
 
-        when (selectedCategory) {
-            Category.ALL -> All()
-            Category.HAIDILAO -> Haidirao()
-            Category.SUBWAY -> Subway()
-            Category.CONVENIENCE -> Convenient()
-            Category.ETC -> Etc()
-        }
+        // TODO: 나중에 필터 따라 게시글 목룍 표시
     }
 }
 
