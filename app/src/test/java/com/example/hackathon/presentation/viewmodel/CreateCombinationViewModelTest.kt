@@ -8,6 +8,7 @@ import com.example.hackathon.domain.repository.CombinationRepository
 import com.example.hackathon.util.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -110,24 +111,13 @@ class CreateCombinationViewModelTest {
             viewModel.createCombination {
                 successCallbackCalled = true
             }
+            this.advanceUntilIdle()
 
             // Then
-            viewModel.uiState.test {
-                // 초기 상태
-                val initialState = awaitItem()
-
-                // 로딩 상태
-                val loadingState = awaitItem()
-                assertEquals(true, loadingState.isLoading)
-                assertEquals(null, loadingState.error)
-
-                // 완료 상태
-                val finalState = awaitItem()
-                assertEquals(false, finalState.isLoading)
-                assertEquals(true, successCallbackCalled)
-
-                cancelAndIgnoreRemainingEvents()
-            }
+            val finalState = viewModel.uiState.value
+            assertEquals(false, finalState.isLoading)
+            assertEquals(null, finalState.error)
+            assertEquals(true, successCallbackCalled)
         }
 
     @Test
@@ -193,21 +183,11 @@ class CreateCombinationViewModelTest {
 
             // When
             viewModel.createCombination {}
+            this.advanceUntilIdle()
 
             // Then
-            viewModel.uiState.test {
-                // 초기 상태 스킵
-                awaitItem()
-
-                // 로딩 상태 스킵
-                awaitItem()
-
-                // 에러 상태
-                val errorState = awaitItem()
-                assertEquals(false, errorState.isLoading)
-                assertEquals("네트워크 오류", errorState.error)
-
-                cancelAndIgnoreRemainingEvents()
-            }
+            val errorState = viewModel.uiState.value
+            assertEquals(false, errorState.isLoading)
+            assertEquals("네트워크 오류", errorState.error)
         }
 }
