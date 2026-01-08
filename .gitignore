@@ -214,6 +214,9 @@ styles.css
 Thumbs.db
 desktop.ini
 
+# Base64 encoded files (보안)
+google-services-base64.txt
+
 # Android Studio Inspect Code results (XML exports)
 # 루트 디렉토리의 Inspect Code 결과 파일들은 무시 (inspection/ 폴더로 이동됨)
 AndroidLint*.xml
