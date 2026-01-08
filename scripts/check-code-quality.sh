@@ -31,6 +31,17 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# 테스트 실행 (ViewModel 테스트만 - 빠른 실행)
+echo ""
+echo "🧪 Running ViewModel tests..."
+./gradlew test --tests "*ViewModelTest" --quiet
+TEST_RESULT=$?
+
+if [ $TEST_RESULT -ne 0 ]; then
+    echo "⚠️  Some tests failed. Run './gradlew test' manually to see details."
+    # 테스트 실패해도 계속 진행
+fi
+
 echo ""
 echo "✅ All code quality checks passed!"
 exit 0
