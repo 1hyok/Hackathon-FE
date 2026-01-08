@@ -95,6 +95,9 @@ class MyPageViewModel
 
         fun toggleLike(combinationId: String) {
             viewModelScope.launch {
+                // 서버에 좋아요 상태 동기화 (먼저 실행)
+                repository.likeCombination(combinationId)
+
                 // 현재 조합의 좋아요 상태 확인
                 val currentCombination =
                     _uiState.value.myCombinations.find { it.id == combinationId }
@@ -120,9 +123,6 @@ class MyPageViewModel
                     }
 
                 _uiState.value = _uiState.value.copy(myCombinations = updatedMyCombinations)
-
-                // 서버에 좋아요 상태 동기화
-                repository.likeCombination(combinationId)
 
                 // 좋아요 탭이면 목록 새로고침 (좋아요 취소 시 목록에서 제거)
                 if (_selectedTab.value == MyPageTab.LIKED_COMBINATIONS) {

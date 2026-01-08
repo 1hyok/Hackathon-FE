@@ -1,8 +1,10 @@
 package com.example.hackathon.core.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -172,22 +174,40 @@ fun CombinationCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
-                    Icon(
-                        imageVector =
-                            if (combination.isLiked) {
-                                Icons.Default.Favorite
-                            } else {
-                                Icons.Outlined.Favorite
-                            },
-                        contentDescription = "좋아요",
-                        tint =
-                            if (combination.isLiked) {
-                                Color.Red
-                            } else {
-                                Color.Gray
-                            },
-                        modifier = Modifier.size(20.dp),
-                    )
+                    Box(
+                        modifier =
+                            Modifier
+                                .size(24.dp)
+                                .then(
+                                    if (combination.isLiked) {
+                                        Modifier.background(Color.Red, CircleShape)
+                                    } else {
+                                        Modifier.border(
+                                            width = 1.5.dp,
+                                            color = Color.Gray,
+                                            shape = CircleShape,
+                                        )
+                                    },
+                                ),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            imageVector =
+                                if (combination.isLiked) {
+                                    Icons.Default.Favorite
+                                } else {
+                                    Icons.Outlined.Favorite
+                                },
+                            contentDescription = "좋아요",
+                            tint =
+                                if (combination.isLiked) {
+                                    Color.White
+                                } else {
+                                    Color.Gray
+                                },
+                            modifier = Modifier.size(14.dp),
+                        )
+                    }
                     Text(
                         text = combination.likeCount.toString(),
                         style = MaterialTheme.typography.bodyMedium,
