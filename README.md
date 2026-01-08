@@ -203,29 +203,45 @@ com.example.hackathon/
    - [Firebase Console](https://console.firebase.google.com)에서 프로젝트 생성
    - 안드로이드 앱 추가 (패키지명: `com.example.hackathon`)
 
-2. **Firebase CLI 토큰 발급**
+2. **google-services.json 파일 다운로드 및 보안 처리**
+   - Firebase 콘솔에서 `google-services.json` 파일 다운로드
+   - **⚠️ 보안 주의**: 이 파일은 민감한 정보를 포함하므로 GitHub 저장소에 직접 올리지 마세요!
+   - 파일을 Base64로 인코딩:
+     ```powershell
+     # Windows (PowerShell)
+     [Convert]::ToBase64String([IO.File]::ReadAllBytes("google-services.json")) | Out-File google-services-base64.txt
+     ```
+     ```bash
+     # Mac/Linux
+     base64 -i google-services.json > google-services-base64.txt
+     ```
+   - `google-services-base64.txt` 파일의 전체 내용을 복사
+
+3. **Firebase CLI 토큰 발급**
    ```bash
    firebase login:ci
    ```
    발급된 토큰을 복사
 
-3. **Firebase App ID 확인**
+4. **Firebase App ID 확인**
    - Firebase 콘솔 → 프로젝트 설정 → 일반 탭
    - App ID 복사
 
-4. **GitHub Secrets 설정**
+5. **GitHub Secrets 설정**
    - GitHub 저장소 → Settings → Secrets and variables → Actions
    - 다음 Secrets 추가:
+     - `GOOGLE_SERVICES_JSON`: Base64로 인코딩된 `google-services.json` 내용 (2단계에서 복사한 전체 문자열)
      - `FIREBASE_APP_ID`: Firebase App ID
      - `FIREBASE_TOKEN`: Firebase CLI 토큰
      - `DISCORD_WEBHOOK`: Discord 웹훅 URL (선택사항)
 
-5. **Firebase 테스터 그룹 생성**
+6. **Firebase 테스터 그룹 생성**
    - Firebase 콘솔 → App Distribution → 테스터 및 그룹
    - "testers" 그룹 생성 및 팀원 이메일 추가
 
-6. **워크플로우 활성화**
+7. **워크플로우 활성화**
    - `.github/workflows/deploy-apk.yml` 파일이 자동으로 사용됩니다
+   - 워크플로우는 GitHub Secret에서 `google-services.json` 파일을 자동으로 생성합니다
 
 #### 옵션 2: GitHub Releases (Firebase 없이)
 
