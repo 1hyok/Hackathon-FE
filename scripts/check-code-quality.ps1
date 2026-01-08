@@ -30,3 +30,4 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "`n✅ All code quality checks passed!" -ForegroundColor Green
 exit 0
 
+

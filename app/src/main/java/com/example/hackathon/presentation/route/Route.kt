@@ -12,4 +12,6 @@ sealed class Route(
     data object Create : Route(route = "create")
 
     data object My : Route(route = "my")
+
+    data object Login : Route(route = "login")
 }
