@@ -20,5 +20,7 @@ interface CombinationRepository {
 
     suspend fun getMyCombinations(): Result<List<Combination>>
 
+    suspend fun getLikedCombinations(): Result<List<Combination>>
+
     suspend fun likeCombination(id: String): Result<Unit>
 }
