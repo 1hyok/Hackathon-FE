@@ -11,6 +11,7 @@ import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.presentation.screen.CreateCombinationScreen
 import com.example.hackathon.presentation.screen.DetailScreen
 import com.example.hackathon.presentation.screen.HomeScreen
+import com.example.hackathon.presentation.screen.LoginScreen
 import com.example.hackathon.presentation.screen.MyScreen
 
 @Composable
@@ -55,6 +56,25 @@ fun AppNavGraph(
                 modifier = modifier,
                 onCombinationClick = { id ->
                     navController.navigate(Route.Detail.createRoute(id))
+                },
+                onLogout = {
+                    // 로그인 화면으로 이동 (백 스택 초기화)
+                    navController.navigate(Route.Login.route) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+            )
+        }
+        composable(route = Route.Login.route) {
+            LoginScreen(
+                modifier = modifier,
+                onNavigateBack = { navController.popBackStack() },
+                onLoginSuccess = {
+                    // TODO: 로그인 성공 시 홈 화면으로 이동 또는 이전 화면으로 돌아가기
+                    navController.popBackStack()
                 },
             )
         }

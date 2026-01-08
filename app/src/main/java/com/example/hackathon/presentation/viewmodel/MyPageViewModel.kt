@@ -64,6 +64,13 @@ class MyPageViewModel
         fun refresh() {
             loadMyCombinations()
         }
+
+        fun logout() {
+            viewModelScope.launch {
+                // TODO: 로그아웃 API 호출 및 토큰 삭제
+                // TODO: 로그인 화면으로 이동
+            }
+        }
     }
 
 enum class MyPageTab {
