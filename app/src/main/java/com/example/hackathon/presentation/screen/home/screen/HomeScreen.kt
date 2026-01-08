@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.core.component.TopAppLogoBar
+import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.presentation.screen.home.component.FilterBar
 import com.example.hackathon.presentation.screen.home.component.SearchComponent
 import com.example.hackathon.presentation.viewmodel.HomeViewModel
@@ -29,36 +30,34 @@ fun HomeScreen(
     // 최소 UI 유지: 앱이 크래시 되지 않도록 안전한 플레이스홀더만 표시
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val filters =
-        listOf(
-            "전체",
-            "#하이디라오",
-            "#서브웨이",
-            "#편의점",
-            "#기타",
-        )
-
-    var selectedFilter by rememberSaveable { mutableStateOf("전체") }
+    var selectedCategory by rememberSaveable {
+        mutableStateOf(Category.ALL)
+    }
 
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
         TopAppLogoBar()
+
         SearchComponent(
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
+
         FilterBar(
             modifier = Modifier.padding(top = 20.dp),
-            filters = filters,
-            selectedFilter = selectedFilter,
-            onFilterSelected = { selectedFilter = it },
+            categories = Category.entries.toList(),
+            selectedCategory = selectedCategory,
+            onCategorySelected = { category ->
+                selectedCategory = category
+            },
         )
-        when (selectedFilter) {
-            "전체" -> All()
-            "#하이디라오" -> Haidirao()
-            "#서브웨이" -> Subway()
-            "#편의점" -> Convenient()
-            "#기타" -> Etc()
+
+        when (selectedCategory) {
+            Category.ALL -> All()
+            Category.HAIDILAO -> Haidirao()
+            Category.SUBWAY -> Subway()
+            Category.CONVENIENCE -> Convenient()
+            Category.ETC -> Etc()
         }
     }
 }

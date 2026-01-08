@@ -13,6 +13,7 @@ import com.example.hackathon.presentation.screen.DetailScreen
 import com.example.hackathon.presentation.screen.EditProfileScreen
 import com.example.hackathon.presentation.screen.LoginScreen
 import com.example.hackathon.presentation.screen.MyScreen
+import com.example.hackathon.presentation.screen.SearchScreen
 import com.example.hackathon.presentation.screen.home.screen.HomeScreen
 
 @Composable
@@ -33,6 +34,12 @@ fun AppNavGraph(
                 onCreateClick = {
                     navController.navigate(Route.Create.route)
                 },
+            )
+        }
+        composable(route = Route.Search.route) {
+            SearchScreen(
+                modifier = modifier,
+                onNavigateBack = { navController.popBackStack() },
             )
         }
         composable(

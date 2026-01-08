@@ -1,89 +1,70 @@
 package com.example.hackathon.presentation.screen.home.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.hackathon.R
+import com.example.hackathon.core.component.CategoryChip
+import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.ui.theme.HackathonTheme
 
 @Composable
 fun FilterBar(
+    categories: List<Category>,
+    selectedCategory: Category,
+    onCategorySelected: (Category) -> Unit,
     modifier: Modifier = Modifier,
-    filters: List<String>,
-    selectedFilter: String,
-    onFilterSelected: (String) -> Unit,
 ) {
     Column {
         Row(
             modifier =
-                modifier
+                Modifier
                     .fillMaxWidth()
-                    .shadow(
-                        elevation = 12.dp,
-                        shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp),
-                        clip = false,
-                    )
-                    .background(
-                        color = HackathonTheme.colors.primary,
-                        shape =
-                            RoundedCornerShape(
-                                topStart = 15.dp,
-                                topEnd = 15.dp,
-                            ),
-                    )
-                    .padding(vertical = 10.dp),
-            horizontalArrangement = Arrangement.Center,
+                    .padding(start = 20.dp, top = 20.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_hot),
+                contentDescription = "hot",
+                modifier = Modifier.size(24.dp),
+                tint = HackathonTheme.colors.primary,
+            )
             Text(
-                text = "꿀조합",
-                style = HackathonTheme.typography.Head2_bold,
-                color = HackathonTheme.colors.white,
+                text = "꿀조합 랭킹",
+                style = HackathonTheme.typography.Sub1_semibold,
+                color = HackathonTheme.colors.black,
+                modifier = Modifier.padding(start = 4.dp),
             )
         }
 
         LazyRow(
             modifier =
-                Modifier
+                modifier
                     .fillMaxWidth()
                     .background(HackathonTheme.colors.white)
-                    .padding(vertical = 12.dp),
-            horizontalArrangement =
-                Arrangement.spacedBy(
-                    space = 20.dp,
-                    alignment = Alignment.CenterHorizontally,
-                ),
+                    .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            items(filters) { filter ->
-                val isSelected = filter == selectedFilter
-
-                Text(
-                    text = filter,
-                    style = HackathonTheme.typography.Body_semibold,
-                    color =
-                        if (isSelected) {
-                            HackathonTheme.colors.primary
-                        } else {
-                            HackathonTheme.colors.gray700
-                        },
-                    modifier =
-                        Modifier
-                            .clickable {
-                                onFilterSelected(filter)
-                            }
-                            .padding(horizontal = 8.dp),
+            items(categories) { category ->
+                CategoryChip(
+                    category = category,
+                    isSelected = category == selectedCategory,
+                    onClick = {
+                        onCategorySelected(category)
+                    },
                 )
             }
         }
