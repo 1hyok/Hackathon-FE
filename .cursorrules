@@ -204,6 +204,10 @@ com.example.hackathon/
   4. **Windows Defender**: Consider excluding project folder from real-time scanning (Settings > Virus & threat protection > Exclusions).
 - **Never**: Force-kill JDK processes via Task Manager (risks data corruption).
 
+## Rule Management
+- **When making code changes**: If the changes introduce new patterns, conventions, or require specific guidelines, automatically add them to `.cursorrules` to ensure consistency across the project.
+- **Purpose**: Keep `.cursorrules` up-to-date with project practices so that future changes follow established patterns.
+
 # Git Branch Strategy
 - **CRITICAL**: Always work on your own branch, NOT on main branch.
 - **Branch naming**: Use your name as branch name (e.g., `ilhyuk`, `yewon`).
