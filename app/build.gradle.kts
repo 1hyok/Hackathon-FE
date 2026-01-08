@@ -82,6 +82,9 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -121,9 +124,9 @@ ktlint {
 // 코드 품질 검사 통합 Task
 tasks.register("codeQualityCheck") {
     group = "verification"
-    description = "Runs all code quality checks (Ktlint + Detekt)"
+    description = "Runs all code quality checks (Ktlint + Detekt + Tests)"
 
-    dependsOn("ktlintCheck", "detekt")
+    dependsOn("ktlintCheck", "detekt", "test")
 
     doLast {
         println("✅ All code quality checks completed!")

@@ -221,15 +221,8 @@ fun CreateCombinationScreen(
                     OutlinedTextField(
                         value = tagInput.value,
                         onValueChange = { newValue ->
-                            // # 입력 시 자동으로 태그 추가
-                            if (newValue.endsWith("#") && newValue.length > tagInput.value.length) {
-                                // #만 입력한 경우는 그대로 유지
-                                tagInput.value = newValue
-                            } else if (
-                                newValue.contains("#") &&
-                                (newValue.endsWith(" ") || newValue.endsWith(",") || newValue.endsWith("\n"))
-                            ) {
-                                // #태그명 뒤에 공백, 쉼표, 엔터가 오면 자동으로 태그 추가
+                            // 공백, 쉼표, 엔터 입력 시 자동으로 태그 추가
+                            if (newValue.endsWith(" ") || newValue.endsWith(",") || newValue.endsWith("\n")) {
                                 val tagText = newValue.substringBeforeLast(" ").substringBeforeLast(",").substringBeforeLast("\n")
                                 val normalized = tagText.trim().trimStart('#').trim()
                                 if (normalized.isNotBlank() && !uiState.tags.contains("#$normalized")) {
@@ -237,14 +230,16 @@ fun CreateCombinationScreen(
                                 }
                                 tagInput.value = ""
                             } else {
-                                tagInput.value = newValue
+                                // # 입력은 무시 (leadingIcon에 이미 표시됨)
+                                val cleanedValue = newValue.replace("#", "")
+                                tagInput.value = cleanedValue
                             }
                         },
                         label = { Text("해시태그") },
-                        placeholder = { Text("#을 입력하고 태그를 작성하세요") },
+                        placeholder = { Text("태그를 입력하세요") },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        supportingText = { Text("# 입력 후 태그 작성, 공백/쉼표/Enter로 추가") },
+                        supportingText = { Text("태그 입력 후 공백/쉼표/Enter로 추가") },
                         leadingIcon = {
                             Text(
                                 text = "#",
@@ -257,7 +252,7 @@ fun CreateCombinationScreen(
                             if (tagInput.value.isNotBlank()) {
                                 IconButton(
                                     onClick = {
-                                        val normalized = tagInput.value.trim().trimStart('#').trim()
+                                        val normalized = tagInput.value.trim()
                                         if (normalized.isNotBlank() && !uiState.tags.contains("#$normalized")) {
                                             viewModel.addTag("#$normalized")
                                             tagInput.value = ""

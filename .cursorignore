@@ -1,0 +1,47 @@
+# Android build output (Cursor 인덱싱 제외)
+# Cursor와 Android Studio의 파일 잠금 충돌 방지
+
+# Build 폴더 (모든 빌드 산출물)
+build/
+app/build/
+**/build/
+
+# Gradle 관련
+.gradle/
+.gradle-wrapper/
+
+# Android Studio 생성 파일
+local.properties
+*.iml
+.idea/
+
+# 중간 빌드 파일 (R.jar 등)
+**/intermediates/
+**/generated/
+**/tmp/
+**/outputs/
+
+# 로그 및 임시 파일
+*.log
+*.tmp
+*.swp
+*~
+
+# 패키지 파일
+*.jar
+*.apk
+*.aab
+*.dex
+
+# NDK 빌드 출력
+obj/
+.externalNativeBuild/
+.cxx/
+
+# 프로파일링 파일
+*.hprof
+
+# OS 특정 파일
+.DS_Store
+Thumbs.db
+desktop.ini

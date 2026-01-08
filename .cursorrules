@@ -160,11 +160,49 @@ com.example.hackathon/
 - Add `// 담당자: 이름` comment at the top of files for hackathon collaboration.
 - Add `// TODO: 내용` for future improvements.
 
+## Testing Guidelines
+- **Testing Strategy**: Focus on ViewModel unit tests (business logic validation).
+  - ViewModel tests are fast and catch most bugs.
+  - UI tests are optional for hackathon (time-consuming).
+- **Testing Libraries**:
+  - **MockK**: Mocking dependencies (`io.mockk`)
+  - **Turbine**: Flow testing (`app.cash.turbine`)
+  - **Kotlinx Coroutines Test**: Coroutine testing (`kotlinx.coroutines.test`)
+- **Test Structure**:
+  - Test files: `*Test.kt` (e.g., `CreateCombinationViewModelTest.kt`)
+  - Test utilities: `util/` package (e.g., `MainDispatcherRule.kt`)
+  - Use `@get:Rule val mainDispatcherRule = MainDispatcherRule()` for coroutine tests.
+- **Test Naming**: Use descriptive test names with backticks:
+  ```kotlin
+  @Test
+  fun `updateTitle updates the title in uiState`() = runTest { ... }
+  ```
+- **Test Execution**:
+  - **Automatic**: Tests run automatically on commit (Git Hook) and code quality checks.
+  - **Manual**: `./gradlew test` or `.\scripts\run-tests.ps1`
+  - **Specific test**: `./gradlew test --tests "*ViewModelTest"`
+- **Test Best Practices**:
+  - Mock all external dependencies (Repository, API services).
+  - Test state changes using Turbine: `viewModel.uiState.test { ... }`
+  - Use `runTest` for coroutine-based tests.
+  - Test both success and failure scenarios.
+  - Keep tests fast and isolated (no shared state).
+
 # Project-Specific Rules
 - This is a hackathon project (2 days prep + 1 day event).
 - Focus on working code over perfect code.
 - Use dummy data when server API is not ready.
 - All team members work on both design and development.
+
+## Troubleshooting: File Lock Issues (Android Studio + Cursor)
+- **Problem**: `R.jar: The process cannot access the file because it is being used by another process`
+- **Cause**: Cursor's file indexing conflicts with Android Studio's Gradle build process.
+- **Solution**:
+  1. **Primary**: `.cursorignore` file already excludes `build/` folders (prevents indexing).
+  2. **If still occurs**: Run `./gradlew --stop` (or `.\gradlew.bat --stop` on Windows) to gracefully stop Gradle daemon.
+  3. **Alternative**: Use Android Studio's `Build > Clean Project` menu.
+  4. **Windows Defender**: Consider excluding project folder from real-time scanning (Settings > Virus & threat protection > Exclusions).
+- **Never**: Force-kill JDK processes via Task Manager (risks data corruption).
 
 # Git Branch Strategy
 - **CRITICAL**: Always work on your own branch, NOT on main branch.
