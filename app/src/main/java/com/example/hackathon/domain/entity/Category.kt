@@ -5,5 +5,4 @@ enum class Category(val displayName: String) {
     HAIDILAO("#하이디라오"),
     SUBWAY("#서브웨이"),
     CONVENIENCE("#편의점"),
-    ETC("#기타"),
 }
