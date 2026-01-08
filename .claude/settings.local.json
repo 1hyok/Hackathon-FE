@@ -9,7 +9,9 @@
       "Bash(git checkout:*)",
       "Bash(git pull:*)",
       "Bash(./gradlew ktlintCheck:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(./gradlew:*)",
+      "Bash(./gradlew :app:testDebugUnitTest:*)"
     ]
   }
 }

@@ -47,14 +47,24 @@ class DetailViewModel
 
         fun toggleLike() {
             val combination = _uiState.value.combination ?: return
+            val wasLiked = combination.isLiked
 
             viewModelScope.launch {
                 repository.likeCombination(combination.id).fold(
                     onSuccess = {
-                        // TODO: 서버에서 업데이트된 좋아요 수 받아오기
+                        // 좋아요 상태와 좋아요 수 업데이트
                         _uiState.value =
                             _uiState.value.copy(
-                                combination = combination.copy(likeCount = combination.likeCount + 1),
+                                combination =
+                                    combination.copy(
+                                        isLiked = !wasLiked,
+                                        likeCount =
+                                            if (!wasLiked) {
+                                                combination.likeCount + 1
+                                            } else {
+                                                (combination.likeCount - 1).coerceAtLeast(0)
+                                            },
+                                    ),
                             )
                     },
                     onFailure = { /* 에러 처리 */ },

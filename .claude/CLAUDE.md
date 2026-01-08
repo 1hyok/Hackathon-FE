@@ -308,3 +308,9 @@ com.example.hackathon/
   6. Merge to main only after review/approval
 - **NEVER commit directly to main branch** for personal work.
 - **Common code** (shared components, theme, navigation) can go to main after team discussion.
+- **Commit Policy (CRITICAL)**:
+  - **Documentation files only**: Only commit documentation files (`.md`, `.txt`, `.cursorrules`, etc.) automatically without user approval.
+  - **Documentation merge to main**: After committing documentation files, merge them to remote main branch automatically.
+  - **Code files**: NEVER commit code changes (`.kt`, `.kts`, `.xml`, etc.) without explicit user approval.
+  - **Always ask**: Before committing any non-documentation files, always ask the user for permission first.
+  - **Exception**: Documentation updates can be committed and merged to main automatically, but code changes require explicit confirmation.

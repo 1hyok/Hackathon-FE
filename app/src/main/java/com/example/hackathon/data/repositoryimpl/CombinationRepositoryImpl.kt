@@ -19,6 +19,9 @@ class CombinationRepositoryImpl
         // 좋아요한 조합 ID를 저장하는 Set (서버 API 연동 전까지 사용)
         private val likedCombinationIds = mutableSetOf<String>()
 
+        // 조합별 좋아요 수를 추적하는 Map (서버 API 연동 전까지 사용)
+        private val combinationLikeCounts = mutableMapOf<String, Int>()
+
         // TODO: 서버 API 연동 시 실제 API 호출로 변경
         override suspend fun getCombinations(category: Category?): Result<List<Combination>> {
             return try {
@@ -32,7 +35,17 @@ class CombinationRepositoryImpl
                     } else {
                         allCombinations.filter { it.category == category }
                     }
-                Result.success(filtered)
+                // 좋아요 상태 및 좋아요 수 반영
+                val combinationsWithLikeStatus =
+                    filtered.map { combination ->
+                        val likeCount =
+                            combinationLikeCounts[combination.id] ?: combination.likeCount
+                        combination.copy(
+                            isLiked = likedCombinationIds.contains(combination.id),
+                            likeCount = likeCount,
+                        )
+                    }
+                Result.success(combinationsWithLikeStatus)
             } catch (e: Exception) {
                 Result.failure(e)
             }
@@ -45,7 +58,14 @@ class CombinationRepositoryImpl
                 val allCombinations = DummyData.dummyCombinations + createdCombinations
                 val combination = allCombinations.find { it.id == id }
                 if (combination != null) {
-                    Result.success(combination)
+                    // 좋아요 상태 및 좋아요 수 반영
+                    val likeCount = combinationLikeCounts[id] ?: combination.likeCount
+                    val combinationWithLikeStatus =
+                        combination.copy(
+                            isLiked = likedCombinationIds.contains(id),
+                            likeCount = likeCount,
+                        )
+                    Result.success(combinationWithLikeStatus)
                 } else {
                     Result.failure(Exception("조합을 찾을 수 없습니다"))
                 }
@@ -110,9 +130,18 @@ class CombinationRepositoryImpl
                 val allCombinations = DummyData.dummyCombinations + createdCombinations
                 // 현재 로그인한 사용자의 조합만
                 val myCombinations =
-                    allCombinations.filter {
-                        it.author.id == DummyData.currentUser.id
-                    }
+                    allCombinations
+                        .filter {
+                            it.author.id == DummyData.currentUser.id
+                        }
+                        .map { combination ->
+                            val likeCount =
+                                combinationLikeCounts[combination.id] ?: combination.likeCount
+                            combination.copy(
+                                isLiked = likedCombinationIds.contains(combination.id),
+                                likeCount = likeCount,
+                            )
+                        }
                 Result.success(myCombinations)
             } catch (e: Exception) {
                 Result.failure(e)
@@ -126,7 +155,14 @@ class CombinationRepositoryImpl
                 val likedCombinations =
                     allCombinations
                         .filter { likedCombinationIds.contains(it.id) }
-                        .map { it.copy(isLiked = true) }
+                        .map { combination ->
+                            val likeCount =
+                                combinationLikeCounts[combination.id] ?: combination.likeCount
+                            combination.copy(
+                                isLiked = true,
+                                likeCount = likeCount,
+                            )
+                        }
                 Result.success(likedCombinations)
             } catch (e: Exception) {
                 Result.failure(e)
@@ -137,10 +173,25 @@ class CombinationRepositoryImpl
             return try {
                 delay(100)
                 // 좋아요 토글 로직
-                if (likedCombinationIds.contains(id)) {
+                val wasLiked = likedCombinationIds.contains(id)
+                if (wasLiked) {
                     likedCombinationIds.remove(id)
+                    // 좋아요 수 감소
+                    val allCombinations = DummyData.dummyCombinations + createdCombinations
+                    val combination = allCombinations.find { it.id == id }
+                    if (combination != null) {
+                        val currentCount = combinationLikeCounts[id] ?: combination.likeCount
+                        combinationLikeCounts[id] = (currentCount - 1).coerceAtLeast(0)
+                    }
                 } else {
                     likedCombinationIds.add(id)
+                    // 좋아요 수 증가
+                    val allCombinations = DummyData.dummyCombinations + createdCombinations
+                    val combination = allCombinations.find { it.id == id }
+                    if (combination != null) {
+                        val currentCount = combinationLikeCounts[id] ?: combination.likeCount
+                        combinationLikeCounts[id] = currentCount + 1
+                    }
                 }
                 Result.success(Unit)
             } catch (e: Exception) {

@@ -180,7 +180,13 @@ fun CombinationCard(
                                 .size(24.dp)
                                 .then(
                                     if (combination.isLiked) {
-                                        Modifier.background(Color.Red, CircleShape)
+                                        Modifier
+                                            .background(Color.Red, CircleShape)
+                                            .border(
+                                                width = 1.5.dp,
+                                                color = Color.Red,
+                                                shape = CircleShape,
+                                            )
                                     } else {
                                         Modifier.border(
                                             width = 1.5.dp,
