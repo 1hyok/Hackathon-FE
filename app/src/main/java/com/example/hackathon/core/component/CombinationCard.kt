@@ -178,22 +178,25 @@ fun CombinationCard(
                         modifier =
                             Modifier
                                 .size(24.dp)
-                                .then(
-                                    if (combination.isLiked) {
-                                        Modifier
-                                            .background(Color.Red, CircleShape)
-                                            .border(
-                                                width = 1.5.dp,
-                                                color = Color.Red,
-                                                shape = CircleShape,
-                                            )
-                                    } else {
-                                        Modifier.border(
-                                            width = 1.5.dp,
-                                            color = Color.Gray,
-                                            shape = CircleShape,
-                                        )
-                                    },
+                                .clip(CircleShape)
+                                .background(
+                                    color =
+                                        if (combination.isLiked) {
+                                            Color.Red
+                                        } else {
+                                            Color.Transparent
+                                        },
+                                    shape = CircleShape,
+                                )
+                                .border(
+                                    width = 1.5.dp,
+                                    color =
+                                        if (combination.isLiked) {
+                                            Color.White
+                                        } else {
+                                            Color.Gray
+                                        },
+                                    shape = CircleShape,
                                 ),
                         contentAlignment = Alignment.Center,
                     ) {
