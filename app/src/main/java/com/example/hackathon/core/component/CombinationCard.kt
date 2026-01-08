@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -34,6 +35,8 @@ import com.example.hackathon.ui.theme.Gray50
 fun CombinationCard(
     combination: Combination,
     onClick: () -> Unit,
+    // 좋아요 클릭 콜백 (null이면 비활성화)
+    onLikeClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -160,7 +163,13 @@ fun CombinationCard(
                 Row(
                     modifier =
                         Modifier
-                            .clickable(onClick = { /* TODO: 좋아요 기능 구현 */ })
+                            .then(
+                                if (onLikeClick != null) {
+                                    Modifier.clickable(onClick = onLikeClick)
+                                } else {
+                                    Modifier
+                                },
+                            )
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -169,17 +178,36 @@ fun CombinationCard(
                         modifier =
                             Modifier
                                 .size(24.dp)
-                                .border(
-                                    width = 1.5.dp,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    shape = CircleShape,
+                                .then(
+                                    if (combination.isLiked) {
+                                        Modifier.background(
+                                            MaterialTheme.colorScheme.primary,
+                                            CircleShape,
+                                        )
+                                    } else {
+                                        Modifier.border(
+                                            width = 1.5.dp,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            shape = CircleShape,
+                                        )
+                                    },
                                 ),
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Favorite,
+                            imageVector =
+                                if (combination.isLiked) {
+                                    Icons.Default.Favorite
+                                } else {
+                                    Icons.Outlined.Favorite
+                                },
                             contentDescription = "좋아요",
-                            tint = MaterialTheme.colorScheme.primary,
+                            tint =
+                                if (combination.isLiked) {
+                                    Color.White
+                                } else {
+                                    MaterialTheme.colorScheme.primary
+                                },
                             modifier = Modifier.size(14.dp),
                         )
                     }
@@ -210,6 +238,7 @@ private fun CombinationCardPreview() {
                 tags = listOf("#서브웨이", "#테스트"),
                 author = User(id = "1", nickname = "테스트유저", profileImageUrl = null),
                 likeCount = 42,
+                isLiked = false,
                 createdAt = System.currentTimeMillis().toString(),
             ),
         onClick = {},

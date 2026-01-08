@@ -1,5 +1,5 @@
 # File Sync Rule (CRITICAL)
-- **This file (`.cursorrules`) and `.claude/CLAUDE.md` MUST stay in sync.**
+- **This file (`.claude/CLAUDE.md`) and `.cursorrules` MUST stay in sync.**
 - When modifying either file, apply the same changes to both files.
 - **Flexible Sync**: Cursor와 Claude Code의 특성 차이로 인한 부분은 각 도구에 맞게 융통성 있게 적용:
   - Cursor 전용: Custom Commands (`/doc`, `/test` 등), Rule Management 섹션
@@ -94,13 +94,12 @@ When stuck, provide a working workaround before investigating the perfect soluti
 2. Use `when` expressions for exhaustiveness.
 3. Avoid `!!` (double-bang) operator; use safe calls (`?.`) or `let`.
 4. **KtLint Compliance (CRITICAL - Prevents Build Failures)**:
-   - **⚠️ IMPORTANT**: KtLint violations cause build failures. Always follow these rules when writing code.
    - **Max Line Length**: Keep lines under 120 characters. If a line exceeds this, break it into multiple lines:
      ```kotlin
-     // ❌ Wrong (too long)
+     // Wrong (too long)
      val result = repository.getData().fold(onSuccess = { data -> updateState(data) }, onFailure = { error -> showError(error) })
 
-     // ✅ Correct (broken into multiple lines)
+     // Correct (broken into multiple lines)
      val result = repository.getData().fold(
          onSuccess = { data -> updateState(data) },
          onFailure = { error -> showError(error) },
@@ -120,12 +119,12 @@ When stuck, provide a working workaround before investigating the perfect soluti
    - Do NOT rely on smart casts for delegated properties (e.g., `by collectAsState()`, `by viewModels()`).
    - Always assign to a local variable (snapshot) before checking nullability:
    ```kotlin
-   // ❌ Wrong
+   // Wrong
    if (uiState.error != null) {
        Text(text = uiState.error) // Smart cast impossible
    }
 
-   // ✅ Correct
+   // Correct
    val errorMessage = uiState.error ?: "오류가 발생했습니다"
    if (errorMessage != null) {
        Text(text = errorMessage)
@@ -135,8 +134,8 @@ When stuck, provide a working workaround before investigating the perfect soluti
        Text(text = error)
    }
    ```
-5. Follow [Kotlin Official Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html).
-6. Use Android Studio auto-formatting: `Ctrl + Alt + L` (Windows) before committing.
+6. Follow [Kotlin Official Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html).
+7. Use Android Studio auto-formatting: `Ctrl + Alt + L` (Windows) before committing.
 
 ## Naming Conventions
 - **File/Class names**: PascalCase (e.g., `HomeScreen.kt`, `CombinationCard.kt`, `HomeViewModel`)
@@ -167,7 +166,7 @@ When stuck, provide a working workaround before investigating the perfect soluti
 com.example.hackathon/
 ├── data/                    # 데이터 레이어
 │   ├── dto/                # Request/Response 모델
-│   ├── mapper/              # Entity ↔ DTO 변환
+│   ├── mapper/              # Entity <-> DTO 변환
 │   ├── repositoryimpl/     # Repository 구현
 │   └── service/            # API 인터페이스
 ├── domain/                  # 도메인 레이어
@@ -262,22 +261,10 @@ com.example.hackathon/
   4. **Windows Defender**: Consider excluding project folder from real-time scanning (Settings > Virus & threat protection > Exclusions).
 - **Never**: Force-kill JDK processes via Task Manager (risks data corruption).
 
-## Rule Management
-- **When making code changes**: If the changes introduce new patterns, conventions, or require specific guidelines, suggest updates to `.cursorrules` at the end of the conversation.
-- **Format**: "`.cursorrules`에 추가할 내용: [제안 내용]" 형식으로 제안하면 개발자가 복사-붙여넣기할 수 있음.
-- **Purpose**: Keep `.cursorrules` up-to-date with project practices so that future changes follow established patterns.
-
 ## Hackathon Mindset
 - **Working code first**: `// TODO: Refactor later for hackathon` 주석을 적극 허용
 - **Speed over perfection**: 완벽한 클린 코드보다 작동하는 코드 우선
 - **Quick workarounds**: 복잡한 해결책보다 간단한 우회책 먼저 제시
-
-# Custom Commands
-- `/doc`: 해당 파일의 모든 public 함수에 한국어 KDoc 주석을 작성하라.
-- `/test`: 현재 ViewModel에 대한 Unit Test 코드를 작성하라 (MockK, Turbine 사용).
-- `/clean`: 사용하지 않는 import와 리소스를 정리하라.
-- `/fix`: 현재 에러를 분석하고 가장 간단한 해결책을 제시하라.
-- `/refactor`: 해커톤 후 리팩토링이 필요한 부분에 `// TODO: Refactor later` 주석을 추가하라.
 
 # Git Branch Strategy
 - **CRITICAL**: Always work on your own branch, NOT on main branch.
@@ -306,4 +293,3 @@ com.example.hackathon/
   6. Merge to main only after review/approval
 - **NEVER commit directly to main branch** for personal work.
 - **Common code** (shared components, theme, navigation) can go to main after team discussion.
-
