@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.presentation.screen.CreateCombinationScreen
 import com.example.hackathon.presentation.screen.DetailScreen
+import com.example.hackathon.presentation.screen.EditProfileScreen
 import com.example.hackathon.presentation.screen.LoginScreen
 import com.example.hackathon.presentation.screen.MyScreen
 import com.example.hackathon.presentation.screen.home.screen.HomeScreen
@@ -57,6 +58,9 @@ fun AppNavGraph(
                 onCombinationClick = { id ->
                     navController.navigate(Route.Detail.createRoute(id))
                 },
+                onEditProfileClick = {
+                    navController.navigate(Route.EditProfile.route)
+                },
                 onLogout = {
                     // 로그인 화면으로 이동 (백 스택 초기화)
                     navController.navigate(Route.Login.route) {
@@ -66,6 +70,12 @@ fun AppNavGraph(
                         launchSingleTop = true
                     }
                 },
+            )
+        }
+        composable(route = Route.EditProfile.route) {
+            EditProfileScreen(
+                modifier = modifier,
+                onNavigateBack = { navController.popBackStack() },
             )
         }
         composable(route = Route.Login.route) {

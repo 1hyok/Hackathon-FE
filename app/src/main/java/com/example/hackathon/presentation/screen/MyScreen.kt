@@ -15,7 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,19 +44,24 @@ import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 import com.example.hackathon.ui.theme.Primary
 
 // 담당자: 일혁
-// TODO: 사용자 정보 API 연동 필요
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyScreen(
     modifier: Modifier = Modifier,
     viewModel: MyPageViewModel = hiltViewModel(),
     onCombinationClick: (String) -> Unit = {},
+    onEditProfileClick: () -> Unit = {},
     onLogout: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val selectedTab by viewModel.selectedTab.collectAsStateWithLifecycle()
     val myCombinations = uiState.myCombinations
     val likedCombinations = uiState.likedCombinations
+
+    // 화면이 표시될 때마다 프로필 정보 새로고침
+    LaunchedEffect(Unit) {
+        viewModel.loadProfile()
+    }
     val currentCombinations =
         if (selectedTab == com.example.hackathon.presentation.viewmodel.MyPageTab.MY_COMBINATIONS) {
             myCombinations
@@ -113,6 +119,7 @@ fun MyScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Row(
+                    modifier = Modifier.weight(1f),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
@@ -126,14 +133,14 @@ fun MyScreen(
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
-                                text = "쩝쩝박사".take(1),
+                                text = uiState.user?.nickname?.take(1) ?: "?",
                                 style = MaterialTheme.typography.titleLarge,
                             )
                         }
                     }
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(
-                            text = "쩝쩝박사",
+                            text = uiState.user?.nickname ?: "로딩 중...",
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
@@ -143,6 +150,16 @@ fun MyScreen(
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                         )
                     }
+                }
+                Button(
+                    onClick = onEditProfileClick,
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        ),
+                ) {
+                    Text("수정")
                 }
             }
 
@@ -160,7 +177,7 @@ fun MyScreen(
                     ),
             ) {
                 Icon(
-                    imageVector = Icons.Default.ExitToApp,
+                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                     contentDescription = null,
                     modifier = Modifier.size(18.dp),
                 )

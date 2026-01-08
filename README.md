@@ -1,4 +1,4 @@
-﻿# Hackathon - 음식 조합 공유 앱
+# Hackathon - 음식 조합 공유 앱
 
 해커톤 프로젝트: 음식점 꿀조합 공유 앱 (서브웨이, 하이디라오, 편의점 등)
 
@@ -156,7 +156,7 @@ com.example.hackathon/
 
 ## 👥 팀 구성
 
-- **일혁**: 로그인 화면, 조합 등록 화면, 마이페이지
+- **일혁**: 로그인 화면, 조합 등록 화면, 마이페이지, 프로필 수정 화면
 - **예원**: 홈 화면, 조합 상세 화면
 
 ## 🌿 브랜치 전략
@@ -182,6 +182,7 @@ com.example.hackathon/
   - [로그인 화면](./FIGMA_AI_PROMPT_LOGIN.md)
   - [조합 등록 화면](./FIGMA_AI_PROMPT_CREATE_COMBINATION.md)
   - [마이페이지](./FIGMA_AI_PROMPT_MY_PAGE.md)
+  - [프로필 수정 화면](./FIGMA_AI_PROMPT_EDIT_PROFILE.md)
 
 ## 📌 주요 특징
 
