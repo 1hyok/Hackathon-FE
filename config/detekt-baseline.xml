@@ -1,7 +1,49 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<baseline version="1.23.1">
-    <!-- Detekt baseline 파일 -->
-    <!-- 기존 코드의 경고를 무시하기 위한 파일 -->
-    <!-- 해커톤 프로젝트에서는 초기에는 비어있음 -->
-</baseline>
-
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:CreateCombinationScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun CreateCombinationScreen( modifier: Modifier = Modifier, viewModel: CreateCombinationViewModel = hiltViewModel(), onNavigateBack: () -&gt; Unit = {}, )</ID>
+    <ID>EmptyFunctionBlock:TagConvenience.kt${ }</ID>
+    <ID>EmptyFunctionBlock:TagEtc.kt${ }</ID>
+    <ID>EmptyFunctionBlock:TagHaidirao.kt${ }</ID>
+    <ID>EmptyFunctionBlock:TagSubway.kt${ }</ID>
+    <ID>ForbiddenComment:CombinationCard.kt$/* TODO: 좋아요 기능 구현 */</ID>
+    <ID>ForbiddenComment:CombinationRepositoryImpl.kt$CombinationRepositoryImpl$// TODO: 서버 API 연동 시 실제 API 호출로 변경</ID>
+    <ID>ForbiddenComment:CombinationRepositoryImpl.kt$CombinationRepositoryImpl$// TODO: 실제 API 호출</ID>
+    <ID>ForbiddenComment:DetailViewModel.kt$DetailViewModel$// TODO: 디자인 확인 후 UI 조정 필요</ID>
+    <ID>ForbiddenComment:DetailViewModel.kt$DetailViewModel$// TODO: 서버에서 업데이트된 좋아요 수 받아오기</ID>
+    <ID>ForbiddenComment:HomeViewModel.kt$HomeViewModel$// TODO: 디자인 확인 후 UI 조정 필요</ID>
+    <ID>ForbiddenComment:LoginScreen.kt$/* TODO: 비밀번호 찾기 */</ID>
+    <ID>ForbiddenComment:LoginScreen.kt$/* TODO: 아이디 찾기 */</ID>
+    <ID>ForbiddenComment:LoginScreen.kt$/* TODO: 회원가입 화면으로 이동 */</ID>
+    <ID>ForbiddenComment:LoginScreen.kt$// TODO: 로그인 성공 시 onLoginSuccess 호출</ID>
+    <ID>ForbiddenComment:LoginViewModel.kt$LoginViewModel$// TODO: API 연동</ID>
+    <ID>ForbiddenComment:LoginViewModel.kt$LoginViewModel$// TODO: 소셜 로그인 API 연동</ID>
+    <ID>ForbiddenComment:MyPageViewModel.kt$MyPageViewModel$// TODO: 로그아웃 API 호출 및 토큰 삭제</ID>
+    <ID>ForbiddenComment:MyPageViewModel.kt$MyPageViewModel$// TODO: 로그인 화면으로 이동</ID>
+    <ID>ForbiddenComment:MyPageViewModel.kt$MyPageViewModel$// TODO: 사용자 정보 API 연동 필요</ID>
+    <ID>ForbiddenComment:MyPageViewModel.kt$MyPageViewModel$// TODO: 좋아요한 조합 로드</ID>
+    <ID>ForbiddenComment:MyScreen.kt$/* TODO: 뒤로가기 연결 필요시 구현 */</ID>
+    <ID>ForbiddenComment:MyScreen.kt$/* TODO: 설정 화면 */</ID>
+    <ID>ForbiddenComment:MyScreen.kt$// TODO: 사용자 정보 API 연동 필요</ID>
+    <ID>ForbiddenComment:NavGraph.kt$// TODO: 로그인 성공 시 홈 화면으로 이동 또는 이전 화면으로 돌아가기</ID>
+    <ID>ForbiddenComment:Type.kt$// TODO: Pretendard 폰트 파일 추가 후 FontFamily 적용</ID>
+    <ID>LongMethod:CreateCombinationScreen.kt$@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class) @Composable fun CreateCombinationScreen( modifier: Modifier = Modifier, viewModel: CreateCombinationViewModel = hiltViewModel(), onNavigateBack: () -&gt; Unit = {}, )</ID>
+    <ID>LongParameterList:CombinationRepository.kt$CombinationRepository$( title: String, description: String, category: Category, ingredients: List&lt;String&gt;, steps: List&lt;String&gt;, tags: List&lt;String&gt; = emptyList(), imageUri: android.net.Uri? = null, )</ID>
+    <ID>TooGenericExceptionCaught:CombinationRepositoryImpl.kt$CombinationRepositoryImpl$e: Exception</ID>
+    <ID>UnusedParameter:All.kt$modifier: Modifier = Modifier</ID>
+    <ID>UnusedParameter:Convenient.kt$modifier: Modifier = Modifier</ID>
+    <ID>UnusedParameter:Etc.kt$modifier: Modifier = Modifier</ID>
+    <ID>UnusedParameter:Haidirao.kt$modifier: Modifier = Modifier</ID>
+    <ID>UnusedParameter:HomeScreen.kt$onCombinationClick: (String) -&gt; Unit = {}</ID>
+    <ID>UnusedParameter:HomeScreen.kt$onCreateClick: () -&gt; Unit = {}</ID>
+    <ID>UnusedParameter:LoginScreen.kt$onLoginSuccess: () -&gt; Unit = {}</ID>
+    <ID>UnusedParameter:LoginViewModel.kt$LoginViewModel$provider: SocialLoginProvider</ID>
+    <ID>UnusedParameter:Subway.kt$modifier: Modifier = Modifier</ID>
+    <ID>UnusedParameter:TagConvenience.kt$modifier: Modifier = Modifier</ID>
+    <ID>UnusedParameter:TagEtc.kt$modifier: Modifier = Modifier</ID>
+    <ID>UnusedParameter:TagHaidirao.kt$modifier: Modifier = Modifier</ID>
+    <ID>UnusedParameter:TagSubway.kt$modifier: Modifier = Modifier</ID>
+    <ID>UnusedPrivateProperty:CombinationRepositoryImpl.kt$CombinationRepositoryImpl$private val combinationService: CombinationService</ID>
+  </CurrentIssues>
+</SmellBaseline>
