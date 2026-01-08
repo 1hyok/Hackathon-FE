@@ -66,6 +66,57 @@ class MyPageViewModel
             loadMyCombinations()
         }
 
+        fun toggleLike(combinationId: String) {
+            viewModelScope.launch {
+                // 내가 등록한 조합 목록에서 토글
+                val updatedMyCombinations =
+                    _uiState.value.myCombinations.map { combination ->
+                        if (combination.id == combinationId) {
+                            val newIsLiked = !combination.isLiked
+                            combination.copy(
+                                isLiked = newIsLiked,
+                                likeCount =
+                                    if (newIsLiked) {
+                                        combination.likeCount + 1
+                                    } else {
+                                        (combination.likeCount - 1).coerceAtLeast(0)
+                                    },
+                            )
+                        } else {
+                            combination
+                        }
+                    }
+
+                // 좋아요한 조합 목록에서도 토글
+                val updatedLikedCombinations =
+                    _uiState.value.likedCombinations.map { combination ->
+                        if (combination.id == combinationId) {
+                            val newIsLiked = !combination.isLiked
+                            combination.copy(
+                                isLiked = newIsLiked,
+                                likeCount =
+                                    if (newIsLiked) {
+                                        combination.likeCount + 1
+                                    } else {
+                                        (combination.likeCount - 1).coerceAtLeast(0)
+                                    },
+                            )
+                        } else {
+                            combination
+                        }
+                    }
+
+                _uiState.value =
+                    _uiState.value.copy(
+                        myCombinations = updatedMyCombinations,
+                        likedCombinations = updatedLikedCombinations,
+                    )
+
+                // TODO: 서버에 좋아요 상태 동기화 (API 호출)
+                repository.likeCombination(combinationId)
+            }
+        }
+
         fun logout() {
             viewModelScope.launch {
                 // TODO: 로그아웃 API 호출 및 토큰 삭제

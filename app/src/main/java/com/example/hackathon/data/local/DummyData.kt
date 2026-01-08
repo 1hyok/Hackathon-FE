@@ -40,6 +40,7 @@ object DummyData {
                 tags = listOf("#서브웨이", "#에그마요", "#아보카도"),
                 author = dummyUser,
                 likeCount = 42,
+                isLiked = false,
                 createdAt = "2024-01-05",
             ),
             Combination(
@@ -65,6 +66,7 @@ object DummyData {
                 tags = listOf("#하이디라오", "#소스조합", "#마늘"),
                 author = dummyUser,
                 likeCount = 38,
+                isLiked = false,
                 createdAt = "2024-01-04",
             ),
             Combination(
@@ -89,6 +91,7 @@ object DummyData {
                 tags = listOf("#편의점", "#불닭볶음면", "#치즈"),
                 author = dummyUser,
                 likeCount = 56,
+                isLiked = false,
                 createdAt = "2024-01-03",
             ),
         )

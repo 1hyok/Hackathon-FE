@@ -86,6 +86,7 @@ class CombinationRepositoryImpl
                         // 현재 로그인한 사용자 사용
                         author = DummyData.currentUser,
                         likeCount = 0,
+                        isLiked = false,
                         createdAt =
                             java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
                                 .format(java.util.Date()),
