@@ -31,6 +31,17 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# 테스트 실행 (Unit 테스트만 - 실패 시 종료)
+echo ""
+echo "🧪 Running unit tests..."
+./gradlew :app:testDebugUnitTest --quiet
+TEST_RESULT=$?
+
+if [ $TEST_RESULT -ne 0 ]; then
+    echo "❌ Tests failed. Blocking. 상세: ./gradlew :app:testDebugUnitTest"
+    exit 1
+fi
+
 echo ""
 echo "✅ All code quality checks passed!"
 exit 0
