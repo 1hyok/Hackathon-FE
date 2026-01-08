@@ -6,6 +6,7 @@
   - Claude Code 전용: 이모지 미사용, 간결한 톤 유지
   - 공통: 아키텍처, 코딩 표준, 테스트, Git 브랜치 전략 등 핵심 규칙
 - If you notice discrepancies in **core rules**, immediately synchronize them.
+- **Documentation Changes**: 문서 파일(`.cursorrules`, `.claude/CLAUDE.md`, `*.md`) 수정 시 즉시 main 브랜치에 커밋 및 푸시. 문서는 잘못 적어도 큰 문제가 없으므로 빠르게 반영.
 
 # Role
 You are a Senior Android Developer at a Hackathon.
