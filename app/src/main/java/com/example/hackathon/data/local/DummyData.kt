@@ -8,9 +8,12 @@ object DummyData {
     val dummyUser =
         User(
             id = "user1",
-            nickname = "맛집러버",
+            nickname = "쩝쩝박사",
             profileImageUrl = null,
         )
+
+    // 현재 로그인한 사용자 정보 (임시 저장)
+    var currentUser: User = dummyUser
 
     val dummyCombinations =
         listOf(
@@ -34,6 +37,7 @@ object DummyData {
                         "올리브 오일 뿌리기",
                         "후추로 마무리",
                     ),
+                tags = listOf("#서브웨이", "#에그마요", "#아보카도"),
                 author = dummyUser,
                 likeCount = 42,
                 createdAt = "2024-01-05",
@@ -58,6 +62,7 @@ object DummyData {
                         "간장으로 간 맞추기",
                         "고기와 함께 즐기기",
                     ),
+                tags = listOf("#하이디라오", "#소스조합", "#마늘"),
                 author = dummyUser,
                 likeCount = 38,
                 createdAt = "2024-01-04",
@@ -81,6 +86,7 @@ object DummyData {
                         "계란 넣고 저어주기",
                         "완성!",
                     ),
+                tags = listOf("#편의점", "#불닭볶음면", "#치즈"),
                 author = dummyUser,
                 likeCount = 56,
                 createdAt = "2024-01-03",

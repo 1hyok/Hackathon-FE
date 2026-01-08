@@ -340,8 +340,3 @@ Space + 드래그 - 화면 이동
 - `GIT_STRATEGY.md`: Git 브랜치 전략
 - `CHECKLIST.md`: 해커톤 작업 체크리스트
 - `ACTION_PLAN.md`: 지금 당장 해야 할 일
-
----
-
-**마지막 업데이트**: 2024년 (작성일)
-

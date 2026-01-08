@@ -14,6 +14,7 @@ interface CombinationRepository {
         category: Category,
         ingredients: List<String>,
         steps: List<String>,
+        tags: List<String> = emptyList(),
         imageUri: android.net.Uri? = null,
     ): Result<Combination>
 

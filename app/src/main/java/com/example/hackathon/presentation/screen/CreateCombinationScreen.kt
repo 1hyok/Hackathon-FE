@@ -45,9 +45,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -84,7 +82,6 @@ fun CreateCombinationScreen(
 
     // 해시태그 입력 UI 상태 (로컬)
     val tagInput = rememberSaveable { mutableStateOf("") }
-    val tags = remember { mutableStateListOf<String>() }
 
     Scaffold(
         topBar = {
@@ -223,41 +220,69 @@ fun CreateCombinationScreen(
                     // 해시태그 입력
                     OutlinedTextField(
                         value = tagInput.value,
-                        onValueChange = { tagInput.value = it },
-                        label = { Text("해시태그 (예: #서브웨이)") },
+                        onValueChange = { newValue ->
+                            // # 입력 시 자동으로 태그 추가
+                            if (newValue.endsWith("#") && newValue.length > tagInput.value.length) {
+                                // #만 입력한 경우는 그대로 유지
+                                tagInput.value = newValue
+                            } else if (
+                                newValue.contains("#") &&
+                                (newValue.endsWith(" ") || newValue.endsWith(",") || newValue.endsWith("\n"))
+                            ) {
+                                // #태그명 뒤에 공백, 쉼표, 엔터가 오면 자동으로 태그 추가
+                                val tagText = newValue.substringBeforeLast(" ").substringBeforeLast(",").substringBeforeLast("\n")
+                                val normalized = tagText.trim().trimStart('#').trim()
+                                if (normalized.isNotBlank() && !uiState.tags.contains("#$normalized")) {
+                                    viewModel.addTag("#$normalized")
+                                }
+                                tagInput.value = ""
+                            } else {
+                                tagInput.value = newValue
+                            }
+                        },
+                        label = { Text("해시태그") },
+                        placeholder = { Text("#을 입력하고 태그를 작성하세요") },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        supportingText = { Text("Enter/쉼표로 추가, X로 삭제") },
+                        supportingText = { Text("# 입력 후 태그 작성, 공백/쉼표/Enter로 추가") },
+                        leadingIcon = {
+                            Text(
+                                text = "#",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(start = 16.dp),
+                            )
+                        },
                         trailingIcon = {
-                            IconButton(
-                                onClick = {
-                                    val normalized =
-                                        tagInput.value
-                                            .trim()
-                                            .trimStart('#')
-                                    if (normalized.isNotBlank()) {
-                                        tags.add("#$normalized")
-                                        tagInput.value = ""
-                                    }
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Add,
-                                    contentDescription = "태그 추가",
-                                )
+                            if (tagInput.value.isNotBlank()) {
+                                IconButton(
+                                    onClick = {
+                                        val normalized = tagInput.value.trim().trimStart('#').trim()
+                                        if (normalized.isNotBlank() && !uiState.tags.contains("#$normalized")) {
+                                            viewModel.addTag("#$normalized")
+                                            tagInput.value = ""
+                                        }
+                                    },
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Add,
+                                        contentDescription = "태그 추가",
+                                    )
+                                }
                             }
                         },
                     )
 
-                    if (tags.isNotEmpty()) {
+                    if (uiState.tags.isNotEmpty()) {
                         FlowRow(
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            tags.forEach { tag ->
+                            uiState.tags.forEach { tag ->
                                 TagChip(
                                     text = tag,
-                                    onRemove = { tags.remove(tag) },
+                                    onRemove = { viewModel.removeTag(tag) },
                                 )
                             }
                         }

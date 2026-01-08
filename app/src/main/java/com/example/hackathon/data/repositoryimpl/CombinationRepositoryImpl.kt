@@ -13,11 +13,16 @@ class CombinationRepositoryImpl
     constructor(
         private val combinationService: CombinationService,
     ) : CombinationRepository {
+        // 임시로 새로 등록한 조합을 저장하는 리스트 (서버 API 연동 전까지 사용)
+        private val createdCombinations = mutableListOf<Combination>()
+
         // TODO: 서버 API 연동 시 실제 API 호출로 변경
         override suspend fun getCombinations(category: Category?): Result<List<Combination>> {
             return try {
-                delay(500) // 네트워크 시뮬레이션
-                val allCombinations = DummyData.dummyCombinations
+                // 네트워크 시뮬레이션
+                delay(500)
+                // 더미 데이터 + 새로 등록한 조합 합치기
+                val allCombinations = DummyData.dummyCombinations + createdCombinations
                 val filtered =
                     if (category == null || category == Category.ALL) {
                         allCombinations
@@ -33,7 +38,9 @@ class CombinationRepositoryImpl
         override suspend fun getCombinationById(id: String): Result<Combination> {
             return try {
                 delay(300)
-                val combination = DummyData.dummyCombinations.find { it.id == id }
+                // 더미 데이터 + 새로 등록한 조합에서 찾기
+                val allCombinations = DummyData.dummyCombinations + createdCombinations
+                val combination = allCombinations.find { it.id == id }
                 if (combination != null) {
                     Result.success(combination)
                 } else {
@@ -50,6 +57,7 @@ class CombinationRepositoryImpl
             category: Category,
             ingredients: List<String>,
             steps: List<String>,
+            tags: List<String>,
             imageUri: android.net.Uri?,
         ): Result<Combination> {
             return try {
@@ -74,12 +82,16 @@ class CombinationRepositoryImpl
                         category = category,
                         ingredients = ingredients,
                         steps = steps,
-                        author = DummyData.dummyUser,
+                        tags = tags,
+                        // 현재 로그인한 사용자 사용
+                        author = DummyData.currentUser,
                         likeCount = 0,
                         createdAt =
                             java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
                                 .format(java.util.Date()),
                     )
+                // 임시로 로컬 리스트에 추가 (서버 API 연동 전까지)
+                createdCombinations.add(newCombination)
                 Result.success(newCombination)
             } catch (e: Exception) {
                 Result.failure(e)
@@ -90,9 +102,12 @@ class CombinationRepositoryImpl
             return try {
                 delay(300)
                 // TODO: 실제 API 호출
+                // 더미 데이터 + 새로 등록한 조합에서 내 조합만 필터링
+                val allCombinations = DummyData.dummyCombinations + createdCombinations
+                // 현재 로그인한 사용자의 조합만
                 val myCombinations =
-                    DummyData.dummyCombinations.filter {
-                        it.author.id == DummyData.dummyUser.id
+                    allCombinations.filter {
+                        it.author.id == DummyData.currentUser.id
                     }
                 Result.success(myCombinations)
             } catch (e: Exception) {

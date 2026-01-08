@@ -2,6 +2,7 @@ package com.example.hackathon.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.hackathon.data.local.DummyData
 import com.example.hackathon.domain.entity.Combination
 import com.example.hackathon.domain.repository.CombinationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -68,6 +69,8 @@ class MyPageViewModel
         fun logout() {
             viewModelScope.launch {
                 // TODO: 로그아웃 API 호출 및 토큰 삭제
+                // 현재 사용자 정보 초기화
+                DummyData.currentUser = DummyData.dummyUser
                 // TODO: 로그인 화면으로 이동
             }
         }
