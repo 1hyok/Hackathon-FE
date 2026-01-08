@@ -27,12 +27,12 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-# 테스트 실행 (Unit 테스트만 - 빠른 실행)
+# 테스트 실행 (Unit 테스트만 - 실패 시 종료)
 Write-Host "`n🧪 Running unit tests..." -ForegroundColor Yellow
 & .\gradlew.bat :app:testDebugUnitTest --quiet
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "⚠️  Some tests failed. Run './gradlew :app:testDebugUnitTest' manually to see details." -ForegroundColor Yellow
-    # 테스트 실패해도 계속 진행
+    Write-Host "❌ Tests failed. Blocking. 상세: ./gradlew :app:testDebugUnitTest" -ForegroundColor Red
+    exit 1
 }
 
 Write-Host "`n✅ All code quality checks passed!" -ForegroundColor Green

@@ -16,7 +16,7 @@ if ($TestClass -ne "") {
 }
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "`n❌ Tests failed!" -ForegroundColor Red
+    Write-Host "`n❌ Tests failed! (커밋/푸시 차단 권장)" -ForegroundColor Red
     exit 1
 }
 

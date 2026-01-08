@@ -15,7 +15,7 @@ else
 fi
 
 if [ $? -ne 0 ]; then
-    echo "❌ Tests failed!"
+    echo "❌ Tests failed! (커밋/푸시 차단 권장)"
     exit 1
 fi
 
