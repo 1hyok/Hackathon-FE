@@ -8,10 +8,10 @@ echo "🧪 Running tests..."
 
 if [ -n "$TEST_CLASS" ]; then
     echo "📋 Running specific test: $TEST_CLASS"
-    ./gradlew test --tests "$TEST_CLASS"
+    ./gradlew :app:testDebugUnitTest --tests "$TEST_CLASS"
 else
-    echo "📋 Running all tests..."
-    ./gradlew test
+    echo "📋 Running all unit tests..."
+    ./gradlew :app:testDebugUnitTest
 fi
 
 if [ $? -ne 0 ]; then

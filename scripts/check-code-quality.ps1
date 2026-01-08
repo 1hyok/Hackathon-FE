@@ -27,11 +27,11 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-# 테스트 실행 (ViewModel 테스트만 - 빠른 실행)
-Write-Host "`n🧪 Running ViewModel tests..." -ForegroundColor Yellow
-& .\gradlew.bat test --tests "*ViewModelTest" --quiet
+# 테스트 실행 (Unit 테스트만 - 빠른 실행)
+Write-Host "`n🧪 Running unit tests..." -ForegroundColor Yellow
+& .\gradlew.bat :app:testDebugUnitTest --quiet
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "⚠️  Some tests failed. Run './gradlew test' manually to see details." -ForegroundColor Yellow
+    Write-Host "⚠️  Some tests failed. Run './gradlew :app:testDebugUnitTest' manually to see details." -ForegroundColor Yellow
     # 테스트 실패해도 계속 진행
 }
 

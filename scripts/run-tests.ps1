@@ -9,10 +9,10 @@ Write-Host "🧪 Running tests..." -ForegroundColor Cyan
 
 if ($TestClass -ne "") {
     Write-Host "`n📋 Running specific test: $TestClass" -ForegroundColor Yellow
-    & .\gradlew.bat test --tests $TestClass
+    & .\gradlew.bat :app:testDebugUnitTest --tests $TestClass
 } else {
-    Write-Host "`n📋 Running all tests..." -ForegroundColor Yellow
-    & .\gradlew.bat test
+    Write-Host "`n📋 Running all unit tests..." -ForegroundColor Yellow
+    & .\gradlew.bat :app:testDebugUnitTest
 }
 
 if ($LASTEXITCODE -ne 0) {
