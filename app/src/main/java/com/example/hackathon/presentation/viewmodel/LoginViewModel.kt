@@ -2,6 +2,7 @@ package com.example.hackathon.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.hackathon.data.local.DummyData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +34,8 @@ class LoginViewModel
             viewModelScope.launch {
                 _uiState.value = _uiState.value.copy(isLoading = true, error = null)
                 // TODO: API 연동
-                // 임시로 성공 처리
+                // 임시로 성공 처리 - 현재 사용자 정보 저장
+                DummyData.currentUser = DummyData.dummyUser
                 _uiState.value = _uiState.value.copy(isLoading = false)
             }
         }

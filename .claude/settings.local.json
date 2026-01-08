@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\ndocs: AI 규칙 파일 동기화 및 해커톤 최적화\n\n- .claude/CLAUDE.md 생성 (Claude Code용 규칙 파일)\n- .cursorrules와 CLAUDE.md 간 동기화 규칙 추가\n- Role(페르소나) 섹션 추가: Senior Android Developer at Hackathon\n- Custom Commands 추가: /doc, /test, /clean, /fix, /refactor\n- 금지 라이브러리 목록 명시: Gson, Synthetics, AsyncTask, RxJava 등\n- Hackathon Mindset 섹션 추가: 작동 코드 우선 원칙\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git stash:*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)",
+      "Bash(./gradlew ktlintCheck:*)",
+      "Bash(cat:*)",
+      "Bash(./gradlew:*)",
+      "Bash(./gradlew :app:testDebugUnitTest:*)"
+    ]
+  }
+}

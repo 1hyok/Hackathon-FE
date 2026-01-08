@@ -1,7 +1,11 @@
 package com.example.hackathon.presentation.screen
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,6 +25,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -39,24 +45,24 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
 import com.example.hackathon.presentation.viewmodel.CreateCombinationViewModel
 import com.example.hackathon.ui.theme.Gray50
 import com.example.hackathon.ui.theme.Gray700
 import com.example.hackathon.ui.theme.Primary
 
 // 담당자: 일혁
-// TODO: 이미지 업로드 기능 추가 필요
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun CreateCombinationScreen(
@@ -66,9 +72,16 @@ fun CreateCombinationScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    // 이미지 선택을 위한 ActivityResultLauncher
+    val imagePickerLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent(),
+        ) { uri: Uri? ->
+            uri?.let { viewModel.updateImageUri(it) }
+        }
+
     // 해시태그 입력 UI 상태 (로컬)
     val tagInput = rememberSaveable { mutableStateOf("") }
-    val tags = remember { mutableStateListOf<String>() }
 
     Scaffold(
         topBar = {
@@ -121,28 +134,77 @@ fun CreateCombinationScreen(
                             .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    // 이미지 업로드 플레이스홀더
-                    Box(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .height(180.dp)
-                                .background(Gray50, RoundedCornerShape(12.dp))
-                                .border(1.dp, Gray700, RoundedCornerShape(12.dp)),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = "이미지 등록",
-                                tint = Gray700,
+                    // 이미지 선택 및 미리보기
+                    if (uiState.imageUri != null) {
+                        // 선택한 이미지 미리보기
+                        Box(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(180.dp),
+                        ) {
+                            AsyncImage(
+                                model = uiState.imageUri,
+                                contentDescription = "선택한 이미지",
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .height(180.dp)
+                                        .clip(RoundedCornerShape(12.dp)),
+                                contentScale = ContentScale.Crop,
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = "이미지 등록",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = Gray700,
-                            )
+                            // 이미지 제거 버튼
+                            IconButton(
+                                onClick = { viewModel.updateImageUri(null) },
+                                modifier =
+                                    Modifier
+                                        .align(Alignment.TopEnd)
+                                        .padding(8.dp),
+                            ) {
+                                Box(
+                                    modifier =
+                                        Modifier
+                                            .size(32.dp)
+                                            .background(
+                                                Color.Black.copy(alpha = 0.6f),
+                                                CircleShape,
+                                            ),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Close,
+                                        contentDescription = "이미지 제거",
+                                        tint = Color.White,
+                                        modifier = Modifier.size(20.dp),
+                                    )
+                                }
+                            }
+                        }
+                    } else {
+                        // 이미지 선택 버튼
+                        Box(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(180.dp)
+                                    .background(Gray50, RoundedCornerShape(12.dp))
+                                    .border(1.dp, Gray700, RoundedCornerShape(12.dp))
+                                    .clickable { imagePickerLauncher.launch("image/*") },
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = "이미지 등록",
+                                    tint = Gray700,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "이미지 등록",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Gray700,
+                                )
+                            }
                         }
                     }
 
@@ -158,41 +220,64 @@ fun CreateCombinationScreen(
                     // 해시태그 입력
                     OutlinedTextField(
                         value = tagInput.value,
-                        onValueChange = { tagInput.value = it },
-                        label = { Text("해시태그 (예: #서브웨이)") },
+                        onValueChange = { newValue ->
+                            // 공백, 쉼표, 엔터 입력 시 자동으로 태그 추가
+                            if (newValue.endsWith(" ") || newValue.endsWith(",") || newValue.endsWith("\n")) {
+                                val tagText = newValue.substringBeforeLast(" ").substringBeforeLast(",").substringBeforeLast("\n")
+                                val normalized = tagText.trim().trimStart('#').trim()
+                                if (normalized.isNotBlank() && !uiState.tags.contains("#$normalized")) {
+                                    viewModel.addTag("#$normalized")
+                                }
+                                tagInput.value = ""
+                            } else {
+                                // # 입력은 무시 (leadingIcon에 이미 표시됨)
+                                val cleanedValue = newValue.replace("#", "")
+                                tagInput.value = cleanedValue
+                            }
+                        },
+                        label = { Text("해시태그") },
+                        placeholder = { Text("태그를 입력하세요") },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        supportingText = { Text("Enter/쉼표로 추가, X로 삭제") },
+                        supportingText = { Text("태그 입력 후 공백/쉼표/Enter로 추가") },
+                        leadingIcon = {
+                            Text(
+                                text = "#",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(start = 16.dp),
+                            )
+                        },
                         trailingIcon = {
-                            IconButton(
-                                onClick = {
-                                    val normalized =
-                                        tagInput.value
-                                            .trim()
-                                            .trimStart('#')
-                                    if (normalized.isNotBlank()) {
-                                        tags.add("#$normalized")
-                                        tagInput.value = ""
-                                    }
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Add,
-                                    contentDescription = "태그 추가",
-                                )
+                            if (tagInput.value.isNotBlank()) {
+                                IconButton(
+                                    onClick = {
+                                        val normalized = tagInput.value.trim()
+                                        if (normalized.isNotBlank() && !uiState.tags.contains("#$normalized")) {
+                                            viewModel.addTag("#$normalized")
+                                            tagInput.value = ""
+                                        }
+                                    },
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Add,
+                                        contentDescription = "태그 추가",
+                                    )
+                                }
                             }
                         },
                     )
 
-                    if (tags.isNotEmpty()) {
+                    if (uiState.tags.isNotEmpty()) {
                         FlowRow(
+                            modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            tags.forEach { tag ->
+                            uiState.tags.forEach { tag ->
                                 TagChip(
                                     text = tag,
-                                    onRemove = { tags.remove(tag) },
+                                    onRemove = { viewModel.removeTag(tag) },
                                 )
                             }
                         }

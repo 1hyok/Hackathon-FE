@@ -8,6 +8,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -17,7 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +35,8 @@ import com.example.hackathon.ui.theme.Gray50
 fun CombinationCard(
     combination: Combination,
     onClick: () -> Unit,
+    // 좋아요 클릭 콜백 (null이면 비활성화)
+    onLikeClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -100,23 +106,70 @@ fun CombinationCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // 태그 표시
+            if (combination.tags.isNotEmpty()) {
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    combination.tags.forEach { tag ->
+                        Box(
+                            modifier =
+                                Modifier
+                                    .background(
+                                        MaterialTheme.colorScheme.primary,
+                                        RoundedCornerShape(12.dp),
+                                    )
+                                    .padding(horizontal = 10.dp, vertical = 4.dp),
+                        ) {
+                            Text(
+                                text = tag,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color.White,
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+
             // 하단 정보
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
-                    text = combination.author.nickname,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                )
+                // 닉네임 (더 구분되게 스타일링)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+                    )
+                    Text(
+                        text = combination.author.nickname,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
 
                 // 좋아요 버튼
                 Row(
                     modifier =
                         Modifier
-                            .clickable(onClick = { /* TODO: 좋아요 기능 구현 */ })
+                            .then(
+                                if (onLikeClick != null) {
+                                    Modifier.clickable(onClick = onLikeClick)
+                                } else {
+                                    Modifier
+                                },
+                            )
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -125,24 +178,54 @@ fun CombinationCard(
                         modifier =
                             Modifier
                                 .size(24.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    color =
+                                        if (combination.isLiked) {
+                                            Color.Red
+                                        } else {
+                                            Color.Transparent
+                                        },
+                                    shape = CircleShape,
+                                )
                                 .border(
                                     width = 1.5.dp,
-                                    color = MaterialTheme.colorScheme.primary,
+                                    color =
+                                        if (combination.isLiked) {
+                                            Color.White
+                                        } else {
+                                            Color.Gray
+                                        },
                                     shape = CircleShape,
                                 ),
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Favorite,
+                            imageVector =
+                                if (combination.isLiked) {
+                                    Icons.Default.Favorite
+                                } else {
+                                    Icons.Outlined.Favorite
+                                },
                             contentDescription = "좋아요",
-                            tint = MaterialTheme.colorScheme.primary,
+                            tint =
+                                if (combination.isLiked) {
+                                    Color.White
+                                } else {
+                                    Color.Gray
+                                },
                             modifier = Modifier.size(14.dp),
                         )
                     }
                     Text(
                         text = combination.likeCount.toString(),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary,
+                        color =
+                            if (combination.isLiked) {
+                                Color.Red
+                            } else {
+                                Color.Gray
+                            },
                     )
                 }
             }
@@ -163,8 +246,10 @@ private fun CombinationCardPreview() {
                 category = Category.SUBWAY,
                 ingredients = listOf("이탈리안 비엠티", "베이컨", "치즈"),
                 steps = listOf("빵 선택", "베이컨 추가", "치즈 추가"),
+                tags = listOf("#서브웨이", "#테스트"),
                 author = User(id = "1", nickname = "테스트유저", profileImageUrl = null),
                 likeCount = 42,
+                isLiked = false,
                 createdAt = System.currentTimeMillis().toString(),
             ),
         onClick = {},

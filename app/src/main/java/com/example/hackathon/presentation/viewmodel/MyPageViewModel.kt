@@ -2,6 +2,7 @@ package com.example.hackathon.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.hackathon.data.local.DummyData
 import com.example.hackathon.domain.entity.Combination
 import com.example.hackathon.domain.repository.CombinationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +35,30 @@ class MyPageViewModel
             if (tab == MyPageTab.MY_COMBINATIONS) {
                 loadMyCombinations()
             } else {
-                // TODO: 좋아요한 조합 로드
+                loadLikedCombinations()
+            }
+        }
+
+        fun loadLikedCombinations() {
+            viewModelScope.launch {
+                _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+
+                repository.getLikedCombinations().fold(
+                    onSuccess = { combinations ->
+                        _uiState.value =
+                            _uiState.value.copy(
+                                likedCombinations = combinations,
+                                isLoading = false,
+                            )
+                    },
+                    onFailure = { error ->
+                        _uiState.value =
+                            _uiState.value.copy(
+                                isLoading = false,
+                                error = error.message ?: "좋아요한 조합을 불러올 수 없습니다",
+                            )
+                    },
+                )
             }
         }
 
@@ -62,12 +86,81 @@ class MyPageViewModel
         }
 
         fun refresh() {
-            loadMyCombinations()
+            if (_selectedTab.value == MyPageTab.MY_COMBINATIONS) {
+                loadMyCombinations()
+            } else {
+                loadLikedCombinations()
+            }
+        }
+
+        fun toggleLike(combinationId: String) {
+            viewModelScope.launch {
+                // 서버에 좋아요 상태 동기화 (먼저 실행)
+                repository.likeCombination(combinationId).fold(
+                    onSuccess = {
+                        // 현재 조합의 좋아요 상태 확인
+                        val currentCombination =
+                            _uiState.value.myCombinations.find { it.id == combinationId }
+                                ?: _uiState.value.likedCombinations.find { it.id == combinationId }
+                        val wasLiked = currentCombination?.isLiked ?: false
+
+                        // 내가 등록한 조합 목록에서 토글
+                        val updatedMyCombinations =
+                            _uiState.value.myCombinations.map { combination ->
+                                if (combination.id == combinationId) {
+                                    combination.copy(
+                                        isLiked = !wasLiked,
+                                        likeCount =
+                                            if (!wasLiked) {
+                                                combination.likeCount + 1
+                                            } else {
+                                                (combination.likeCount - 1).coerceAtLeast(0)
+                                            },
+                                    )
+                                } else {
+                                    combination
+                                }
+                            }
+
+                        // 좋아요한 조합 목록에서도 토글
+                        val updatedLikedCombinations =
+                            _uiState.value.likedCombinations.map { combination ->
+                                if (combination.id == combinationId) {
+                                    combination.copy(
+                                        isLiked = !wasLiked,
+                                        likeCount =
+                                            if (!wasLiked) {
+                                                combination.likeCount + 1
+                                            } else {
+                                                (combination.likeCount - 1).coerceAtLeast(0)
+                                            },
+                                    )
+                                } else {
+                                    combination
+                                }
+                            }
+
+                        _uiState.value =
+                            _uiState.value.copy(
+                                myCombinations = updatedMyCombinations,
+                                likedCombinations = updatedLikedCombinations,
+                            )
+
+                        // 좋아요 탭이면 목록 새로고침 (좋아요 취소 시 목록에서 제거)
+                        if (_selectedTab.value == MyPageTab.LIKED_COMBINATIONS) {
+                            loadLikedCombinations()
+                        }
+                    },
+                    onFailure = { /* 에러 처리 */ },
+                )
+            }
         }
 
         fun logout() {
             viewModelScope.launch {
                 // TODO: 로그아웃 API 호출 및 토큰 삭제
+                // 현재 사용자 정보 초기화
+                DummyData.currentUser = DummyData.dummyUser
                 // TODO: 로그인 화면으로 이동
             }
         }

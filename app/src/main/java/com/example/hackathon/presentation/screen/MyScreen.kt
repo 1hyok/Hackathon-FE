@@ -242,6 +242,7 @@ fun MyScreen(
                             CombinationCard(
                                 combination = combination,
                                 onClick = { onCombinationClick(combination.id) },
+                                onLikeClick = { viewModel.toggleLike(combination.id) },
                             )
                         }
                     }

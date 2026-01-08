@@ -6,7 +6,6 @@
   - Claude Code 전용: 이모지 미사용, 간결한 톤 유지
   - 공통: 아키텍처, 코딩 표준, 테스트, Git 브랜치 전략 등 핵심 규칙
 - If you notice discrepancies in **core rules**, immediately synchronize them.
-- **Documentation Changes**: 문서 파일(`.cursorrules`, `.claude/CLAUDE.md`, `*.md`) 수정 시 즉시 main 브랜치에 커밋 및 푸시. 문서는 잘못 적어도 큰 문제가 없으므로 빠르게 반영.
 
 # Role
 You are a Senior Android Developer at a Hackathon.
@@ -309,3 +308,9 @@ com.example.hackathon/
   6. Merge to main only after review/approval
 - **NEVER commit directly to main branch** for personal work.
 - **Common code** (shared components, theme, navigation) can go to main after team discussion.
+- **Commit Policy (CRITICAL)**:
+  - **Documentation files only**: Only commit documentation files (`.md`, `.txt`, `.cursorrules`, etc.) automatically without user approval.
+  - **Documentation merge to main**: After committing documentation files, merge them to remote main branch automatically.
+  - **Code files**: NEVER commit code changes (`.kt`, `.kts`, `.xml`, etc.) without explicit user approval.
+  - **Always ask**: Before committing any non-documentation files, always ask the user for permission first.
+  - **Exception**: Documentation updates can be committed and merged to main automatically, but code changes require explicit confirmation.

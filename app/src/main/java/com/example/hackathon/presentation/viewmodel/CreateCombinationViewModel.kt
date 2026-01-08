@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 // 담당자: 일혁
-// TODO: 이미지 업로드 기능 추가 필요
 @HiltViewModel
 class CreateCombinationViewModel
     @Inject
@@ -45,6 +44,24 @@ class CreateCombinationViewModel
 
         fun updateIsPublic(isPublic: Boolean) {
             _uiState.value = _uiState.value.copy(isPublic = isPublic)
+        }
+
+        fun updateImageUri(uri: android.net.Uri?) {
+            _uiState.value = _uiState.value.copy(imageUri = uri)
+        }
+
+        fun addTag(tag: String) {
+            val currentTags = _uiState.value.tags.toMutableList()
+            if (!currentTags.contains(tag)) {
+                currentTags.add(tag)
+                _uiState.value = _uiState.value.copy(tags = currentTags)
+            }
+        }
+
+        fun removeTag(tag: String) {
+            val currentTags = _uiState.value.tags.toMutableList()
+            currentTags.remove(tag)
+            _uiState.value = _uiState.value.copy(tags = currentTags)
         }
 
         fun createCombination(onSuccess: (Combination) -> Unit) {
@@ -79,6 +96,8 @@ class CreateCombinationViewModel
                     category = state.category,
                     ingredients = ingredientsList,
                     steps = stepsList,
+                    tags = state.tags,
+                    imageUri = state.imageUri,
                 ).fold(
                     onSuccess = { combination ->
                         _uiState.value = state.copy(isLoading = false)
@@ -106,6 +125,8 @@ data class CreateCombinationUiState(
     val category: Category = Category.SUBWAY,
     val ingredients: String = "",
     val steps: String = "",
+    val tags: List<String> = emptyList(),
+    val imageUri: android.net.Uri? = null,
     val isPublic: Boolean = true,
     val isLoading: Boolean = false,
     val error: String? = null,
