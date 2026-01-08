@@ -1,8 +1,8 @@
 # Detekt 설정 파일
-# 해커톤 프로젝트용 간소화된 설정
+# 해커톤 프로젝트용 간소화된 설정 (Compose 프로젝트에 맞게 조정)
 
 build:
-  maxIssues: 100
+  maxIssues: 300  # 해커톤 특성상 임계값 상향 (TODO, LongMethod 등 허용)
   weights:
     complexity: 2
     LongParameterList: 1
@@ -17,11 +17,22 @@ complexity:
     thresholdInClasses: 15
   LongMethod:
     active: true
-    threshold: 60
+    threshold: 300  # Compose 화면 함수는 매우 길 수 있으므로 300으로 완화 (해커톤 특성)
   LongParameterList:
     active: true
     functionThreshold: 6
     constructorThreshold: 6
+
+naming:
+  active: true
+  FunctionNaming:
+    active: false  # Compose @Composable 함수는 PascalCase 사용 (컨벤션 충돌)
+  ClassNaming:
+    active: true
+  PackageNaming:
+    active: true
+  ConstructorParameterNaming:
+    active: false  # Compose에서 자주 사용되는 패턴과 충돌 가능
 
 style:
   active: true
@@ -29,7 +40,11 @@ style:
     active: false  # 해커톤에서는 허용
   MaxLineLength:
     active: true
-    maxLineLength: 120
+    maxLineLength: 150  # 120 -> 150으로 완화
+  WildcardImport:
+    active: false  # Compose에서 흔히 사용 (androidx.compose.foundation.layout.* 등)
+  UnusedPrivateMember:
+    active: false  # Preview 함수 등에서 흔히 발생
 
 comments:
   active: true
