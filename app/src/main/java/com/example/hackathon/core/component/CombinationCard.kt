@@ -1,14 +1,22 @@
 package com.example.hackathon.core.component
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +25,7 @@ import coil3.compose.AsyncImage
 import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.domain.entity.Combination
 import com.example.hackathon.domain.entity.User
+import com.example.hackathon.ui.theme.Gray50
 
 @Composable
 fun CombinationCard(
@@ -36,19 +45,39 @@ fun CombinationCard(
                     .fillMaxWidth()
                     .padding(16.dp),
         ) {
-            // 이미지
-            if (combination.imageUrl != null) {
-                AsyncImage(
-                    model = combination.imageUrl,
-                    contentDescription = combination.title,
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                    contentScale = ContentScale.Crop,
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+            // 이미지 (항상 표시)
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+            ) {
+                if (combination.imageUrl != null) {
+                    AsyncImage(
+                        model = combination.imageUrl,
+                        contentDescription = combination.title,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop,
+                    )
+                } else {
+                    // 플레이스홀더 이미지
+                    Box(
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .background(Gray50),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = "이미지 없음",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                        )
+                    }
+                }
             }
+            Spacer(modifier = Modifier.height(12.dp))
 
             // 제목
             Text(
@@ -83,11 +112,39 @@ fun CombinationCard(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                 )
 
-                Text(
-                    text = "❤️ ${combination.likeCount}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary,
-                )
+                // 좋아요 버튼
+                Row(
+                    modifier =
+                        Modifier
+                            .clickable(onClick = { /* TODO: 좋아요 기능 구현 */ })
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Box(
+                        modifier =
+                            Modifier
+                                .size(24.dp)
+                                .border(
+                                    width = 1.5.dp,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = CircleShape,
+                                ),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = "좋아요",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(14.dp),
+                        )
+                    }
+                    Text(
+                        text = combination.likeCount.toString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
             }
         }
     }
