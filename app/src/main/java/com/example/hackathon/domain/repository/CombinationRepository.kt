@@ -14,6 +14,7 @@ interface CombinationRepository {
         category: Category,
         ingredients: List<String>,
         steps: List<String>,
+        imageUri: android.net.Uri? = null,
     ): Result<Combination>
 
     suspend fun getMyCombinations(): Result<List<Combination>>

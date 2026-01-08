@@ -50,20 +50,27 @@ class CombinationRepositoryImpl
             category: Category,
             ingredients: List<String>,
             steps: List<String>,
+            imageUri: android.net.Uri?,
         ): Result<Combination> {
             return try {
                 delay(500)
                 // TODO: 실제 API 호출
+                // 이미지 업로드가 필요한 경우 여기서 처리
+                // if (imageUri != null) {
+                //     val imageUrl = uploadImage(imageUri)
+                // }
                 // val response = combinationService.createCombination(...)
                 // Result.success(response.toEntity())
 
                 // 임시로 더미 데이터 반환
+                // imageUri가 있으면 임시로 문자열로 변환 (실제로는 서버에 업로드 후 URL 받아야 함)
+                val imageUrl = imageUri?.toString()
                 val newCombination =
                     Combination(
                         id = System.currentTimeMillis().toString(),
                         title = title,
                         description = description,
-                        imageUrl = null,
+                        imageUrl = imageUrl,
                         category = category,
                         ingredients = ingredients,
                         steps = steps,
