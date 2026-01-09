@@ -84,10 +84,6 @@ class CreateCombinationViewModel
             _uiState.value = _uiState.value.copy(ingredientsList = currentIngredients)
         }
 
-        fun updateSteps(steps: String) {
-            _uiState.value = _uiState.value.copy(steps = steps)
-        }
-
         fun updateIsPublic(isPublic: Boolean) {
             _uiState.value = _uiState.value.copy(isPublic = isPublic)
         }
@@ -134,11 +130,6 @@ class CreateCombinationViewModel
                     .filter { it.name.isNotBlank() && it.quantity.isNotBlank() }
                     .map { "${it.name} ${it.quantity}" }
 
-            val stepsList =
-                state.steps.split("\n")
-                    .map { it.trim() }
-                    .filter { it.isNotBlank() }
-
             if (validIngredients.isEmpty()) {
                 _uiState.value = state.copy(error = "재료를 입력해주세요")
                 return
@@ -152,7 +143,6 @@ class CreateCombinationViewModel
                     description = state.description,
                     category = state.category,
                     ingredients = validIngredients,
-                    steps = stepsList,
                     tags = state.tags,
                     imageUri = state.imageUris.firstOrNull(),
                 ).fold(
@@ -184,7 +174,6 @@ data class CreateCombinationUiState(
     // 재료 리스트 (재료명, 용량 쌍)
     val ingredientsList: List<IngredientItem> =
         listOf(IngredientItem("", "")),
-    val steps: String = "",
     val tags: List<String> = emptyList(),
     // 하위 호환성 유지
     val imageUri: android.net.Uri? = null,

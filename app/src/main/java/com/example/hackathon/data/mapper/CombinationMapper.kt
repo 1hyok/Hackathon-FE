@@ -15,7 +15,6 @@ fun CombinationResponse.toEntity(): Combination {
         imageUrl = imageUrl,
         category = Category.valueOf(category.uppercase()),
         ingredients = ingredients,
-        steps = steps,
         author = author.toEntity(),
         likeCount = likeCount,
         createdAt = createdAt,

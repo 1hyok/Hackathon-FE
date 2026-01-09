@@ -66,7 +66,6 @@ private fun HomeScreenPreview() {
                     imageUrl = null,
                     category = Category.HAIDILAO,
                     ingredients = listOf("재료1", "재료2"),
-                    steps = listOf("단계1", "단계2"),
                     tags = listOf("태그1", "태그2"),
                     author = mockUser,
                     likeCount = 10,

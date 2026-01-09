@@ -8,5 +8,4 @@ data class CreateCombinationRequest(
     val description: String,
     val category: String,
     val ingredients: List<String>,
-    val steps: List<String>,
 )

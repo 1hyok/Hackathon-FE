@@ -10,7 +10,6 @@ data class CombinationResponse(
     val imageUrl: String? = null,
     val category: String,
     val ingredients: List<String>,
-    val steps: List<String>,
     val author: UserResponse,
     val likeCount: Int,
     val createdAt: String,

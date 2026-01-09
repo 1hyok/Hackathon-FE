@@ -30,25 +30,25 @@ fun HomeContent(
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
-    
+
     // 스크롤이 마지막에 가까워지면 다음 페이지 로드
     val shouldLoadMore by remember {
         derivedStateOf {
             val layoutInfo = listState.layoutInfo
             val totalItemsCount = layoutInfo.totalItemsCount
             val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            
+
             // 마지막에서 3개 아이템 전에 도달하면 다음 페이지 로드
             totalItemsCount > 0 && lastVisibleItemIndex >= totalItemsCount - 3
         }
     }
-    
+
     LaunchedEffect(shouldLoadMore) {
         if (shouldLoadMore && uiState.hasMore && !uiState.isLoadingMore && !uiState.isLoading) {
             onLoadMore()
         }
     }
-    
+
     LazyColumn(
         state = listState,
         modifier = modifier.fillMaxWidth(),
@@ -80,7 +80,7 @@ fun HomeContent(
                     combinations = uiState.combinations,
                     onCombinationClick = onCombinationClick,
                 )
-                
+
                 // 더 불러오기 로딩 인디케이터
                 if (uiState.isLoadingMore) {
                     item {
@@ -156,7 +156,6 @@ private fun HomeContentWithCombinationsPreview() {
                     imageUrl = null,
                     category = Category.HAIDILAO,
                     ingredients = listOf("재료1", "재료2"),
-                    steps = listOf("단계1", "단계2"),
                     tags = listOf("태그1", "태그2"),
                     author = mockUser,
                     likeCount = 10,
@@ -170,7 +169,6 @@ private fun HomeContentWithCombinationsPreview() {
                     imageUrl = null,
                     category = Category.SUBWAY,
                     ingredients = listOf("재료1", "재료2"),
-                    steps = listOf("단계1", "단계2"),
                     tags = listOf("태그1", "태그2"),
                     author = mockUser,
                     likeCount = 5,

@@ -1,6 +1,10 @@
 package com.example.hackathon.data.repositoryimpl
 
+import com.example.hackathon.BuildConfig
+import com.example.hackathon.data.dto.request.CreateCombinationRequest
+import com.example.hackathon.data.dto.request.UpdateCombinationRequest
 import com.example.hackathon.data.local.DummyData
+import com.example.hackathon.data.mapper.toEntity
 import com.example.hackathon.data.service.CombinationService
 import com.example.hackathon.data.service.RecipeService
 import com.example.hackathon.domain.entity.Category
@@ -94,44 +98,131 @@ class CombinationRepositoryImpl
             description: String,
             category: Category,
             ingredients: List<String>,
-            steps: List<String>,
             tags: List<String>,
             imageUri: android.net.Uri?,
         ): Result<Combination> {
             return try {
-                delay(500)
-                // TODO: 실제 API 호출
-                // 이미지 업로드가 필요한 경우 여기서 처리
-                // if (imageUri != null) {
-                //     val imageUrl = uploadImage(imageUri)
-                // }
-                // val response = combinationService.createCombination(...)
-                // Result.success(response.toEntity())
+                if (BuildConfig.USE_MOCK_API) {
+                    // Mock 모드: 더미 데이터 반환
+                    delay(500)
+                    // imageUri가 있으면 임시로 문자열로 변환 (실제로는 서버에 업로드 후 URL 받아야 함)
+                    val imageUrl = imageUri?.toString()
+                    val newCombination =
+                        Combination(
+                            id = System.currentTimeMillis().toString(),
+                            title = title,
+                            description = description,
+                            imageUrl = imageUrl,
+                            category = category,
+                            ingredients = ingredients,
+                            tags = tags,
+                            // 현재 로그인한 사용자 사용
+                            author = DummyData.currentUser,
+                            likeCount = 0,
+                            isLiked = false,
+                            createdAt =
+                                java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                                    .format(java.util.Date()),
+                        )
+                    // 임시로 로컬 리스트에 추가 (서버 API 연동 전까지)
+                    createdCombinations.add(newCombination)
+                    Result.success(newCombination)
+                } else {
+                    // 실제 API 호출
+                    // TODO: 이미지 업로드가 필요한 경우 여기서 처리
+                    // if (imageUri != null) {
+                    //     val imageUrl = uploadImage(imageUri)
+                    // }
+                    val request =
+                        CreateCombinationRequest(
+                            title = title,
+                            description = description,
+                            category = category.name,
+                            ingredients = ingredients,
+                        )
+                    val response = combinationService.createCombination(request)
+                    val data =
+                        response.data
+                            ?: throw IllegalStateException("Create combination data is null")
+                    Result.success(data.toEntity())
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
 
-                // 임시로 더미 데이터 반환
-                // imageUri가 있으면 임시로 문자열로 변환 (실제로는 서버에 업로드 후 URL 받아야 함)
-                val imageUrl = imageUri?.toString()
-                val newCombination =
-                    Combination(
-                        id = System.currentTimeMillis().toString(),
-                        title = title,
-                        description = description,
-                        imageUrl = imageUrl,
-                        category = category,
-                        ingredients = ingredients,
-                        steps = steps,
-                        tags = tags,
-                        // 현재 로그인한 사용자 사용
-                        author = DummyData.currentUser,
-                        likeCount = 0,
-                        isLiked = false,
-                        createdAt =
-                            java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
-                                .format(java.util.Date()),
-                    )
-                // 임시로 로컬 리스트에 추가 (서버 API 연동 전까지)
-                createdCombinations.add(newCombination)
-                Result.success(newCombination)
+        override suspend fun updateCombination(
+            id: String,
+            title: String,
+            description: String,
+            category: Category,
+            ingredients: List<String>,
+            tags: List<String>,
+            imageUri: android.net.Uri?,
+        ): Result<Combination> {
+            return try {
+                if (BuildConfig.USE_MOCK_API) {
+                    // Mock 모드: 로컬 데이터 업데이트
+                    delay(500)
+                    val allCombinations = DummyData.dummyCombinations + createdCombinations
+                    val existingCombination = allCombinations.find { it.id == id }
+                        ?: return Result.failure(Exception("조합을 찾을 수 없습니다"))
+
+                    val imageUrl = imageUri?.toString() ?: existingCombination.imageUrl
+                    val updatedCombination =
+                        existingCombination.copy(
+                            title = title,
+                            description = description,
+                            category = category,
+                            ingredients = ingredients,
+                            tags = tags,
+                            imageUrl = imageUrl,
+                        )
+
+                    // 로컬 리스트 업데이트
+                    val index = createdCombinations.indexOfFirst { it.id == id }
+                    if (index >= 0) {
+                        createdCombinations[index] = updatedCombination
+                    }
+
+                    Result.success(updatedCombination)
+                } else {
+                    // 실제 API 호출
+                    // TODO: 이미지 업로드가 필요한 경우 여기서 처리
+                    val request =
+                        UpdateCombinationRequest(
+                            title = title,
+                            description = description,
+                            category = category.name,
+                            ingredients = ingredients,
+                        )
+                    val response = combinationService.updateCombination(id, request)
+                    val data =
+                        response.data
+                            ?: throw IllegalStateException("Update combination data is null")
+                    Result.success(data.toEntity())
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+
+        override suspend fun deleteCombination(id: String): Result<Unit> {
+            return try {
+                if (BuildConfig.USE_MOCK_API) {
+                    // Mock 모드: 로컬 데이터 삭제
+                    delay(300)
+                    createdCombinations.removeAll { it.id == id }
+                    Result.success(Unit)
+                } else {
+                    // 실제 API 호출
+                    val response = combinationService.deleteCombination(id)
+                    if (response.code == 200) {
+                        Result.success(Unit)
+                    } else {
+                        Result.failure(Exception(response.message))
+                    }
+                }
             } catch (e: Exception) {
                 Result.failure(e)
             }
