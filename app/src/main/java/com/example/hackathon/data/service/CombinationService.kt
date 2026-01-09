@@ -1,6 +1,7 @@
 package com.example.hackathon.data.service
 
 import com.example.hackathon.data.dto.request.CreateCombinationRequest
+import com.example.hackathon.data.dto.request.UpdateCombinationRequest
 import com.example.hackathon.data.dto.response.BaseResponse
 import com.example.hackathon.data.dto.response.CombinationResponse
 import retrofit2.http.*
@@ -22,6 +23,17 @@ interface CombinationService {
     suspend fun createCombination(
         @Body request: CreateCombinationRequest,
     ): BaseResponse<CombinationResponse>
+
+    @PUT("combinations/{id}")
+    suspend fun updateCombination(
+        @Path("id") id: String,
+        @Body request: UpdateCombinationRequest,
+    ): BaseResponse<CombinationResponse>
+
+    @DELETE("combinations/{id}")
+    suspend fun deleteCombination(
+        @Path("id") id: String,
+    ): BaseResponse<Unit>
 
     @GET("users/me/combinations")
     suspend fun getMyCombinations(): BaseResponse<List<CombinationResponse>>

@@ -14,10 +14,21 @@ interface CombinationRepository {
         description: String,
         category: Category,
         ingredients: List<String>,
-        steps: List<String>,
         tags: List<String> = emptyList(),
         imageUri: android.net.Uri? = null,
     ): Result<Combination>
+
+    suspend fun updateCombination(
+        id: String,
+        title: String,
+        description: String,
+        category: Category,
+        ingredients: List<String>,
+        tags: List<String> = emptyList(),
+        imageUri: android.net.Uri? = null,
+    ): Result<Combination>
+
+    suspend fun deleteCombination(id: String): Result<Unit>
 
     suspend fun getMyCombinations(): Result<List<Combination>>
 
