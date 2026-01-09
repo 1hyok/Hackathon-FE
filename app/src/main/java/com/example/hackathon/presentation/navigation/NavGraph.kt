@@ -28,6 +28,7 @@ fun AppNavGraph(
         composable(route = Route.Home.route) {
             HomeScreen(
                 modifier = modifier,
+                navController = navController,
                 onCombinationClick = { id ->
                     navController.navigate(Route.Detail.createRoute(id))
                 },

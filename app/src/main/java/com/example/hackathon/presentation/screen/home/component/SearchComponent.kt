@@ -4,7 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,14 +18,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.R
+import com.example.hackathon.core.util.noRippleClickable
 import com.example.hackathon.ui.theme.HackathonTheme
 
 @Composable
-fun SearchComponent(modifier: Modifier = Modifier) {
-    Spacer(Modifier.padding(top = 30.dp))
+fun SearchComponent(
+    modifier: Modifier = Modifier,
+    onSearchClick: () -> Unit,
+) {
     Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement =
+            Arrangement.spacedBy(
+                space = 10.dp,
+                alignment = Alignment.CenterHorizontally,
+            ),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_logo_rec),
@@ -36,6 +43,7 @@ fun SearchComponent(modifier: Modifier = Modifier) {
             modifier =
                 modifier
                     .size(width = 300.dp, height = 35.dp)
+                    .noRippleClickable { onSearchClick() }
                     .border(
                         color = HackathonTheme.colors.primary,
                         width = 1.5.dp,
@@ -62,8 +70,3 @@ fun SearchComponent(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview
-@Composable
-private fun SearchComponentPreview() {
-    SearchComponent()
-}

@@ -1,32 +1,23 @@
 package com.example.hackathon.presentation.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.hackathon.R
 import com.example.hackathon.presentation.route.Route
 
 enum class NavTab(
     val route: String,
     val label: String,
-    val icon: ImageVector,
+    val icon: Int,
 ) {
-    Home(Route.Home.route, label = "홈", icon = Icons.Default.Home),
-    Search(
-        route = Route.Search.route,
-        label = "검색",
-        icon = Icons.Default.Search,
-    ),
+    Home(Route.Home.route, label = "홈", icon = R.drawable.ic_home),
     Create(
         route = Route.Create.route,
         label = "작성",
-        icon = Icons.Default.Add,
+        icon = R.drawable.ic_add,
     ),
     My(
         route = Route.My.route,
         label = "마이",
-        icon = Icons.Default.Person,
+        icon = R.drawable.ic_my,
     ),
 }
