@@ -56,7 +56,7 @@ fun HashTagInputSection(
             },
             placeholder = {
                 Text(
-                    text = "#입력 후 띄어쓰기 (1개~5개)",
+                    text = "띄어쓰기로 입력 (1개~5개)",
                     style = MaterialTheme.typography.bodyMedium,
                     color = com.example.hackathon.ui.theme.Gray700,
                 )
