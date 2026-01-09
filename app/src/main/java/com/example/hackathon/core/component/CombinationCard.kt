@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -47,18 +48,22 @@ fun CombinationCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
         Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            // 이미지 (항상 표시)
+            // 이미지 (항상 표시) - 카드 상단에 붙어있음
             Box(
                 modifier =
                     Modifier
                         .fillMaxWidth()
                         .height(200.dp)
-                        .clip(RoundedCornerShape(8.dp)),
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = 15.dp,
+                                topEnd = 15.dp,
+                                bottomStart = 0.dp,
+                                bottomEnd = 0.dp,
+                            ),
+                        ),
             ) {
                 if (combination.imageUrl != null) {
                     AsyncImage(
@@ -85,7 +90,14 @@ fun CombinationCard(
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            // 콘텐츠 영역 (padding 적용)
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+            ) {
+                Spacer(modifier = Modifier.height(12.dp))
 
             // 태그 표시 (이미지 바로 아래)
             if (combination.tags.isNotEmpty()) {
@@ -94,20 +106,36 @@ fun CombinationCard(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                     verticalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
-                    combination.tags.forEach { tag ->
+                    combination.tags.forEachIndexed { index, tag ->
+                        val isFirstTag = index == 0
                         Box(
                             modifier =
                                 Modifier
-                                    .background(
-                                        Primary,
-                                        RoundedCornerShape(15.dp),
+                                    .then(
+                                        if (isFirstTag) {
+                                            Modifier.background(
+                                                Primary,
+                                                RoundedCornerShape(15.dp),
+                                            )
+                                        } else {
+                                            Modifier
+                                                .background(
+                                                    Color.White,
+                                                    RoundedCornerShape(15.dp),
+                                                )
+                                                .border(
+                                                    width = 1.dp,
+                                                    color = Primary,
+                                                    shape = RoundedCornerShape(15.dp),
+                                                )
+                                        },
                                     )
                                     .padding(horizontal = 10.dp, vertical = 4.dp),
                         ) {
                             Text(
                                 text = tag,
                                 style = HackathonTheme.typography.Caption_medium,
-                                color = Color.White,
+                                color = if (isFirstTag) Color.White else Primary,
                             )
                         }
                     }
@@ -158,15 +186,20 @@ fun CombinationCard(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Favorite,
+                        imageVector =
+                            if (combination.isLiked) {
+                                Icons.Filled.Favorite
+                            } else {
+                                Icons.Outlined.FavoriteBorder
+                            },
                         contentDescription = "좋아요",
                         tint = Primary,
                         modifier = Modifier.size(18.dp),
                     )
                     Text(
-                        text = combination.likeCount.toString(),
+                        text = String.format("%,d", combination.likeCount),
                         style = HackathonTheme.typography.Body_medium,
-                        color = Primary,
+                        color = Color.Black,
                     )
                 }
 
@@ -174,32 +207,62 @@ fun CombinationCard(
                 Text(
                     text = combination.author.nickname,
                     style = HackathonTheme.typography.Body_medium,
-                    color = Gray700,
+                    color = Color.Black,
                 )
+            }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Liked State")
 @Composable
-private fun CombinationCardPreview() {
-    CombinationCard(
-        combination =
-            Combination(
-                id = "1",
-                title = "건희소스 (매콤달콤)",
-                description = "훠궈마스터 건희가 전수하는 매콤달콤 소스!! 둘이먹다 하...",
-                imageUrl = null,
-                category = Category.SUBWAY,
-                ingredients = listOf("이탈리안 비엠티", "베이컨", "치즈"),
-                steps = listOf("빵 선택", "베이컨 추가", "치즈 추가"),
-                tags = listOf("#하이디라오", "#존맛탱소스", "#존맛탱소스"),
-                author = User(id = "1", nickname = "윤상00", profileImageUrl = null),
-                likeCount = 1120,
-                isLiked = true,
-                createdAt = System.currentTimeMillis().toString(),
-            ),
-        onClick = {},
-    )
+private fun CombinationCardLikedPreview() {
+    HackathonTheme {
+        CombinationCard(
+            combination =
+                Combination(
+                    id = "1",
+                    title = "건희소스 (매콤달콤)",
+                    description = "훠궈마스터 건희가 전수하는 매콤달콤 소스!! 둘이먹다 하...",
+                    imageUrl = null,
+                    category = Category.SUBWAY,
+                    ingredients = listOf("이탈리안 비엠티", "베이컨", "치즈"),
+                    steps = listOf("빵 선택", "베이컨 추가", "치즈 추가"),
+                    tags = listOf("#하이디라오", "#존맛탱소스", "#존맛탱소스"),
+                    author = User(id = "1", nickname = "윤상00", profileImageUrl = null),
+                    likeCount = 1120,
+                    isLiked = true,
+                    createdAt = System.currentTimeMillis().toString(),
+                ),
+            onClick = {},
+            onLikeClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Not Liked State")
+@Composable
+private fun CombinationCardNotLikedPreview() {
+    HackathonTheme {
+        CombinationCard(
+            combination =
+                Combination(
+                    id = "2",
+                    title = "건희소스 (매콤달콤)",
+                    description = "훠궈마스터 건희가 전수하는 매콤달콤 소스!! 둘이먹다 하...",
+                    imageUrl = null,
+                    category = Category.HAIDILAO,
+                    ingredients = listOf("이탈리안 비엠티", "베이컨", "치즈"),
+                    steps = listOf("빵 선택", "베이컨 추가", "치즈 추가"),
+                    tags = listOf("#하이디라오", "#존맛탱소스", "#존맛탱소스"),
+                    author = User(id = "1", nickname = "윤상00", profileImageUrl = null),
+                    likeCount = 1120,
+                    isLiked = false,
+                    createdAt = System.currentTimeMillis().toString(),
+                ),
+            onClick = {},
+            onLikeClick = {},
+        )
+    }
 }
