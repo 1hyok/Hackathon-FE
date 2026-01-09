@@ -2,7 +2,9 @@ package com.example.hackathon.presentation.screen.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,41 +18,55 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.R
+import com.example.hackathon.core.util.noRippleClickable
 import com.example.hackathon.ui.theme.HackathonTheme
 
 @Composable
-fun SearchComponent(modifier: Modifier = Modifier) {
+fun SearchComponent(
+    modifier: Modifier = Modifier,
+    onSearchClick: () -> Unit,
+) {
     Row(
-        modifier =
-            modifier
-                .size(width = 300.dp, height = 35.dp)
-                .border(
-                    color = HackathonTheme.colors.primary,
-                    width = 1.5.dp,
-                    shape = RoundedCornerShape(30.dp),
-                )
-                .background(
-                    HackathonTheme.colors.white,
-                    shape = RoundedCornerShape(30.dp),
-                )
-                .padding(start = 14.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement =
+            Arrangement.spacedBy(
+                space = 10.dp,
+                alignment = Alignment.CenterHorizontally,
+            ),
     ) {
         Icon(
-            painter = painterResource(R.drawable.ic_search),
-            contentDescription = "search component",
-            tint = Color(0xFF8B91A1),
+            painter = painterResource(R.drawable.ic_logo_rec),
+            contentDescription = "logo",
+            modifier = Modifier.size(width = 35.dp, height = 35.dp),
         )
-        Text(
-            text = "오늘은 어떤 꿀조합을 찾고 싶으신가요?",
-            style = HackathonTheme.typography.Caption_medium,
-            color = Color(0xFF8B91A1),
-        )
+        Row(
+            modifier =
+                modifier
+                    .size(width = 300.dp, height = 35.dp)
+                    .noRippleClickable { onSearchClick() }
+                    .border(
+                        color = HackathonTheme.colors.primary,
+                        width = 1.5.dp,
+                        shape = RoundedCornerShape(30.dp),
+                    )
+                    .background(
+                        HackathonTheme.colors.white,
+                        shape = RoundedCornerShape(30.dp),
+                    )
+                    .padding(start = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_search),
+                contentDescription = "search component",
+                tint = Color(0xFF8B91A1),
+            )
+            Text(
+                text = "오늘은 어떤 꿀조합을 찾고 싶으신가요?",
+                style = HackathonTheme.typography.Caption_medium,
+                color = Color(0xFF8B91A1),
+            )
+        }
     }
 }
 
-@Preview
-@Composable
-private fun SearchComponentPreview() {
-    SearchComponent()
-}
