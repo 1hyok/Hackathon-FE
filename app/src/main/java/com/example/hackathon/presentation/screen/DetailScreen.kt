@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -168,6 +169,14 @@ fun DetailScreen(
                                 .padding(horizontal = 20.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
+                        Text(
+                            text = combination?.title ?: "",
+                            style = HackathonTheme.typography.Head2_bold,
+                            color = HackathonTheme.colors.black,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+
                         Icon(
                             imageVector =
                                 if (combination?.isLiked == true) {
@@ -223,6 +232,30 @@ fun DetailScreen(
                                 onClick = {},
                             )
                         }
+                    }
+
+                    Text(
+                        text = "훠궈 마스터 건희가 전수하는 매콤달콤 소스! 둘이서 먹다가 하나 죽어도 모르는 바로 그 맛.",
+                        style = HackathonTheme.typography.Caption_medium,
+                        color = HackathonTheme.colors.gray700,
+                        modifier =
+                            Modifier
+                                .padding(vertical = 15.dp),
+                    )
+                    Column(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 15.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            // TODO: api 연동 시 닉네임으로 교체
+                            text = "윤상00님의 레시피",
+                            style = HackathonTheme.typography.Sub1_semibold,
+                            color = HackathonTheme.colors.black,
+                        )
+                        Spacer(modifier = Modifier.height(15.dp))
                     }
                 }
             }
