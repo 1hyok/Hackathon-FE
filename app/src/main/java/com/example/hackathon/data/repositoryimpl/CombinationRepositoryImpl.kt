@@ -29,7 +29,7 @@ class CombinationRepositoryImpl
         private val combinationLikeCounts = mutableMapOf<String, Int>()
 
         // TODO: 서버 API 연동 시 실제 API 호출로 변경
-        override suspend fun getCombinations(category: Category?): Result<List<Combination>> {
+        override suspend fun getCombinations(category: Category?, page: Int, pageSize: Int): Result<List<Combination>> {
             return try {
                 // 네트워크 시뮬레이션
                 delay(500)
@@ -51,7 +51,16 @@ class CombinationRepositoryImpl
                             likeCount = likeCount,
                         )
                     }
-                Result.success(combinationsWithLikeStatus)
+                
+                // 페이지네이션 적용
+                val startIndex = (page - 1) * pageSize
+                val endIndex = startIndex + pageSize
+                val paginatedCombinations = combinationsWithLikeStatus.subList(
+                    startIndex.coerceAtMost(combinationsWithLikeStatus.size),
+                    endIndex.coerceAtMost(combinationsWithLikeStatus.size)
+                )
+                
+                Result.success(paginatedCombinations)
             } catch (e: Exception) {
                 Result.failure(e)
             }

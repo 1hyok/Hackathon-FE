@@ -40,6 +40,7 @@ fun HomeScreen(
                 viewModel.selectCategory(category)
             },
             onCombinationClick = onCombinationClick,
+            onLoadMore = { viewModel.loadMore() },
             modifier = modifier
                 .fillMaxWidth()
                 .padding(innerPadding),

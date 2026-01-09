@@ -5,7 +5,7 @@ import com.example.hackathon.domain.entity.Combination
 import com.example.hackathon.domain.entity.RecipeDetail
 
 interface CombinationRepository {
-    suspend fun getCombinations(category: Category? = null): Result<List<Combination>>
+    suspend fun getCombinations(category: Category? = null, page: Int = 1, pageSize: Int = 10): Result<List<Combination>>
 
     suspend fun getCombinationById(id: String): Result<Combination>
 
