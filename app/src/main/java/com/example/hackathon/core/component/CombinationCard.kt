@@ -4,16 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +26,9 @@ import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.domain.entity.Combination
 import com.example.hackathon.domain.entity.User
 import com.example.hackathon.ui.theme.Gray50
+import com.example.hackathon.ui.theme.Gray700
+import com.example.hackathon.ui.theme.HackathonTheme
+import com.example.hackathon.ui.theme.Primary
 
 @Composable
 fun CombinationCard(
@@ -42,8 +41,10 @@ fun CombinationCard(
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(15.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        border = androidx.compose.foundation.BorderStroke(1.dp, Primary),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
         Column(
             modifier =
@@ -77,36 +78,16 @@ fun CombinationCard(
                     ) {
                         Text(
                             text = "이미지 없음",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                            style = HackathonTheme.typography.Body_medium,
+                            color = Gray700.copy(alpha = 0.5f),
                         )
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // 제목
-            Text(
-                text = combination.title,
-                style = MaterialTheme.typography.titleMedium,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // 설명
-            Text(
-                text = combination.description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 태그 표시
+            // 태그 표시 (이미지 바로 아래)
             if (combination.tags.isNotEmpty()) {
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
@@ -118,48 +99,51 @@ fun CombinationCard(
                             modifier =
                                 Modifier
                                     .background(
-                                        MaterialTheme.colorScheme.primary,
-                                        RoundedCornerShape(12.dp),
+                                        Primary,
+                                        RoundedCornerShape(15.dp),
                                     )
                                     .padding(horizontal = 10.dp, vertical = 4.dp),
                         ) {
                             Text(
                                 text = tag,
-                                style = MaterialTheme.typography.labelSmall,
+                                style = HackathonTheme.typography.Caption_medium,
                                 color = Color.White,
                             )
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
             }
 
-            // 하단 정보
+            // 제목
+            Text(
+                text = combination.title,
+                style = HackathonTheme.typography.Sub1_semibold,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                color = Color.Black,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // 설명
+            Text(
+                text = combination.description,
+                style = HackathonTheme.typography.Body_medium,
+                color = Gray700,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 하단 정보: 좋아요 (왼쪽), 작성자 (오른쪽)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // 닉네임 (더 구분되게 스타일링)
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-                    )
-                    Text(
-                        text = combination.author.nickname,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
-
-                // 좋아요 버튼
+                // 좋아요 (왼쪽)
                 Row(
                     modifier =
                         Modifier
@@ -169,65 +153,29 @@ fun CombinationCard(
                                 } else {
                                     Modifier
                                 },
-                            )
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                            ),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
-                    Box(
-                        modifier =
-                            Modifier
-                                .size(24.dp)
-                                .clip(CircleShape)
-                                .background(
-                                    color =
-                                        if (combination.isLiked) {
-                                            Color.Red
-                                        } else {
-                                            Color.Transparent
-                                        },
-                                    shape = CircleShape,
-                                )
-                                .border(
-                                    width = 1.5.dp,
-                                    color =
-                                        if (combination.isLiked) {
-                                            Color.White
-                                        } else {
-                                            Color.Gray
-                                        },
-                                    shape = CircleShape,
-                                ),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            imageVector =
-                                if (combination.isLiked) {
-                                    Icons.Default.Favorite
-                                } else {
-                                    Icons.Outlined.Favorite
-                                },
-                            contentDescription = "좋아요",
-                            tint =
-                                if (combination.isLiked) {
-                                    Color.White
-                                } else {
-                                    Color.Gray
-                                },
-                            modifier = Modifier.size(14.dp),
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = "좋아요",
+                        tint = Primary,
+                        modifier = Modifier.size(18.dp),
+                    )
                     Text(
                         text = combination.likeCount.toString(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color =
-                            if (combination.isLiked) {
-                                Color.Red
-                            } else {
-                                Color.Gray
-                            },
+                        style = HackathonTheme.typography.Body_medium,
+                        color = Primary,
                     )
                 }
+
+                // 작성자 닉네임 (오른쪽)
+                Text(
+                    text = combination.author.nickname,
+                    style = HackathonTheme.typography.Body_medium,
+                    color = Gray700,
+                )
             }
         }
     }
@@ -240,16 +188,16 @@ private fun CombinationCardPreview() {
         combination =
             Combination(
                 id = "1",
-                title = "서브웨이 꿀조합",
-                description = "이탈리안 비엠티에 베이컨 추가하면 완벽해요!",
+                title = "건희소스 (매콤달콤)",
+                description = "훠궈마스터 건희가 전수하는 매콤달콤 소스!! 둘이먹다 하...",
                 imageUrl = null,
                 category = Category.SUBWAY,
                 ingredients = listOf("이탈리안 비엠티", "베이컨", "치즈"),
                 steps = listOf("빵 선택", "베이컨 추가", "치즈 추가"),
-                tags = listOf("#서브웨이", "#테스트"),
-                author = User(id = "1", nickname = "테스트유저", profileImageUrl = null),
-                likeCount = 42,
-                isLiked = false,
+                tags = listOf("#하이디라오", "#존맛탱소스", "#존맛탱소스"),
+                author = User(id = "1", nickname = "윤상00", profileImageUrl = null),
+                likeCount = 1120,
+                isLiked = true,
                 createdAt = System.currentTimeMillis().toString(),
             ),
         onClick = {},
