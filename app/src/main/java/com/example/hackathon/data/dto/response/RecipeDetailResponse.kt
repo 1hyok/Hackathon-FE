@@ -1,5 +1,7 @@
 package com.example.hackathon.data.dto.response
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RecipeDetailResponse(
     val id: Long,
     val title: String,
@@ -15,15 +17,21 @@ data class RecipeDetailResponse(
     val updatedAt: String,
 )
 
+
+@Serializable
 data class IngredientDto(
     val name: String,
     val amount: String,
 )
 
+
+@Serializable
 data class StatsDto(
     val likesCount: Int,
 )
 
+
+@Serializable
 data class UserInteractionDto(
     val isLiked: Boolean,
     val isMine: Boolean,

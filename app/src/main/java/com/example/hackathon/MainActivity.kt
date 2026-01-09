@@ -29,8 +29,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        // super.onCreate() 호출 전에 반드시 실행
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
+
+        // 시스템 스플래시를 즉시 닫도록 설정
+        splashScreen.setKeepOnScreenCondition { false }
+
         enableEdgeToEdge()
         setContent {
             HackathonTheme {
@@ -45,35 +51,48 @@ class MainActivity : ComponentActivity() {
                         BottomNavItem("My", Route.My.route, Icons.Default.Person),
                     )
 
+                // 하단 네비게이션 바를 숨겨야 하는 화면들
+                val shouldHideBottomBar =
+                    currentRoute == Route.Login.route ||
+                        currentRoute == Route.Registration.route ||
+                        currentRoute == Route.RegistrationSuccess.route ||
+                        currentRoute == Route.Onboarding.route ||
+                        currentRoute == Route.EditProfile.route ||
+                        currentRoute == Route.Detail.route ||
+                        currentRoute == Route.Create.route ||
+                        currentRoute == Route.Search.route
+
                 Scaffold(
                     bottomBar = {
-                        NavigationBar(
-                            containerColor = Color.White,
-                        ) {
-                            bottomNavItems.forEach { item ->
-                                NavigationBarItem(
-                                    selected = currentRoute == item.route,
-                                    onClick = {
-                                        navController.navigate(item.route) {
-                                            launchSingleTop = true
-                                            restoreState = true
-                                            popUpTo(navController.graph.startDestinationId) {
-                                                saveState = true
+                        if (!shouldHideBottomBar) {
+                            NavigationBar(
+                                containerColor = Color.White,
+                            ) {
+                                bottomNavItems.forEach { item ->
+                                    NavigationBarItem(
+                                        selected = currentRoute == item.route,
+                                        onClick = {
+                                            navController.navigate(item.route) {
+                                                launchSingleTop = true
+                                                restoreState = true
+                                                popUpTo(navController.graph.startDestinationId) {
+                                                    saveState = true
+                                                }
                                             }
-                                        }
-                                    },
-                                    icon = {
-                                        Icon(
-                                            imageVector = item.icon,
-                                            contentDescription = item.label,
-                                        )
-                                    },
-                                    label = {
-                                        Text(
-                                            text = item.label,
-                                        )
-                                    },
-                                )
+                                        },
+                                        icon = {
+                                            Icon(
+                                                imageVector = item.icon,
+                                                contentDescription = item.label,
+                                            )
+                                        },
+                                        label = {
+                                            Text(
+                                                text = item.label,
+                                            )
+                                        },
+                                    )
+                                }
                             }
                         }
                     },

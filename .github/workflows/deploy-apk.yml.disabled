@@ -106,7 +106,7 @@ jobs:
         if: success()
         with:
           severity: info
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          webhookUrl: REDACTED_DISCORD_WEBHOOK/github
           text: |
             🚀 새 APK가 배포되었습니다!
             
@@ -125,7 +125,7 @@ jobs:
         if: failure()
         with:
           severity: error
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          webhookUrl: REDACTED_DISCORD_WEBHOOK/github
           text: |
             APK 빌드 실패!
             작성자: ${{ github.actor }}
