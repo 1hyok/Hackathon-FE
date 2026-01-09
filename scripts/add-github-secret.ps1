@@ -17,14 +17,36 @@ param(
 
 Write-Host "🔐 GitHub Secret 추가 중..." -ForegroundColor Cyan
 
-# Base64 파일 읽기
-$base64File = "google-services-base64.txt"
-if (-not (Test-Path $base64File)) {
-    Write-Host "❌ $base64File 파일을 찾을 수 없습니다!" -ForegroundColor Red
+# Base64 파일 읽기 (여러 파일명 지원)
+$base64Files = @(
+    "google-services-base64-oneline.txt",
+    "google-services-base64.txt"
+)
+
+$base64File = $null
+foreach ($file in $base64Files) {
+    if (Test-Path $file) {
+        $base64File = $file
+        break
+    }
+}
+
+if (-not $base64File) {
+    Write-Host "❌ Base64 파일을 찾을 수 없습니다!" -ForegroundColor Red
+    Write-Host "   찾는 파일: $($base64Files -join ', ')" -ForegroundColor Yellow
+    Write-Host "`n💡 Base64 파일 생성 방법:" -ForegroundColor Cyan
+    Write-Host "   [Convert]::ToBase64String([IO.File]::ReadAllBytes('.\app\google-services.json')) | Out-File -Encoding utf8 google-services-base64-oneline.txt" -ForegroundColor White
     exit 1
 }
 
+Write-Host "📄 파일 사용: $base64File" -ForegroundColor Green
 $secretValue = Get-Content $base64File -Raw | ForEach-Object { $_.Trim() }
+
+# 줄바꿈 제거 확인
+if ($secretValue -match "`r`n" -or $secretValue -match "`n") {
+    Write-Host "⚠️  경고: Base64 문자열에 줄바꿈이 포함되어 있습니다. 제거 중..." -ForegroundColor Yellow
+    $secretValue = $secretValue -replace "`r`n|`n|`r", ""
+}
 
 # GitHub API: Repository public key 가져오기
 Write-Host "`n📥 Repository public key 가져오는 중..." -ForegroundColor Yellow
