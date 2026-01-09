@@ -117,13 +117,13 @@ fun LoginScreen(
             Column(
                 modifier =
                     Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 68.dp),
+                        .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "어디선가 들어본 바로 그 조합\n모두 쩝쩝박사에서",
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.width(237.71429.dp),
                     fontSize = 14.sp,
                     lineHeight = 16.sp,
                     fontFamily = FontMedium,
@@ -136,7 +136,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Column(
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 50.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
@@ -148,7 +148,7 @@ fun LoginScreen(
                     // 닉네임 입력 필드
                     Text(
                         text = "닉네임",
-                        style = HackathonTheme.typography.Body_medium,
+                        style = HackathonTheme.typography.Body_semibold,
                         color = Color.Black,
                         modifier = Modifier.padding(bottom = 8.dp),
                     )
@@ -191,7 +191,7 @@ fun LoginScreen(
                     // Password 입력 필드
                     Text(
                         text = "Password",
-                        style = HackathonTheme.typography.Body_medium,
+                        style = HackathonTheme.typography.Body_semibold,
                         color = Color.Black,
                         modifier = Modifier.padding(bottom = 8.dp),
                     )
@@ -278,7 +278,7 @@ fun LoginScreen(
                     // 계정생성 버튼
                     Button(
                         onClick = onNavigateToRegistration,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(0.4f).height(44.dp),
                         shape = RoundedCornerShape(15.dp),
                         enabled = !uiState.isLoading,
                         colors =
@@ -300,7 +300,7 @@ fun LoginScreen(
                         onClick = {
                             viewModel.login()
                         },
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(0.6f).height(44.dp),
                         shape = RoundedCornerShape(15.dp),
                         enabled = uiState.id.isNotBlank() && uiState.password.isNotBlank() && !uiState.isLoading,
                         colors =
