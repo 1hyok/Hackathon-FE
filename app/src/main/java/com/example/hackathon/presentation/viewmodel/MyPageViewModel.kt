@@ -44,7 +44,7 @@ class MyPageViewModel
 
         fun loadProfile() {
             viewModelScope.launch {
-                _uiState.value = _uiState.value.copy(isLoading = true)
+                _uiState.value = _uiState.value.copy(isLoading = true, error = null)
                 userRepository.getProfile().fold(
                     onSuccess = { user ->
                         _uiState.value =
@@ -55,13 +55,29 @@ class MyPageViewModel
                             )
                     },
                     onFailure = { error ->
-                        // 로그인 안 됨 또는 프로필 로드 실패
-                        _uiState.value =
-                            _uiState.value.copy(
-                                user = null, // 명시적으로 null 설정
+                        // 프로필 로드 실패: 에러만 표시하고 user는 유지 (이전 사용자 정보가 있으면 계속 표시)
+                        // 단, 인증 에러(401, 403)인 경우에만 로그아웃 처리
+                        val errorMessage = error.message ?: "프로필을 불러올 수 없습니다"
+                        val isAuthError = errorMessage.contains("401", ignoreCase = true) ||
+                            errorMessage.contains("403", ignoreCase = true) ||
+                            errorMessage.contains("Unauthorized", ignoreCase = true) ||
+                            errorMessage.contains("Forbidden", ignoreCase = true)
+                        
+                        if (isAuthError) {
+                            // 인증 에러: 로그아웃 처리
+                            _uiState.value = _uiState.value.copy(
+                                user = null,
                                 isLoading = false,
-                                error = error.message ?: "프로필을 불러올 수 없습니다",
+                                error = errorMessage,
+                                isLoggedOut = true,
                             )
+                        } else {
+                            // 기타 에러: 에러만 표시하고 user는 유지
+                            _uiState.value = _uiState.value.copy(
+                                isLoading = false,
+                                error = errorMessage,
+                            )
+                        }
                     },
                 )
             }
