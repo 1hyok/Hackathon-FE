@@ -1,4 +1,4 @@
-package com.example.hackathon.presentation.screen.home.screen
+package com.example.hackathon.presentation.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,8 +23,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.hackathon.core.component.CombinationCard
 import com.example.hackathon.domain.entity.Category
-import com.example.hackathon.presentation.screen.home.component.FilterBar
-import com.example.hackathon.presentation.screen.home.component.SearchComponent
+import com.example.hackathon.presentation.screen.component.FilterBar
+import com.example.hackathon.presentation.screen.component.SearchComponent
 import com.example.hackathon.presentation.viewmodel.HomeViewModel
 import com.example.hackathon.ui.theme.Gray700
 import com.example.hackathon.ui.theme.HackathonTheme
