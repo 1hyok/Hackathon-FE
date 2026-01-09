@@ -55,10 +55,13 @@ fun AppNavGraph(
             route = Route.Detail.route + "/{id}",
             arguments =
                 listOf(
-                    navArgument("id") { type = NavType.StringType },
+                    navArgument("id") {
+                        type = NavType.StringType
+                    },
                 ),
         ) { backStackEntry ->
             val idString = backStackEntry.arguments?.getString("id")
+
             val recipeId = idString?.toLongOrNull() ?: -1L
 
             DetailScreen(

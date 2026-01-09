@@ -232,30 +232,10 @@ class CombinationRepositoryImpl
         }
 
         override suspend fun getRecipeDetail(id: Long): Result<RecipeDetail> =
-
-            Result.success(
-                RecipeDetail(
-                    id = id,
-                    title = "임시 레시피",
-                    category = "하이디라오",
-                    description = "서버 없이 테스트 중인 더미 데이터입니다.",
-                    images = emptyList(),
-                    ingredients =
-                        listOf(
-                            Ingredient("땅콩소스", "1T"),
-                            Ingredient("칠리소스", "2T"),
-                        ),
-                    stats = Stats(likesCount = 123),
-                    userInteraction =
-                        UserInteraction(
-                            isLiked = true,
-                            isMine = false,
-                        ),
-                    tags = listOf("#mock"),
-                    createdAt = "",
-                    updatedAt = "",
-                ),
-            )
+            runCatching {
+                DummyData.getRecipeDetailById(id)
+                    ?: throw IllegalStateException("Recipe detail data is null")
+            }
 
             /*
              * TODO: 나중에 API 연동 후 아래 코드 사용
