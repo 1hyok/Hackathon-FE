@@ -73,7 +73,7 @@ jobs:
         if: success()
         with:
           severity: info
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          webhookUrl: https://discord.com/api/webhooks/1458783280672542730/y2ecaK758FHc9F2tVb1KlVV_W9chUBkxUI8wEoS68rzW2PofCUgbG7jiYcBbpbDzfdn9/github
           text: |
             새 APK가 릴리즈되었습니다!
             다운로드 링크: https://github.com/${{ github.repository }}/releases/download/build-${{ steps.version.outputs.DATE }}/app-debug.apk
@@ -83,7 +83,7 @@ jobs:
         if: failure()
         with:
           severity: error
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          webhookUrl: https://discord.com/api/webhooks/1458783280672542730/y2ecaK758FHc9F2tVb1KlVV_W9chUBkxUI8wEoS68rzW2PofCUgbG7jiYcBbpbDzfdn9/github
           text: |
             APK 빌드 실패!
             작성자: ${{ github.actor }}
