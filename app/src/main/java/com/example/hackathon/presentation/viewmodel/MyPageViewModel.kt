@@ -26,8 +26,20 @@ class MyPageViewModel
         val uiState: StateFlow<MyPageUiState> = _uiState.asStateFlow()
 
         init {
-            loadProfile()
-            loadMyRecipes()
+            // 로그인 상태 확인 후 프로필 로드
+            viewModelScope.launch {
+                val hasTokens = authRepository.hasValidTokens()
+                if (hasTokens) {
+                    loadProfile()
+                    loadMyRecipes()
+                } else {
+                    // 로그인 안 됨: isLoading을 false로 설정하여 UI가 로그인 화면으로 리다이렉트할 수 있도록
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        user = null,
+                    )
+                }
+            }
         }
 
         fun loadProfile() {
@@ -39,11 +51,14 @@ class MyPageViewModel
                             _uiState.value.copy(
                                 user = user,
                                 isLoading = false,
+                                error = null,
                             )
                     },
                     onFailure = { error ->
+                        // 로그인 안 됨 또는 프로필 로드 실패
                         _uiState.value =
                             _uiState.value.copy(
+                                user = null, // 명시적으로 null 설정
                                 isLoading = false,
                                 error = error.message ?: "프로필을 불러올 수 없습니다",
                             )
@@ -116,11 +131,18 @@ class MyPageViewModel
             viewModelScope.launch {
                 authRepository.logout().fold(
                     onSuccess = {
-                        _uiState.value = _uiState.value.copy(isLoggedOut = true)
+                        // 로그아웃 성공: UI 상태 초기화
+                        _uiState.value = _uiState.value.copy(
+                            isLoggedOut = true,
+                            user = null, // 사용자 정보 초기화
+                        )
                     },
                     onFailure = { error ->
                         // 로그아웃 실패해도 로컬 토큰은 삭제하고 로그아웃 처리
-                        _uiState.value = _uiState.value.copy(isLoggedOut = true)
+                        _uiState.value = _uiState.value.copy(
+                            isLoggedOut = true,
+                            user = null, // 사용자 정보 초기화
+                        )
                     },
                 )
             }
