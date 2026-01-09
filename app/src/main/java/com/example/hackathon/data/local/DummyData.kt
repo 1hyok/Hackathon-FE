@@ -2,7 +2,11 @@ package com.example.hackathon.data.local
 
 import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.domain.entity.Combination
+import com.example.hackathon.domain.entity.Ingredient
+import com.example.hackathon.domain.entity.RecipeDetail
+import com.example.hackathon.domain.entity.Stats
 import com.example.hackathon.domain.entity.User
+import com.example.hackathon.domain.entity.UserInteraction
 
 object DummyData {
     val dummyUser =
@@ -95,4 +99,34 @@ object DummyData {
                 createdAt = "2024-01-03",
             ),
         )
+
+    fun getRecipeDetailById(id: Long): RecipeDetail? {
+        val combination =
+            dummyCombinations.find { it.id == id.toString() }
+                ?: return null
+
+        return RecipeDetail(
+            id = id,
+            title = combination.title,
+            category = combination.category.name,
+            description = combination.description,
+            images = listOf(combination.imageUrl) as List<String>,
+            ingredients =
+                combination.ingredients.map {
+                    Ingredient(
+                        name = it,
+                        amount = "",
+                    )
+                },
+            stats = Stats(likesCount = combination.likeCount),
+            userInteraction =
+                UserInteraction(
+                    isLiked = combination.isLiked,
+                    isMine = combination.author.id == currentUser.id,
+                ),
+            tags = combination.tags,
+            createdAt = combination.createdAt,
+            updatedAt = combination.createdAt,
+        )
+    }
 }

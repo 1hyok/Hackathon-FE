@@ -1,5 +1,6 @@
 package com.example.hackathon.presentation.screen.combination
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,8 +15,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -40,12 +44,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
+import com.example.hackathon.R
 import com.example.hackathon.core.component.TopAppLogoBar
+import com.example.hackathon.data.local.DummyData
 import com.example.hackathon.presentation.viewmodel.DetailViewModel
 import com.example.hackathon.ui.theme.HackathonTheme
 
@@ -70,32 +77,44 @@ fun DetailScreen(
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-        TopAppLogoBar()
-
-        TopAppBar(
-            title = {
-                Text(
-                    text = "레시피 상세",
-                    style = HackathonTheme.typography.Sub1_semibold,
-                    color = HackathonTheme.colors.black,
+        Row(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding() // 상태바 침범 방지 (중요)
+                    .height(56.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            IconButton(
+                onClick = onNavigateBack,
+                modifier = Modifier.size(48.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "뒤로가기",
                 )
-            },
-            navigationIcon = {
-                IconButton(onClick = onNavigateBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "뒤로가기",
-                    )
-                }
-            },
-            windowInsets = WindowInsets(0),
-        )
+            }
+
+            Box(
+                modifier = Modifier.weight(1f),
+                contentAlignment = Alignment.Center,
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_logo),
+                    contentDescription = "logo",
+                    modifier = Modifier.width(90.dp),
+                )
+            }
+
+            // 오른쪽 더미 공간 (좌우 균형)
+            Spacer(modifier = Modifier.size(48.dp))
+        }
 
         LazyColumn(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 20.dp),
+                    .padding(start = 20.dp, end = 20.dp, top = 20.dp),
         ) {
             item {
                 when {
@@ -219,6 +238,43 @@ fun DetailScreen(
                             )
                         }
 
+                        val authorText = DummyData.dummyUser.nickname
+
+                        Text(
+                            text = authorText,
+                            style = HackathonTheme.typography.Body_medium,
+                            color = Color(0xFF555555),
+                            modifier = Modifier.padding(bottom = 10.dp),
+                        )
+
+                        if (recipe.tags.isNotEmpty()) {
+                            LazyRow(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 12.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                items(recipe.tags) { tag ->
+                                    Box(
+                                        modifier =
+                                            Modifier
+                                                .background(
+                                                    color = HackathonTheme.colors.primary,
+                                                    shape = RoundedCornerShape(20.dp),
+                                                )
+                                                .padding(horizontal = 12.dp, vertical = 4.dp),
+                                    ) {
+                                        Text(
+                                            text = tag,
+                                            style = HackathonTheme.typography.Caption_medium,
+                                            color = HackathonTheme.colors.white,
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
                         Text(
                             text = recipe.description,
                             style = HackathonTheme.typography.Caption_medium,
@@ -235,18 +291,18 @@ fun DetailScreen(
                                         shape = RoundedCornerShape(10.dp),
                                     )
                                     .background(
-                                        Color(0xFFD9D9D9),
+                                        Color(0xFFF7F7F7),
                                         shape = RoundedCornerShape(10.dp),
                                     )
                                     .border(
                                         shape = RoundedCornerShape(10.dp),
-                                        color = HackathonTheme.colors.gray700,
+                                        color = Color(0xFFCCCCCC),
                                         width = 1.dp,
                                     )
                                     .padding(horizontal = 20.dp, vertical = 10.dp),
                         ) {
                             Text(
-                                text = "재료",
+                                text = authorText + "님의 레시피",
                                 style = HackathonTheme.typography.Sub1_semibold,
                                 color = HackathonTheme.colors.black,
                             )
