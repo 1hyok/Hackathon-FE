@@ -1,6 +1,7 @@
 package com.example.hackathon.di
 
 import com.example.hackathon.BuildConfig
+import com.example.hackathon.data.service.RecipeService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,4 +54,7 @@ object NetworkModule {
             .client(client)
             .addConverterFactory(converterFactory)
             .build()
+
+    @Provides
+    fun provideRecipeService(retrofit: Retrofit): RecipeService = retrofit.create(RecipeService::class.java)
 }

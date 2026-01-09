@@ -2,6 +2,7 @@ package com.example.hackathon.domain.repository
 
 import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.domain.entity.Combination
+import com.example.hackathon.domain.entity.RecipeDetail
 
 interface CombinationRepository {
     suspend fun getCombinations(category: Category? = null): Result<List<Combination>>
@@ -25,4 +26,6 @@ interface CombinationRepository {
     suspend fun likeCombination(id: String): Result<Unit>
 
     suspend fun searchCombinations(query: String): Result<List<Combination>>
+
+    suspend fun getRecipeDetail(id: Long): Result<RecipeDetail>
 }
