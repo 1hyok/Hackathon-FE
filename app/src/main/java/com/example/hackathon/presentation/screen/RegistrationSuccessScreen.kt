@@ -26,7 +26,6 @@ import com.example.hackathon.ui.theme.Gray700
 import com.example.hackathon.ui.theme.HackathonTheme
 import com.example.hackathon.ui.theme.Primary
 
-// 담당자: 일혁
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrationSuccessScreen(

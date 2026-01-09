@@ -7,22 +7,26 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.hackathon.core.component.CombinationCard
 import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.presentation.screen.home.component.FilterBar
 import com.example.hackathon.presentation.screen.home.component.SearchComponent
 import com.example.hackathon.presentation.viewmodel.HomeViewModel
+import com.example.hackathon.ui.theme.Gray700
 import com.example.hackathon.ui.theme.HackathonTheme
 
 @Composable
@@ -33,12 +37,8 @@ fun HomeScreen(
     onCombinationClick: (String) -> Unit = {},
     onCreateClick: () -> Unit = {},
 ) {
-    // 최소 UI 유지: 앱이 크래시 되지 않도록 안전한 플레이스홀더만 표시
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    var selectedCategory by rememberSaveable {
-        mutableStateOf(Category.ALL)
-    }
+    val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -80,31 +80,33 @@ fun HomeScreen(
                     categories = Category.entries.toList(),
                     selectedCategory = selectedCategory,
                     onCategorySelected = { category ->
-                        selectedCategory = category
+                        viewModel.selectCategory(category)
                     },
                 )
             }
-            /*
-            item {
-                when {
-                    uiState.isLoading -> {
+
+            when {
+                uiState.isLoading -> {
+                    item {
                         Box(
                             modifier =
                                 Modifier
-                                    .fillParentMaxHeight()
-                                    .padding(top = 40.dp),
+                                    .fillMaxWidth()
+                                    .padding(top = 40.dp, bottom = 200.dp),
                             contentAlignment = Alignment.Center,
                         ) {
                             CircularProgressIndicator()
                         }
                     }
+                }
 
-                    uiState.error != null -> {
+                uiState.error != null -> {
+                    item {
                         Box(
                             modifier =
                                 Modifier
-                                    .fillParentMaxHeight()
-                                    .padding(top = 40.dp),
+                                    .fillMaxWidth()
+                                    .padding(top = 40.dp, bottom = 200.dp),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
@@ -115,13 +117,15 @@ fun HomeScreen(
                             )
                         }
                     }
+                }
 
-                    uiState.combinations.isEmpty() -> {
+                uiState.combinations.isEmpty() && !uiState.isLoading -> {
+                    item {
                         Box(
                             modifier =
                                 Modifier
-                                    .fillParentMaxHeight()
-                                    .padding(top = 40.dp),
+                                    .fillMaxWidth()
+                                    .padding(top = 40.dp, bottom = 200.dp),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
@@ -132,23 +136,19 @@ fun HomeScreen(
                             )
                         }
                     }
+                }
 
-                    else -> {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentPadding = PaddingValues(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp),
-                        ) {
-                            items(uiState.combinations) { combination ->
-                                CombinationCard(
-                                    combination = combination,
-                                    onClick = { onCombinationClick(combination.id) },
-                                )
-                            }
-                        }
+                else -> {
+                    // 조합 목록
+                    items(uiState.combinations) { combination ->
+                        CombinationCard(
+                            combination = combination,
+                            onClick = { onCombinationClick(combination.id) },
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+                        )
                     }
                 }
-            }*/
+            }
         }
     }
 }

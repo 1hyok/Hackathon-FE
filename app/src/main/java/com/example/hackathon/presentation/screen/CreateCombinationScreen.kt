@@ -43,7 +43,6 @@ import com.example.hackathon.presentation.viewmodel.CreateCombinationViewModel
 import com.example.hackathon.ui.theme.Gray700
 import com.example.hackathon.ui.theme.Primary
 
-// 담당자: 일혁
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun CreateCombinationScreen(

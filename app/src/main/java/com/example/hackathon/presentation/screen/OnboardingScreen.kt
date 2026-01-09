@@ -28,7 +28,6 @@ import com.example.hackathon.R
 import com.example.hackathon.ui.theme.HackathonTheme
 import com.example.hackathon.ui.theme.Primary
 
-// 담당자: 일혁
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnboardingScreen(

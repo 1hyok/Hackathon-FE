@@ -10,35 +10,20 @@
 - 의존성 주입 모듈
 
 ### 개인 작업 → 브랜치 사용
-- 각자 담당 화면 구현
+- 화면 구현
 - 관련 ViewModel, Repository
 
 ---
 
 ## 브랜치 네이밍 전략
 
-### 옵션 1: 이름만 사용 (추천 - 가장 간단)
+### 옵션 1: 기능별 브랜치 (추천)
 ```
 main
-├── yeowon          # 예원의 모든 작업
-└── ilhyeok         # 일혁의 모든 작업
-```
-
-**장점:**
-- 가장 간단함
-- 브랜치 전환 빨리 가능
-- 해커톤에 적합
-
-**단점:**
-- 여러 기능을 한 브랜치에 작업
-
-### 옵션 2: 이름 + 기능 (권장)
-```
-main
-├── yeowon/home-screen
-├── yeowon/detail-screen
-├── ilhyeok/create-screen
-└── ilhyeok/my-page
+├── feature/home-screen
+├── feature/detail-screen
+├── feature/create-screen
+└── feature/my-page
 ```
 
 **장점:**
@@ -48,11 +33,11 @@ main
 **단점:**
 - 브랜치가 많아짐
 
-### 옵션 3: 이름 + 간단한 기능 (절충안)
+### 옵션 2: 간단한 기능 브랜치 (절충안)
 ```
 main
-├── yeowon/feature
-└── ilhyeok/feature
+├── feature/ui
+└── feature/api
 ```
 
 ---
@@ -62,8 +47,7 @@ main
 ### 브랜치 구조
 ```
 main (공통 코드)
-├── yeowon (예원 작업)
-└── ilhyeok (일혁 작업)
+└── feature (기능별 작업)
 ```
 
 ### 작업 흐름
@@ -83,34 +67,19 @@ main (공통 코드)
 
 3. **개인 작업 시작**
    ```bash
-   git checkout -b ilhyeok  # 또는 yeowon
+   git checkout -b feature/create-screen
    # 작업...
    git add .
    git commit -m "feat: 조합 등록 화면 구현"
-   git push origin ilhyeok
+   git push origin feature/create-screen
    ```
 
 4. **개인 작업 완료 후 main에 머지**
    ```bash
    git checkout main
-   git merge ilhyeok
+   git merge feature/create-screen
    git push origin main
    ```
-
----
-
-## 역할별 브랜치
-
-### 예원 (yeowon)
-- 홈 화면 (HomeScreen)
-- 조합 상세 화면 (DiaryScreen)
-- 관련 ViewModel, Repository
-
-### 일혁 (ilhyeok)
-- **인증 관련**: 로그인 화면 (LoginScreen), 회원가입 화면 (RegistrationScreen), 온보딩 화면 (OnboardingScreen), 회원가입 완료 화면 (RegistrationSuccessScreen)
-- **조합 관련**: 조합 등록 화면 (CreateCombinationScreen), 이미지 서버 업로드
-- **기타 화면**: 검색 화면 (SearchScreen)
-- **공통 작업**: 공통 컴포넌트 (이미 main에 있음), 폰트 설정, API 연동 (일혁 담당 화면들), 에러 처리 개선, 로딩 상태 개선
 
 ---
 
@@ -124,13 +93,9 @@ main (공통 코드)
 
 2. **브랜치 작업 전 main 최신화**
    ```bash
-   git checkout ilhyeok
+   git checkout feature/your-feature
    git merge main  # 또는 rebase
    ```
-
-3. **작업 영역 분리**
-   - 예원: `presentation/screen/HomeScreen.kt`, `DiaryScreen.kt`
-   - 일혁: `presentation/screen/CreateCombinationScreen.kt`, `LoginScreen.kt`, `RegistrationScreen.kt`, `OnboardingScreen.kt`, `SearchScreen.kt`
 
 ---
 
@@ -153,26 +118,21 @@ chore: 기타
 
 ## 최종 추천
 
-**해커톤에서는 옵션 1 (이름만) 추천**
+**해커톤에서는 기능별 브랜치 추천**
 
 이유:
-- 시간 부족
-- 브랜치 전환 최소화
-- 충돌 가능성 낮음 (작업 영역이 명확히 분리됨)
+- 기능별로 명확
+- 나중에 리뷰하기 쉬움
 
 ```bash
-# 초기 설정
-git checkout -b yeowon
-git checkout -b ilhyeok
-
 # 평소 작업
-git checkout ilhyeok
+git checkout -b feature/your-feature
 # 작업 후
-git push origin ilhyeok
+git push origin feature/your-feature
 
 # 완료되면 main에 머지
 git checkout main
-git merge ilhyeok
+git merge feature/your-feature
 git push origin main
 ```
 
