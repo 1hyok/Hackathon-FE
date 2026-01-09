@@ -18,7 +18,7 @@ import com.example.hackathon.presentation.screen.OnboardingScreen
 import com.example.hackathon.presentation.screen.RegistrationScreen
 import com.example.hackathon.presentation.screen.RegistrationSuccessScreen
 import com.example.hackathon.presentation.screen.SearchScreen
-import com.example.hackathon.presentation.screen.home.screen.HomeScreen
+import com.example.hackathon.presentation.screen.HomeScreen
 import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 
 @Composable
