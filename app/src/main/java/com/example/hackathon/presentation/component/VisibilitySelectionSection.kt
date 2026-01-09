@@ -28,10 +28,6 @@ fun VisibilitySelectionSection(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Text(
-            text = "공개 여부",
-            style = MaterialTheme.typography.bodyMedium,
-        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
