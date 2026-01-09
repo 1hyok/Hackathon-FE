@@ -110,6 +110,7 @@ object DummyData {
             title = combination.title,
             category = combination.category.name,
             description = combination.description,
+            author = combination.author,
             images = listOf(combination.imageUrl) as List<String>,
             ingredients =
                 combination.ingredients.map {
