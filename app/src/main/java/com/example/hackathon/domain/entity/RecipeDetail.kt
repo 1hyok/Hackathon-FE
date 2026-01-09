@@ -1,9 +1,7 @@
 package com.example.hackathon.domain.entity
 
-import com.google.common.math.Stats
-
 data class RecipeDetail(
-    val id: Int,
+    val id: Long,
     val title: String,
     val category: String,
     val description: String,

@@ -2,7 +2,7 @@ package com.example.hackathon.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.hackathon.domain.entity.Combination
+import com.example.hackathon.domain.entity.RecipeDetail
 import com.example.hackathon.domain.repository.CombinationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,7 @@ class DetailViewModel
         private val _uiState = MutableStateFlow(DetailUiState())
         val uiState: StateFlow<DetailUiState> = _uiState.asStateFlow()
 
-        fun loadCombination(id: String) {
+        fun loadRecipeDetail(id: Long) {
             viewModelScope.launch {
                 _uiState.value =
                     _uiState.value.copy(
@@ -29,12 +29,12 @@ class DetailViewModel
                         error = null,
                     )
 
-                repository.getCombinationById(id).fold(
+                repository.getRecipeDetail(id).fold(
                     onSuccess = { result ->
                         _uiState.value =
                             _uiState.value.copy(
                                 isLoading = false,
-                                combination = result,
+                                recipeDetail = result,
                             )
                     },
                     onFailure = { throwable ->
@@ -49,32 +49,35 @@ class DetailViewModel
         }
 
         fun toggleLike() {
-            val current = _uiState.value.combination ?: return
+            val current = _uiState.value.recipeDetail ?: return
 
-            val isLiked = current.isLiked
-            val newLikeCount =
-                if (isLiked) {
-                    current.likeCount - 1
-                } else {
-                    current.likeCount + 1
-                }
+            val isLiked = current.userInteraction.isLiked
+            val currentCount = current.stats.likesCount
 
-            _uiState.value =
-                _uiState.value.copy(
-                    combination =
-                        current.copy(
+            val updated =
+                current.copy(
+                    stats =
+                        current.stats.copy(
+                            likesCount =
+                                if (isLiked) currentCount - 1 else currentCount + 1,
+                        ),
+                    userInteraction =
+                        current.userInteraction.copy(
                             isLiked = !isLiked,
-                            likeCount = newLikeCount,
                         ),
                 )
 
-            // TODO: 서버에 좋아요/취소 요청
-            // repository.toggleLike(current.id)
+            _uiState.value =
+                _uiState.value.copy(
+                    recipeDetail = updated,
+                )
+
+            // TODO: repository.toggleLike(current.id)
         }
     }
 
 data class DetailUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
-    val combination: Combination? = null,
+    val recipeDetail: RecipeDetail? = null,
 )
