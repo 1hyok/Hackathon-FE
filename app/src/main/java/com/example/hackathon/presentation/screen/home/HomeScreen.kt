@@ -1,5 +1,6 @@
 package com.example.hackathon.presentation.screen.home
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -32,6 +33,7 @@ fun HomeScreen(
         topBar = {
             HomeTopBar(navController = navController)
         },
+        contentWindowInsets = WindowInsets(0),
     ) { innerPadding ->
         HomeContent(
             uiState = uiState,
