@@ -67,7 +67,22 @@ When stuck, provide a working workaround before investigating the perfect soluti
    @Composable
    fun MyScreen(...) { ... }
    ```
-5. Use `@Preview(showBackground = true)` for UI components when possible.
+5. **File Structure Rule (CRITICAL)**:
+   - **One Composable function per file**: Each Composable file MUST contain only ONE `@Composable` function (plus its preview).
+   - **Preview is mandatory**: Every Composable file MUST have exactly ONE `@Preview` function.
+   - **File splitting**: If a file exceeds ~300 lines or contains multiple logical sections, split it into separate component files.
+   - **Component extraction**: Extract reusable UI sections into separate component files in the `component/` directory.
+   - **File naming**: Component files should be named descriptively (e.g., `ImageUploadSection.kt`, `HashTagInputSection.kt`).
+   - **Example structure**:
+     ```kotlin
+     // MyScreen.kt - ONLY contains MyScreen function and its preview
+     @Composable
+     fun MyScreen(...) { ... }
+
+     @Preview(showBackground = true)
+     @Composable
+     private fun MyScreenPreview() { ... }
+     ```
 6. **KtLint Compliance (CRITICAL - Prevents Build Failures)**:
    - **Max Line Length**: Keep lines under 120 characters. If a line exceeds this, break it into multiple lines.
    - **Import Order**: Group imports: 1) Kotlin stdlib, 2) Android/AndroidX, 3) Third-party, 4) Project. Separate groups with blank lines.
