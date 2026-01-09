@@ -93,13 +93,13 @@ fun RegistrationScreen(
             ) {
                 Text(
                     text = "어디선가 들어본 바로 그 조합",
-                    style = HackathonTheme.typography.Body_medium,
+                    style = HackathonTheme.typography.Body_semibold,
                     color = Gray700,
                     textAlign = TextAlign.Center,
                 )
                 Text(
                     text = "모두 쩝쩝박사에서",
-                    style = HackathonTheme.typography.Body_medium,
+                    style = HackathonTheme.typography.Body_semibold,
                     color = Gray700,
                     textAlign = TextAlign.Center,
                 )
