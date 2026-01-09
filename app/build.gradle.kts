@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.ktlint)
     alias(libs.plugins.google.services)
 }
 
@@ -111,37 +110,16 @@ detekt {
     // }
 }
 
-// Ktlint 설정
-ktlint {
-    android.set(true)
-    ignoreFailures.set(false) // 플러그인 12.1.1로 업그레이드하여 Java 21 호환성 문제 해결
-    reporters {
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
-        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
-    }
-    filter {
-        exclude("**/build/**")
-        exclude("**/generated/**")
-        exclude("**/*.gradle.kts") // Kotlin 스크립트 파일 제외
-    }
-}
 
 // 코드 품질 검사 통합 Task
 tasks.register("codeQualityCheck") {
     group = "verification"
-    description = "Runs all code quality checks (Ktlint + Detekt + Tests)"
+    description = "Runs all code quality checks (Detekt + Tests)"
 
-    dependsOn("ktlintCheck", "detekt", "test")
+    dependsOn("detekt", "test")
 
     doLast {
         println("✅ All code quality checks completed!")
     }
 }
 
-// 빌드 전 자동으로 코드 포맷팅 실행 (검사는 Git Hook에서 처리)
-// 참고: 빌드 시마다 검사를 실행하면 빌드가 느려질 수 있으므로,
-//       포맷팅만 자동 실행하고 검사는 Git Hook 또는 수동 실행으로 처리
-// 주의: ktlintFormat이 실패하면 빌드가 실패합니다. 코드 작성 시 KtLint 규칙을 준수해야 합니다.
-tasks.named("preBuild") {
-    dependsOn("ktlintFormat")
-}

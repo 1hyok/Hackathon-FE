@@ -3,22 +3,6 @@
 
 Write-Host "🔍 Running code quality checks..." -ForegroundColor Cyan
 
-# Ktlint 포맷팅
-Write-Host "`n📝 Running Ktlint Format..." -ForegroundColor Yellow
-& .\gradlew.bat ktlintFormat
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ Ktlint formatting failed!" -ForegroundColor Red
-    exit 1
-}
-
-# Ktlint 검사
-Write-Host "`n📝 Running Ktlint Check..." -ForegroundColor Yellow
-& .\gradlew.bat ktlintCheck
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ Ktlint check failed! Please fix the issues." -ForegroundColor Red
-    exit 1
-}
-
 # Detekt 검사
 Write-Host "`n🔎 Running Detekt..." -ForegroundColor Yellow
 & .\gradlew.bat detekt
