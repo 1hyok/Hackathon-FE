@@ -49,7 +49,6 @@ class MainActivity : ComponentActivity() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 
-                // ⭐ Route → NavTab 매핑 (이게 핵심)
                 val currentTab: NavTab? =
                     NavTab.entries.find { it.route == currentRoute }
 
