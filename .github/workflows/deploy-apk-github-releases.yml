@@ -76,7 +76,7 @@ jobs:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           text: |
             새 APK가 릴리즈되었습니다!
-            다운로드 링크: ${{ steps.create_release.outputs.upload_url }}
+            다운로드 링크: https://github.com/${{ github.repository }}/releases/download/build-${{ steps.version.outputs.DATE }}/app-debug.apk
 
       - name: Notify Discord on failure
         uses: rjstone/discord-webhook-notify@v1

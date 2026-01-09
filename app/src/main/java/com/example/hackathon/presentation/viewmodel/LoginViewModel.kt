@@ -3,6 +3,7 @@ package com.example.hackathon.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hackathon.data.local.DummyData
+import com.example.hackathon.domain.entity.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -47,8 +48,13 @@ class LoginViewModel
                         )
                     return@launch
                 }
-                // 임시로 성공 처리 - 현재 사용자 정보 저장
-                DummyData.currentUser = DummyData.dummyUser
+                // 임시로 성공 처리 - 입력한 닉네임으로 사용자 정보 저장
+                DummyData.currentUser =
+                    User(
+                        id = "user_${System.currentTimeMillis()}",
+                        nickname = _uiState.value.id,
+                        profileImageUrl = null,
+                    )
                 _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
             }
         }
