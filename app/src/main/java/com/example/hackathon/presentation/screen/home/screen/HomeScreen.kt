@@ -84,10 +84,71 @@ fun HomeScreen(
                     },
                 )
             }
-
+            /*
             item {
-                // TODO: 추후 Combination List 삽입
-            }
+                when {
+                    uiState.isLoading -> {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .fillParentMaxHeight()
+                                    .padding(top = 40.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+
+                    uiState.error != null -> {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .fillParentMaxHeight()
+                                    .padding(top = 40.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = uiState.error ?: "오류가 발생했습니다",
+                                style = HackathonTheme.typography.Body_medium,
+                                color = Gray700,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                    }
+
+                    uiState.combinations.isEmpty() -> {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .fillParentMaxHeight()
+                                    .padding(top = 40.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = "아직 등록된 조합이 없어요 ㅠㅠ",
+                                style = HackathonTheme.typography.Body_medium,
+                                color = Gray700,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                    }
+
+                    else -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentPadding = PaddingValues(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            items(uiState.combinations) { combination ->
+                                CombinationCard(
+                                    combination = combination,
+                                    onClick = { onCombinationClick(combination.id) },
+                                )
+                            }
+                        }
+                    }
+                }
+            }*/
         }
     }
 }
