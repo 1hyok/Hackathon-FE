@@ -1,4 +1,4 @@
-package com.example.hackathon.presentation.screen.component
+package com.example.hackathon.presentation.component
 
 import android.net.Uri
 import androidx.compose.foundation.background
