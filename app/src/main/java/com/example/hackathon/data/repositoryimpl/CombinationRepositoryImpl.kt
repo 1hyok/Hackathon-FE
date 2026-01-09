@@ -1,9 +1,12 @@
 package com.example.hackathon.data.repositoryimpl
 
 import com.example.hackathon.data.local.DummyData
+import com.example.hackathon.data.mapper.toDomain
 import com.example.hackathon.data.service.CombinationService
+import com.example.hackathon.data.service.RecipeService
 import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.domain.entity.Combination
+import com.example.hackathon.domain.entity.RecipeDetail
 import com.example.hackathon.domain.repository.CombinationRepository
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -12,6 +15,7 @@ class CombinationRepositoryImpl
     @Inject
     constructor(
         private val combinationService: CombinationService,
+        private val recipeService: RecipeService,
     ) : CombinationRepository {
         // 임시로 새로 등록한 조합을 저장하는 리스트 (서버 API 연동 전까지 사용)
         private val createdCombinations = mutableListOf<Combination>()
@@ -224,4 +228,14 @@ class CombinationRepositoryImpl
                 Result.failure(e)
             }
         }
+
+        override suspend fun getRecipeDetail(id: Long): Result<RecipeDetail> =
+            runCatching {
+                val response = recipeService.getRecipeDetail(id)
+                val data =
+                    response.data
+                        ?: throw IllegalStateException("Recipe detail data is null")
+
+                data.toDomain()
+            }
     }
