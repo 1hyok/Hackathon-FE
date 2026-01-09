@@ -1,12 +1,19 @@
 package com.example.hackathon.data.repositoryimpl
 
+import android.content.Context
+import android.net.Uri
 import com.example.hackathon.BuildConfig
 import com.example.hackathon.data.dto.request.CreateCombinationRequest
+import com.example.hackathon.data.dto.request.RegisterRequest
 import com.example.hackathon.data.dto.request.UpdateCombinationRequest
+import com.example.hackathon.data.dto.request.UpdateRegisterRequest
+import com.example.hackathon.data.dto.response.IngredientDto
 import com.example.hackathon.data.local.DummyData
 import com.example.hackathon.data.mapper.toEntity
+import com.example.hackathon.data.local.TokenManager
 import com.example.hackathon.data.service.CombinationService
 import com.example.hackathon.data.service.RecipeService
+import com.example.hackathon.data.service.UserService
 import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.domain.entity.Combination
 import com.example.hackathon.domain.entity.Ingredient
@@ -14,7 +21,9 @@ import com.example.hackathon.domain.entity.RecipeDetail
 import com.example.hackathon.domain.entity.Stats
 import com.example.hackathon.domain.entity.UserInteraction
 import com.example.hackathon.domain.repository.CombinationRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
+import java.util.Base64
 import javax.inject.Inject
 
 class CombinationRepositoryImpl
@@ -22,7 +31,26 @@ class CombinationRepositoryImpl
     constructor(
         private val combinationService: CombinationService,
         private val recipeService: RecipeService,
+        private val userService: UserService,
+        private val tokenManager: TokenManager,
+        @ApplicationContext private val context: Context,
     ) : CombinationRepository {
+        
+        /**
+         * Uri를 Base64 인코딩된 문자열로 변환
+         * Swagger 스펙: images는 문자열 배열 (Base64 인코딩된 이미지 데이터)
+         */
+        private suspend fun encodeImageToBase64(uri: Uri?): String? {
+            if (uri == null) return null
+            return try {
+                context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                    val bytes = inputStream.readBytes()
+                    Base64.getEncoder().encodeToString(bytes)
+                }
+            } catch (e: Exception) {
+                null
+            }
+        }
         // 임시로 새로 등록한 조합을 저장하는 리스트 (서버 API 연동 전까지 사용)
         private val createdCombinations = mutableListOf<Combination>()
 
@@ -100,6 +128,7 @@ class CombinationRepositoryImpl
             ingredients: List<String>,
             tags: List<String>,
             imageUri: android.net.Uri?,
+            isPublic: Boolean,
         ): Result<Combination> {
             return try {
                 if (BuildConfig.USE_MOCK_API) {
@@ -117,7 +146,7 @@ class CombinationRepositoryImpl
                             ingredients = ingredients,
                             tags = tags,
                             // 현재 로그인한 사용자 사용
-                            author = DummyData.currentUser,
+                            author = DummyData.currentUser ?: DummyData.dummyUser, // 로그인 안 됨 시 더미 사용자 사용
                             likeCount = 0,
                             isLiked = false,
                             createdAt =
@@ -128,23 +157,98 @@ class CombinationRepositoryImpl
                     createdCombinations.add(newCombination)
                     Result.success(newCombination)
                 } else {
-                    // 실제 API 호출
-                    // TODO: 이미지 업로드가 필요한 경우 여기서 처리
-                    // if (imageUri != null) {
-                    //     val imageUrl = uploadImage(imageUri)
-                    // }
-                    val request =
-                        CreateCombinationRequest(
+                    // 실제 API 호출 (Swagger 스펙: POST /register 사용)
+                    // 이미지를 Base64 인코딩된 문자열로 변환
+                    // 디버깅: 이미지가 문제일 수 있으므로 빈 배열로 테스트 가능
+                    val imageStrings = if (imageUri != null) {
+                        val base64String = encodeImageToBase64(imageUri)
+                        if (base64String != null) {
+                            // Base64 문자열 크기 체크 (너무 크면 서버에서 처리 실패 가능)
+                            // 일반적으로 1MB 이상이면 문제가 될 수 있음
+                            if (base64String.length > 1_000_000) {
+                                android.util.Log.w("CombinationRepository", "Image Base64 string is too large: ${base64String.length} bytes. Consider compressing the image.")
+                            }
+                            listOf(base64String)
+                        } else {
+                            emptyList()
+                        }
+                    } else {
+                        emptyList()
+                    }
+                    
+                    // 디버깅: 요청 데이터 로깅 (개발 중에만)
+                    if (BuildConfig.DEBUG) {
+                        android.util.Log.d("CombinationRepository", "RegisterRequest: title=$title, categories=${listOf(category.name)}, ingredients count=${ingredients.size}, images count=${imageStrings.size}, description length=${description.length}")
+                    }
+                    
+                    // 현재 사용자 ID 가져오기
+                    // 1. JWT 토큰에서 추출 시도 (가장 안정적)
+                    // 2. /users/mypage API 호출 시도
+                    // 3. DummyData에서 fallback
+                    val userId = tokenManager.getUserIdFromToken()
+                        ?: try {
+                            val userProfile = userService.getMyPage()
+                            userProfile.id?.toLongOrNull()
+                        } catch (e: Exception) {
+                            // /users/mypage가 실패하면 null
+                            null
+                        }
+                        ?: DummyData.currentUser?.id?.toLongOrNull()
+                        ?: throw IllegalStateException("User ID is not available. Please login again.")
+                    
+                    // Swagger 스펙에 맞게 RegisterRequest 생성
+                    // ingredients는 "재료명 용량" 형태의 문자열 리스트이므로 파싱 필요
+                    val ingredientDtos = ingredients.map { ingredientString ->
+                        // "재료명 용량" 형태를 파싱
+                        // 마지막 공백을 기준으로 name과 amount 분리
+                        val lastSpaceIndex = ingredientString.lastIndexOf(' ')
+                        if (lastSpaceIndex > 0 && lastSpaceIndex < ingredientString.length - 1) {
+                            IngredientDto(
+                                name = ingredientString.substring(0, lastSpaceIndex).trim(),
+                                amount = ingredientString.substring(lastSpaceIndex + 1).trim(),
+                            )
+                        } else {
+                            // 공백이 없거나 형식이 잘못된 경우 전체를 name으로 사용
+                            IngredientDto(
+                                name = ingredientString.trim(),
+                                amount = "",
+                            )
+                        }
+                    }
+                    
+                    val registerRequest = RegisterRequest(
+                        title = title,
+                        categories = listOf(category.name), // 단일 카테고리를 배열로 변환
+                        ingredients = ingredientDtos,
+                        images = imageStrings,
+                        description = description,
+                        isPrivate = !isPublic, // isPublic = true면 isPrivate = false (전체 공개), isPublic = false면 isPrivate = true (나만 보기)
+                    )
+                    
+                    val response = combinationService.register(userId, registerRequest)
+                    
+                    // Response<Unit>을 사용하면 빈 응답도 안전하게 처리됨
+                    if (response.isSuccessful) {
+                        // 200 OK면 성공으로 간주하고 임시 Combination 생성
+                        val newCombination = Combination(
+                            id = System.currentTimeMillis().toString(),
                             title = title,
                             description = description,
-                            category = category.name,
+                            imageUrl = imageUri?.toString(),
+                            category = category,
                             ingredients = ingredients,
+                            tags = tags,
+                            author = DummyData.currentUser ?: DummyData.dummyUser,
+                            likeCount = 0,
+                            isLiked = false,
+                            createdAt = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                                .format(java.util.Date()),
                         )
-                    val response = combinationService.createCombination(request)
-                    val data =
-                        response.data
-                            ?: throw IllegalStateException("Create combination data is null")
-                    Result.success(data.toEntity())
+                        createdCombinations.add(newCombination)
+                        Result.success(newCombination)
+                    } else {
+                        throw IllegalStateException("Register failed: ${response.code()}")
+                    }
                 }
             } catch (e: Exception) {
                 Result.failure(e)
@@ -159,6 +263,7 @@ class CombinationRepositoryImpl
             ingredients: List<String>,
             tags: List<String>,
             imageUri: android.net.Uri?,
+            isPublic: Boolean,
         ): Result<Combination> {
             return try {
                 if (BuildConfig.USE_MOCK_API) {
@@ -187,20 +292,103 @@ class CombinationRepositoryImpl
 
                     Result.success(updatedCombination)
                 } else {
-                    // 실제 API 호출
-                    // TODO: 이미지 업로드가 필요한 경우 여기서 처리
-                    val request =
-                        UpdateCombinationRequest(
+                    // 실제 API 호출 (Swagger 스펙: PUT /register/{postId} 사용)
+                    // 이미지를 Base64 인코딩된 문자열로 변환
+                    // 디버깅: 이미지가 문제일 수 있으므로 빈 배열로 테스트 가능
+                    val imageStrings = if (imageUri != null) {
+                        val base64String = encodeImageToBase64(imageUri)
+                        if (base64String != null) {
+                            // Base64 문자열 크기 체크
+                            if (base64String.length > 1_000_000) {
+                                android.util.Log.w("CombinationRepository", "Image Base64 string is too large: ${base64String.length} bytes. Consider compressing the image.")
+                            }
+                            listOf(base64String)
+                        } else {
+                            emptyList()
+                        }
+                    } else {
+                        emptyList()
+                    }
+                    
+                    // 현재 사용자 ID 가져오기
+                    // 1. JWT 토큰에서 추출 시도 (가장 안정적)
+                    // 2. /users/mypage API 호출 시도
+                    // 3. DummyData에서 fallback
+                    val userId = tokenManager.getUserIdFromToken()
+                        ?: try {
+                            val userProfile = userService.getMyPage()
+                            userProfile.id?.toLongOrNull()
+                        } catch (e: Exception) {
+                            // /users/mypage가 실패하면 null
+                            null
+                        }
+                        ?: DummyData.currentUser?.id?.toLongOrNull()
+                        ?: throw IllegalStateException("User ID is not available. Please login again.")
+                    
+                    val postId = id.toLongOrNull()
+                        ?: throw IllegalStateException("Post ID is not a valid number")
+                    
+                    // 디버깅: 요청 데이터 로깅 (개발 중에만)
+                    if (BuildConfig.DEBUG) {
+                        android.util.Log.d("CombinationRepository", "UpdateRegisterRequest: postId=$postId, title=$title, categories=${listOf(category.name)}, ingredients count=${ingredients.size}, images count=${imageStrings.size}")
+                    }
+                    
+                    // Swagger 스펙에 맞게 UpdateRegisterRequest 생성
+                    // ingredients는 "재료명 용량" 형태의 문자열 리스트이므로 파싱 필요
+                    val ingredientDtos = ingredients.map { ingredientString ->
+                        // "재료명 용량" 형태를 파싱
+                        // 마지막 공백을 기준으로 name과 amount 분리
+                        val lastSpaceIndex = ingredientString.lastIndexOf(' ')
+                        if (lastSpaceIndex > 0 && lastSpaceIndex < ingredientString.length - 1) {
+                            IngredientDto(
+                                name = ingredientString.substring(0, lastSpaceIndex).trim(),
+                                amount = ingredientString.substring(lastSpaceIndex + 1).trim(),
+                            )
+                        } else {
+                            // 공백이 없거나 형식이 잘못된 경우 전체를 name으로 사용
+                            IngredientDto(
+                                name = ingredientString.trim(),
+                                amount = "",
+                            )
+                        }
+                    }
+                    
+                    val updateRequest = UpdateRegisterRequest(
+                        title = title,
+                        categories = listOf(category.name), // 단일 카테고리를 배열로 변환
+                        ingredients = ingredientDtos,
+                        images = imageStrings,
+                        description = description,
+                        isPrivate = !isPublic, // isPublic = true면 isPrivate = false (전체 공개), isPublic = false면 isPrivate = true (나만 보기)
+                    )
+                    
+                    val response = combinationService.updateRegister(postId, userId, updateRequest)
+                    
+                    // Response<Unit>을 사용하면 빈 응답도 안전하게 처리됨
+                    if (response.isSuccessful) {
+                        // 200 OK면 성공으로 간주: 로컬 데이터 업데이트
+                        val updatedCombination = Combination(
+                            id = id,
                             title = title,
                             description = description,
-                            category = category.name,
+                            imageUrl = imageUri?.toString(),
+                            category = category,
                             ingredients = ingredients,
+                            tags = tags,
+                            author = DummyData.currentUser ?: DummyData.dummyUser,
+                            likeCount = 0,
+                            isLiked = false,
+                            createdAt = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                                .format(java.util.Date()),
                         )
-                    val response = combinationService.updateCombination(id, request)
-                    val data =
-                        response.data
-                            ?: throw IllegalStateException("Update combination data is null")
-                    Result.success(data.toEntity())
+                        val index = createdCombinations.indexOfFirst { it.id == id }
+                        if (index >= 0) {
+                            createdCombinations[index] = updatedCombination
+                        }
+                        Result.success(updatedCombination)
+                    } else {
+                        throw IllegalStateException("Update register failed: ${response.code()}")
+                    }
                 }
             } catch (e: Exception) {
                 Result.failure(e)
@@ -215,12 +403,32 @@ class CombinationRepositoryImpl
                     createdCombinations.removeAll { it.id == id }
                     Result.success(Unit)
                 } else {
-                    // 실제 API 호출
-                    val response = combinationService.deleteCombination(id)
-                    if (response.code == 200) {
+                    // 실제 API 호출 (Swagger 스펙: DELETE /register/{postId} 사용)
+                    // 현재 사용자 ID 가져오기
+                    // 1. JWT 토큰에서 추출 시도 (가장 안정적)
+                    // 2. /users/mypage API 호출 시도
+                    // 3. DummyData에서 fallback
+                    val userId = tokenManager.getUserIdFromToken()
+                        ?: try {
+                            val userProfile = userService.getMyPage()
+                            userProfile.id?.toLongOrNull()
+                        } catch (e: Exception) {
+                            // /users/mypage가 실패하면 null
+                            null
+                        }
+                        ?: DummyData.currentUser?.id?.toLongOrNull()
+                        ?: throw IllegalStateException("User ID is not available. Please login again.")
+                    
+                    val postId = id.toLongOrNull()
+                        ?: throw IllegalStateException("Post ID is not a valid number")
+                    
+                    val response = combinationService.deleteRegister(postId, userId)
+                    
+                    // Response<Unit>을 사용하면 빈 응답도 안전하게 처리됨
+                    if (response.isSuccessful) {
                         Result.success(Unit)
                     } else {
-                        Result.failure(Exception(response.message))
+                        throw IllegalStateException("Delete register failed: ${response.code()}")
                     }
                 }
             } catch (e: Exception) {
@@ -238,7 +446,7 @@ class CombinationRepositoryImpl
                 val myCombinations =
                     allCombinations
                         .filter {
-                            it.author.id == DummyData.currentUser.id
+                            it.author.id == DummyData.currentUser?.id
                         }
                         .map { combination ->
                             val likeCount =

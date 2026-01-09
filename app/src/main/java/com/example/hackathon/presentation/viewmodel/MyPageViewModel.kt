@@ -26,27 +26,58 @@ class MyPageViewModel
         val uiState: StateFlow<MyPageUiState> = _uiState.asStateFlow()
 
         init {
-            loadProfile()
-            loadMyRecipes()
+            // 로그인 상태 확인 후 프로필 로드
+            viewModelScope.launch {
+                val hasTokens = authRepository.hasValidTokens()
+                if (hasTokens) {
+                    loadProfile()
+                    loadMyRecipes()
+                } else {
+                    // 로그인 안 됨: isLoading을 false로 설정하여 UI가 로그인 화면으로 리다이렉트할 수 있도록
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        user = null,
+                    )
+                }
+            }
         }
 
         fun loadProfile() {
             viewModelScope.launch {
-                _uiState.value = _uiState.value.copy(isLoading = true)
+                _uiState.value = _uiState.value.copy(isLoading = true, error = null)
                 userRepository.getProfile().fold(
                     onSuccess = { user ->
                         _uiState.value =
                             _uiState.value.copy(
                                 user = user,
                                 isLoading = false,
+                                error = null,
                             )
                     },
                     onFailure = { error ->
-                        _uiState.value =
-                            _uiState.value.copy(
+                        // 프로필 로드 실패: 에러만 표시하고 user는 유지 (이전 사용자 정보가 있으면 계속 표시)
+                        // 단, 인증 에러(401, 403)인 경우에만 로그아웃 처리
+                        val errorMessage = error.message ?: "프로필을 불러올 수 없습니다"
+                        val isAuthError = errorMessage.contains("401", ignoreCase = true) ||
+                            errorMessage.contains("403", ignoreCase = true) ||
+                            errorMessage.contains("Unauthorized", ignoreCase = true) ||
+                            errorMessage.contains("Forbidden", ignoreCase = true)
+                        
+                        if (isAuthError) {
+                            // 인증 에러: 로그아웃 처리
+                            _uiState.value = _uiState.value.copy(
+                                user = null,
                                 isLoading = false,
-                                error = error.message ?: "프로필을 불러올 수 없습니다",
+                                error = errorMessage,
+                                isLoggedOut = true,
                             )
+                        } else {
+                            // 기타 에러: 에러만 표시하고 user는 유지
+                            _uiState.value = _uiState.value.copy(
+                                isLoading = false,
+                                error = errorMessage,
+                            )
+                        }
                     },
                 )
             }
@@ -116,11 +147,18 @@ class MyPageViewModel
             viewModelScope.launch {
                 authRepository.logout().fold(
                     onSuccess = {
-                        _uiState.value = _uiState.value.copy(isLoggedOut = true)
+                        // 로그아웃 성공: UI 상태 초기화
+                        _uiState.value = _uiState.value.copy(
+                            isLoggedOut = true,
+                            user = null, // 사용자 정보 초기화
+                        )
                     },
                     onFailure = { error ->
                         // 로그아웃 실패해도 로컬 토큰은 삭제하고 로그아웃 처리
-                        _uiState.value = _uiState.value.copy(isLoggedOut = true)
+                        _uiState.value = _uiState.value.copy(
+                            isLoggedOut = true,
+                            user = null, // 사용자 정보 초기화
+                        )
                     },
                 )
             }

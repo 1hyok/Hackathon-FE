@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.hackathon.domain.repository.AuthRepository
 import com.example.hackathon.presentation.navigation.AppNavGraph
 import com.example.hackathon.presentation.navigation.BottomNavBar
 import com.example.hackathon.presentation.navigation.BottomNavItem
@@ -38,9 +37,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var authRepository: AuthRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -107,7 +103,6 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     AppNavGraph(
                         navController = navController,
-                        authRepository = authRepository,
                         modifier = Modifier.padding(innerPadding),
                     )
                 }
