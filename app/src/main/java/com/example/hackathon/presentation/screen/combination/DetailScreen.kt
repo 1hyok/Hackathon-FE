@@ -317,10 +317,6 @@ fun DetailScreen(
                             modifier =
                                 Modifier
                                     .fillMaxWidth()
-                                    .shadow(
-                                        elevation = 6.dp,
-                                        shape = RoundedCornerShape(10.dp),
-                                    )
                                     .background(
                                         Color(0xFFF7F7F7),
                                         shape = RoundedCornerShape(10.dp),
@@ -330,7 +326,7 @@ fun DetailScreen(
                                         color = Color(0xFFCCCCCC),
                                         width = 1.dp,
                                     )
-                                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                                    .padding(horizontal = 20.dp, vertical = 15.dp),
                         ) {
                             Text(
                                 text = authorText + "님의 레시피",
@@ -341,10 +337,26 @@ fun DetailScreen(
                             Spacer(modifier = Modifier.height(12.dp))
 
                             recipe.ingredients.forEach {
-                                Text(
-                                    text = "• ${it.name} ${it.amount}",
-                                    style = HackathonTheme.typography.Body_medium,
-                                )
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Text(
+                                        text = it.name,
+                                        style = HackathonTheme.typography.Body_medium,
+                                        color = HackathonTheme.colors.black,
+                                    )
+
+                                    Spacer(modifier = Modifier.weight(1f))
+
+                                    Text(
+                                        text = it.amount,
+                                        style = HackathonTheme.typography.Body_medium,
+                                        color = HackathonTheme.colors.black,
+                                    )
+                                }
                             }
                         }
                     }
