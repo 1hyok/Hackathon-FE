@@ -67,7 +67,22 @@ When stuck, provide a working workaround before investigating the perfect soluti
    @Composable
    fun MyScreen(...) { ... }
    ```
-5. Use `@Preview(showBackground = true)` for UI components when possible.
+5. **File Structure Rule (CRITICAL)**:
+   - **One Composable function per file**: Each Composable file MUST contain only ONE `@Composable` function (plus its preview).
+   - **Preview is mandatory**: Every Composable file MUST have exactly ONE `@Preview` function.
+   - **File splitting**: If a file exceeds ~300 lines or contains multiple logical sections, split it into separate component files.
+   - **Component extraction**: Extract reusable UI sections into separate component files in the `component/` directory.
+   - **File naming**: Component files should be named descriptively (e.g., `ImageUploadSection.kt`, `HashTagInputSection.kt`).
+   - **Example structure**:
+     ```kotlin
+     // MyScreen.kt - ONLY contains MyScreen function and its preview
+     @Composable
+     fun MyScreen(...) { ... }
+
+     @Preview(showBackground = true)
+     @Composable
+     private fun MyScreenPreview() { ... }
+     ```
 6. **KtLint Compliance (CRITICAL - Prevents Build Failures)**:
    - **Max Line Length**: Keep lines under 120 characters. If a line exceeds this, break it into multiple lines.
    - **Import Order**: Group imports: 1) Kotlin stdlib, 2) Android/AndroidX, 3) Third-party, 4) Project. Separate groups with blank lines.
@@ -109,6 +124,7 @@ When stuck, provide a working workaround before investigating the perfect soluti
      )
      ```
 5. **KtLint Compliance (CRITICAL - Prevents Build Failures)**:
+   - **IMPORTANT**: KtLint violations cause build failures. Always follow these rules when writing code.
    - **Max Line Length**: Keep lines under 120 characters. If a line exceeds this, break it into multiple lines:
      ```kotlin
      // Wrong (too long)
@@ -130,7 +146,7 @@ When stuck, provide a working workaround before investigating the perfect soluti
    - **Function Formatting**: If parameters exceed line length, put each on a new line with proper indentation and trailing commas.
    - **String Formatting**: Prefer string templates: `"Hello $name"` (not `"Hello " + name`)
    - **Code Writing**: When writing code, proactively check line length and break long lines before they cause build failures.
-5. **Smart Cast for Delegated Properties**:
+6. **Smart Cast for Delegated Properties**:
    - Do NOT rely on smart casts for delegated properties (e.g., `by collectAsState()`, `by viewModels()`).
    - Always assign to a local variable (snapshot) before checking nullability:
    ```kotlin
@@ -149,8 +165,33 @@ When stuck, provide a working workaround before investigating the perfect soluti
        Text(text = error)
    }
    ```
-6. Follow [Kotlin Official Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html).
-7. Use Android Studio auto-formatting: `Ctrl + Alt + L` (Windows) before committing.
+7. **Interface Override Rule (CRITICAL - Prevents Compilation Errors)**:
+   - **NEVER** specify default parameter values in override functions.
+   - Default values should ONLY be in the interface/abstract class, NOT in the implementation.
+   ```kotlin
+   // Wrong - causes compilation error
+   interface MyRepository {
+       suspend fun getData(page: Int = 1): Result<List<Data>>
+   }
+   class MyRepositoryImpl : MyRepository {
+       override suspend fun getData(page: Int = 1): Result<List<Data>> { // ERROR!
+           // ...
+       }
+   }
+
+   // Correct - default value only in interface
+   interface MyRepository {
+       suspend fun getData(page: Int = 1): Result<List<Data>>
+   }
+   class MyRepositoryImpl : MyRepository {
+       override suspend fun getData(page: Int): Result<List<Data>> { // No default value
+           // ...
+       }
+   }
+   ```
+   - **Always check**: When overriding interface functions, remove ALL default parameter values from the override function signature.
+8. Follow [Kotlin Official Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html).
+9. Use Android Studio auto-formatting: `Ctrl + Alt + L` (Windows) before committing.
 
 ## Naming Conventions
 - **File/Class names**: PascalCase (e.g., `HomeScreen.kt`, `CombinationCard.kt`, `HomeViewModel`)
@@ -280,6 +321,21 @@ com.example.hackathon/
 - **Working code first**: `// TODO: Refactor later for hackathon` 주석을 적극 허용
 - **Speed over perfection**: 완벽한 클린 코드보다 작동하는 코드 우선
 - **Quick workarounds**: 복잡한 해결책보다 간단한 우회책 먼저 제시
+
+## Figma AI 프롬프트 작성 규칙
+- **중요**: Figma AI는 프로젝트 컨텍스트를 참조할 수 없습니다.
+  - 팀원 이름, 기존 디자인 스타일, 프로젝트 히스토리 등을 모릅니다.
+  - 프롬프트에 모든 필요한 정보를 명시적으로 포함해야 합니다.
+- **프롬프트 작성 시 필수 포함 사항**:
+  - 디자인 시스템 (색상, 타이포그래피, 간격 등)을 완전히 명시
+  - 화면 구성 요소를 구체적으로 설명 (위치, 크기, 스타일)
+  - 인터랙션 및 상태 관리 방법 설명
+  - 기존 화면과의 일관성을 위한 스타일 가이드 포함
+  - 컨텍스트 없이도 이해할 수 있도록 독립적으로 작성
+- **금지 사항**:
+  - "예원이 스타일", "기존 디자인 참고" 등 컨텍스트 의존적 표현 사용 금지
+  - 팀원 이름이나 프로젝트 히스토리 언급 금지
+  - 다른 파일이나 디자인 참조 없이 독립적으로 이해 가능하도록 작성
 
 # Git Branch Strategy
 - **CRITICAL**: Always work on your own branch, NOT on main branch.
