@@ -73,7 +73,7 @@ jobs:
         if: success()
         with:
           severity: info
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          webhookUrl: REDACTED_DISCORD_WEBHOOK/github
           text: |
             새 APK가 릴리즈되었습니다!
             다운로드 링크: https://github.com/${{ github.repository }}/releases/download/build-${{ steps.version.outputs.DATE }}/app-debug.apk
@@ -83,7 +83,7 @@ jobs:
         if: failure()
         with:
           severity: error
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          webhookUrl: REDACTED_DISCORD_WEBHOOK/github
           text: |
             APK 빌드 실패!
             작성자: ${{ github.actor }}

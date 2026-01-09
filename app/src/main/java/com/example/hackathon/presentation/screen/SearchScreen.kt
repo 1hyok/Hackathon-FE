@@ -13,28 +13,29 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.R
 import com.example.hackathon.presentation.viewmodel.SearchViewModel
+import com.example.hackathon.ui.theme.Gray700
 import com.example.hackathon.ui.theme.HackathonTheme
 
 @Composable
@@ -44,8 +45,12 @@ fun SearchScreen(
     onNavigateBack: () -> Unit = {},
     onCombinationClick: (String) -> Unit = {},
 ) {
-    var query by rememberSaveable { mutableStateOf("") }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    // query 변경 시 ViewModel에 반영
+    LaunchedEffect(uiState.query) {
+        // query는 ViewModel에서 관리하므로 별도 처리 불필요
+    }
 
     Scaffold(
         topBar = {
@@ -71,12 +76,15 @@ fun SearchScreen(
                     Image(
                         painter = painterResource(R.drawable.ic_logo_rec),
                         contentDescription = "back",
-                        modifier = Modifier.size(50.dp),
+                        modifier =
+                            Modifier
+                                .size(50.dp)
+                                .clickable { onNavigateBack() },
                     )
 
                     TextField(
-                        value = query,
-                        onValueChange = { query = it },
+                        value = uiState.query,
+                        onValueChange = { viewModel.onQueryChange(it) },
                         modifier =
                             Modifier
                                 .heightIn(min = 30.dp)
@@ -94,7 +102,7 @@ fun SearchScreen(
                                 tint = Color(0xFF8B91A1),
                                 modifier =
                                     Modifier.clickable {
-                                        viewModel.onSearch(query)
+                                        viewModel.onSearch(uiState.query)
                                     },
                             )
                         },
@@ -114,30 +122,66 @@ fun SearchScreen(
             }
         },
     ) { innerPadding ->
-        if (!uiState.hasSearched) {
-            // 검색 전 안내 화면
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = "쩝쩝박사님들의 레시피를 검색해보세요",
-                    style = HackathonTheme.typography.Body_medium,
-                    color = HackathonTheme.colors.gray700,
+        when {
+            !uiState.hasSearched -> {
+                // 검색 전 안내 화면
+                Box(
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "쩝쩝박사님들의 레시피를 검색해보세요",
+                        style = HackathonTheme.typography.Body_medium,
+                        color = HackathonTheme.colors.gray700,
+                    )
+                }
+            }
+
+            uiState.isLoading -> {
+                // 로딩 중
+                Box(
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            uiState.error != null -> {
+                // 에러 발생
+                Box(
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = uiState.error ?: "검색 중 오류가 발생했습니다",
+                        style = HackathonTheme.typography.Body_medium,
+                        color = Gray700,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
+
+            else -> {
+                // 검색 결과 표시
+                CombinationList(
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                    results = uiState.results,
+                    onCombinationClick = onCombinationClick,
                 )
             }
-        } else {
-            // 검색 후에는 무조건 CombinationList
-            CombinationList(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
-                results = uiState.results,
-            )
         }
     }
 }
