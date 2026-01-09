@@ -8,7 +8,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.presentation.screen.CreateCombinationScreen
 import com.example.hackathon.presentation.screen.DetailScreen
@@ -20,6 +19,7 @@ import com.example.hackathon.presentation.screen.RegistrationScreen
 import com.example.hackathon.presentation.screen.RegistrationSuccessScreen
 import com.example.hackathon.presentation.screen.SearchScreen
 import com.example.hackathon.presentation.screen.home.screen.HomeScreen
+import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 
 @Composable
 fun AppNavGraph(
