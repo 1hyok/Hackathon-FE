@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.domain.entity.Combination
 import com.example.hackathon.domain.repository.CombinationRepository
+import com.example.hackathon.presentation.component.IngredientItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -59,7 +60,7 @@ class CreateCombinationViewModel
             if (index < currentIngredients.size) {
                 currentIngredients[index] = currentIngredients[index].copy(name = name)
             } else {
-                currentIngredients.add(com.example.hackathon.presentation.screen.component.IngredientItem(name, ""))
+                currentIngredients.add(IngredientItem(name, ""))
             }
             _uiState.value = _uiState.value.copy(ingredientsList = currentIngredients)
         }
@@ -72,14 +73,14 @@ class CreateCombinationViewModel
             if (index < currentIngredients.size) {
                 currentIngredients[index] = currentIngredients[index].copy(quantity = quantity)
             } else {
-                currentIngredients.add(com.example.hackathon.presentation.screen.component.IngredientItem("", quantity))
+                currentIngredients.add(IngredientItem("", quantity))
             }
             _uiState.value = _uiState.value.copy(ingredientsList = currentIngredients)
         }
 
         fun addIngredient() {
             val currentIngredients = _uiState.value.ingredientsList.toMutableList()
-            currentIngredients.add(com.example.hackathon.presentation.screen.component.IngredientItem("", ""))
+            currentIngredients.add(IngredientItem("", ""))
             _uiState.value = _uiState.value.copy(ingredientsList = currentIngredients)
         }
 
@@ -181,8 +182,8 @@ data class CreateCombinationUiState(
     val category: Category = Category.SUBWAY,
     val ingredients: String = "",
     // 재료 리스트 (재료명, 용량 쌍)
-    val ingredientsList: List<com.example.hackathon.presentation.screen.component.IngredientItem> =
-        listOf(com.example.hackathon.presentation.screen.component.IngredientItem("", "")),
+    val ingredientsList: List<IngredientItem> =
+        listOf(IngredientItem("", "")),
     val steps: String = "",
     val tags: List<String> = emptyList(),
     // 하위 호환성 유지

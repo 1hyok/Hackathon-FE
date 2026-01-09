@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.R
-import com.example.hackathon.presentation.screen.component.CombinationList
+import com.example.hackathon.presentation.component.CombinationList
 import com.example.hackathon.presentation.viewmodel.SearchViewModel
 import com.example.hackathon.ui.theme.Gray700
 import com.example.hackathon.ui.theme.HackathonTheme

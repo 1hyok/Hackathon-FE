@@ -35,10 +35,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.core.component.TopAppLogoBar
-import com.example.hackathon.presentation.screen.component.HashTagInputSection
-import com.example.hackathon.presentation.screen.component.ImageUploadSection
-import com.example.hackathon.presentation.screen.component.IngredientInputSection
-import com.example.hackathon.presentation.screen.component.VisibilitySelectionSection
+import com.example.hackathon.presentation.component.HashTagInputSection
+import com.example.hackathon.presentation.component.ImageUploadSection
+import com.example.hackathon.presentation.component.IngredientInputSection
+import com.example.hackathon.presentation.component.VisibilitySelectionSection
 import com.example.hackathon.presentation.viewmodel.CreateCombinationViewModel
 import com.example.hackathon.ui.theme.Gray700
 import com.example.hackathon.ui.theme.Primary
