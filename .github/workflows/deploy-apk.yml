@@ -24,10 +24,28 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Create google-services.json
-        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > app/google-services.json
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          # Base64 디코딩 (줄바꿈 제거 후 디코딩)
+          echo "$GOOGLE_SERVICES_JSON" | tr -d '\n' | base64 --decode > app/google-services.json
+          
+          # 파일 생성 확인
+          if [ ! -f app/google-services.json ]; then
+            echo "❌ google-services.json 파일 생성 실패!"
+            exit 1
+          fi
+          
+          # JSON 유효성 검증 (기본 확인)
+          if ! cat app/google-services.json | grep -q '"project_info"'; then
+            echo "❌ google-services.json 파일이 유효한 JSON 형식이 아닙니다!"
+            exit 1
+          fi
+          
+          echo "✅ google-services.json 파일 생성 완료"
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --stacktrace --info
 
       - name: Get commit message
         id: commit
@@ -36,6 +54,7 @@ jobs:
           echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Upload to Firebase App Distribution
+        id: firebase_distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
@@ -54,10 +73,17 @@ jobs:
           severity: info
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           text: |
-            새 APK가 배포되었습니다!
-            버전: ${{ steps.commit.outputs.SHORT_SHA }}
-            커밋: ${{ steps.commit.outputs.MESSAGE }}
-            작성자: ${{ github.actor }}
+            🚀 새 APK가 배포되었습니다!
+            
+            **버전:** ${{ steps.commit.outputs.SHORT_SHA }}
+            **커밋:** ${{ steps.commit.outputs.MESSAGE }}
+            **작성자:** ${{ github.actor }}
+            
+            📥 **다운로드:**
+            Firebase 콘솔에서 최신 버전을 다운로드하세요:
+            https://console.firebase.google.com/project/drzubzub-594aa/appdistribution/app/1:1017615947344:android:9a6380798488227ca4e355/distributors
+            
+            또는 Firebase App Tester 앱을 설치하고 알림을 확인하세요.
 
       - name: Send Discord notification on failure
         uses: rjstone/discord-webhook-notify@v1

@@ -34,13 +34,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.R
 import com.example.hackathon.presentation.viewmodel.SearchViewModel
-import com.example.hackathon.ui.theme.HackathonTheme
+import com.example.hackathon.ui.theme.Gray700
+import com.example.hackathon.ui.theme.Primary
+import kotlinx.coroutines.delay
 
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit = {},
+    onCombinationClick: (String) -> Unit = {},
 ) {
     var query by rememberSaveable { mutableStateOf("") }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -138,4 +141,10 @@ fun SearchScreen(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchScreenPreview() {
+    SearchScreen()
 }
