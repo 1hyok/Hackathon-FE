@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write  # Release 생성 및 파일 업로드 권한
+    
     steps:
       - uses: actions/checkout@v4
 

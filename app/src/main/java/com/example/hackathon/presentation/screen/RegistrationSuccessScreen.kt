@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.component.TopAppLogoBar
 import com.example.hackathon.ui.theme.Gray700
+import com.example.hackathon.ui.theme.HackathonTheme
 import com.example.hackathon.ui.theme.Primary
 
 // 담당자: 일혁
@@ -54,23 +54,23 @@ fun RegistrationSuccessScreen(
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Text(
                     text = "가입 완료",
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = HackathonTheme.typography.Head1_bold,
                     color = Color.Black,
                     textAlign = TextAlign.Center,
                 )
 
                 Text(
                     text = "회원가입이 완료되었습니다.\n로그인 후 이용해주세요.",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = HackathonTheme.typography.Body_medium,
                     color = Gray700,
                     textAlign = TextAlign.Center,
                 )
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
                 // 로그인하기 버튼
                 Button(
@@ -85,7 +85,7 @@ fun RegistrationSuccessScreen(
                 ) {
                     Text(
                         text = "로그인하기",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = HackathonTheme.typography.Sub1_semibold,
                     )
                 }
             }

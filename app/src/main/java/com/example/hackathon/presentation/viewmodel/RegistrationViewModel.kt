@@ -55,6 +55,10 @@ class RegistrationViewModel
                 _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
             }
         }
+
+        fun clearSuccess() {
+            _uiState.value = _uiState.value.copy(isSuccess = false)
+        }
     }
 
 data class RegistrationUiState(

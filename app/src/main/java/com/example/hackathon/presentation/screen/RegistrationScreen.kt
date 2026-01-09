@@ -4,11 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,25 +20,28 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,7 +49,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.core.component.TopAppLogoBar
 import com.example.hackathon.presentation.viewmodel.RegistrationViewModel
 import com.example.hackathon.ui.theme.Gray700
+import com.example.hackathon.ui.theme.HackathonTheme
 import com.example.hackathon.ui.theme.Primary
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // 담당자: 일혁
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,35 +64,49 @@ fun RegistrationScreen(
     onRegistrationSuccess: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    // 회원가입 성공 시 처리
-    LaunchedEffect(uiState.isSuccess) {
-        if (uiState.isSuccess) {
-            onRegistrationSuccess()
-        }
-    }
+    val scrollState = rememberScrollState()
+    val nameFieldRequester = remember { BringIntoViewRequester() }
+    val passwordFieldRequester = remember { BringIntoViewRequester() }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = modifier,
+        contentWindowInsets = WindowInsets.ime,
     ) { paddingValues ->
         Column(
             modifier =
                 Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // 로고 영역 (최상단)
             TopAppLogoBar()
 
+            Spacer(modifier = Modifier.height(20.dp))
+
             // 태그라인
-            Text(
-                text = "어디선가 들어본 바로 그 조합 모두 쩝쩝박사에서",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Gray700,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier.padding(horizontal = 16.dp),
+            ) {
+                Text(
+                    text = "어디선가 들어본 바로 그 조합",
+                    style = HackathonTheme.typography.Body_medium,
+                    color = Gray700,
+                    textAlign = TextAlign.Center,
+                )
+                Text(
+                    text = "모두 쩝쩝박사에서",
+                    style = HackathonTheme.typography.Body_medium,
+                    color = Gray700,
+                    textAlign = TextAlign.Center,
+                )
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
 
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -90,38 +114,77 @@ fun RegistrationScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 // 닉네임 입력 필드
+                Text(
+                    text = "닉네임",
+                    style = HackathonTheme.typography.Body_medium,
+                    color = Color.Black,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
                 OutlinedTextField(
                     value = uiState.name,
                     onValueChange = viewModel::updateName,
                     placeholder = {
                         Text(
-                            text = "닉네임",
-                            style = MaterialTheme.typography.bodyMedium,
+                            text = "닉네임을 입력하세요",
+                            style = HackathonTheme.typography.Body_medium,
+                            color = Gray700,
                         )
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .bringIntoViewRequester(nameFieldRequester)
+                            .onFocusChanged { focusState ->
+                                if (focusState.isFocused) {
+                                    coroutineScope.launch {
+                                        delay(300) // 키보드 애니메이션 대기
+                                        nameFieldRequester.bringIntoView()
+                                    }
+                                }
+                            },
                     shape = RoundedCornerShape(15.dp),
                     colors =
                         OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Gray700,
+                            focusedBorderColor = Primary,
                             unfocusedBorderColor = Gray700,
                             focusedTextColor = Color.Black,
                             unfocusedTextColor = Color.Black,
                         ),
+                    textStyle = HackathonTheme.typography.Body_medium,
                     singleLine = true,
                 )
 
+                Spacer(modifier = Modifier.height(16.dp))
+
                 // Password 입력 필드
+                Text(
+                    text = "Password",
+                    style = HackathonTheme.typography.Body_medium,
+                    color = Color.Black,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
                 OutlinedTextField(
                     value = uiState.password,
                     onValueChange = viewModel::updatePassword,
                     placeholder = {
                         Text(
-                            text = "Password",
-                            style = MaterialTheme.typography.bodyMedium,
+                            text = "비밀번호를 입력하세요",
+                            style = HackathonTheme.typography.Body_medium,
+                            color = Gray700,
                         )
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .bringIntoViewRequester(passwordFieldRequester)
+                            .onFocusChanged { focusState ->
+                                if (focusState.isFocused) {
+                                    coroutineScope.launch {
+                                        delay(300) // 키보드 애니메이션 대기
+                                        passwordFieldRequester.bringIntoView()
+                                    }
+                                }
+                            },
                     shape = RoundedCornerShape(15.dp),
                     visualTransformation =
                         if (uiState.isPasswordVisible) {
@@ -151,13 +214,16 @@ fun RegistrationScreen(
                     },
                     colors =
                         OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Gray700,
+                            focusedBorderColor = Primary,
                             unfocusedBorderColor = Gray700,
                             focusedTextColor = Color.Black,
                             unfocusedTextColor = Color.Black,
                         ),
+                    textStyle = HackathonTheme.typography.Body_medium,
                     singleLine = true,
                 )
+
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // 버튼 영역 (가로 배치)
                 Row(
@@ -168,9 +234,6 @@ fun RegistrationScreen(
                     Button(
                         onClick = {
                             viewModel.register()
-                            if (uiState.isSuccess) {
-                                onRegistrationSuccess()
-                            }
                         },
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(15.dp),
@@ -194,7 +257,7 @@ fun RegistrationScreen(
                         } else {
                             Text(
                                 text = "계정생성",
-                                style = MaterialTheme.typography.titleMedium,
+                                style = HackathonTheme.typography.Sub1_semibold,
                             )
                         }
                     }
@@ -207,30 +270,81 @@ fun RegistrationScreen(
                         enabled = !uiState.isLoading,
                         colors =
                             ButtonDefaults.buttonColors(
-                                containerColor = Primary,
+                                containerColor = Gray700,
                                 contentColor = Color.White,
-                                disabledContainerColor = Primary.copy(alpha = 0.5f),
+                                disabledContainerColor = Gray700.copy(alpha = 0.5f),
                                 disabledContentColor = Color.White.copy(alpha = 0.5f),
                             ),
                     ) {
                         Text(
                             text = "로그인",
-                            style = MaterialTheme.typography.titleMedium,
+                            style = HackathonTheme.typography.Sub1_semibold,
                         )
                     }
                 }
 
+                Spacer(modifier = Modifier.height(16.dp))
+
                 // 하단 문의 안내
                 Text(
                     text = "닉네임/비밀번호를 잊어버렸다면? jjupjjup@naver.com으로 문의",
-                    style = MaterialTheme.typography.bodySmall,
+                    style = HackathonTheme.typography.Caption_medium,
                     color = Gray700,
-                    modifier = Modifier.padding(top = 16.dp),
+                    textAlign = TextAlign.Center,
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
             }
         }
+    }
+
+    // 회원가입 성공 다이얼로그
+    if (uiState.isSuccess) {
+        AlertDialog(
+            onDismissRequest = {
+                viewModel.clearSuccess()
+                onRegistrationSuccess()
+            },
+            title = {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Text(
+                        text = "닉네임 : ${uiState.name}",
+                        style = HackathonTheme.typography.Body_medium,
+                        color = Color.Black,
+                    )
+                    Text(
+                        text = "가입이 완료되었습니다",
+                        style = HackathonTheme.typography.Body_medium,
+                        color = Color.Black,
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.clearSuccess()
+                        onRegistrationSuccess()
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(15.dp),
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = Primary,
+                            contentColor = Color.White,
+                        ),
+                ) {
+                    Text(
+                        text = "확인",
+                        style = HackathonTheme.typography.Sub1_semibold,
+                    )
+                }
+            },
+            containerColor = Color.White,
+            shape = RoundedCornerShape(15.dp),
+        )
     }
 }
 

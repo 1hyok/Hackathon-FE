@@ -60,6 +60,10 @@ class LoginViewModel
                 _uiState.value = _uiState.value.copy(isLoading = false)
             }
         }
+
+        fun clearError() {
+            _uiState.value = _uiState.value.copy(error = null)
+        }
     }
 
 data class LoginUiState(
