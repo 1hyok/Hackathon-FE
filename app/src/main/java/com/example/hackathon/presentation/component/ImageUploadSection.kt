@@ -26,13 +26,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.example.hackathon.R
 import com.example.hackathon.ui.theme.Gray50
 import com.example.hackathon.ui.theme.Gray700
+import com.example.hackathon.ui.theme.HackathonTheme
 
 @Composable
 fun ImageUploadSection(
@@ -52,8 +60,28 @@ fun ImageUploadSection(
                     Modifier
                         .fillMaxWidth()
                         .height(180.dp)
-                        .background(Gray50, RoundedCornerShape(12.dp))
-                        .border(1.dp, Gray700.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                        .drawBehind {
+                            val strokeWidth = 2.dp.toPx()
+                            val dashWidth = 6.dp.toPx()
+                            val dashGap = 6.dp.toPx()
+
+                            drawRoundRect(
+                                color = Color(0xFFE10818).copy(alpha = 0.3f),
+                                style =
+                                    Stroke(
+                                        width = strokeWidth,
+                                        pathEffect =
+                                            PathEffect.dashPathEffect(
+                                                floatArrayOf(dashWidth, dashGap),
+                                            ),
+                                    ),
+                                cornerRadius = CornerRadius(12.dp.toPx()),
+                            )
+                        }
+                        .background(
+                            color = Color(0xFFFFF3F3),
+                            shape = RoundedCornerShape(12.dp),
+                        )
                         .clickable { onImageClick() },
                 contentAlignment = Alignment.Center,
             ) {
@@ -62,7 +90,7 @@ fun ImageUploadSection(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Add,
+                        painter = painterResource(R.drawable.ic_camera),
                         contentDescription = "이미지 등록",
                         tint = Gray700,
                         modifier = Modifier.size(32.dp),
