@@ -17,13 +17,11 @@ import com.example.hackathon.ui.theme.HackathonTheme
 fun LazyListScope.HomeCombinationList(
     combinations: List<Combination>,
     onCombinationClick: (String) -> Unit,
-    onLikeClick: (String) -> Unit,
 ) {
     items(combinations) { combination ->
         CombinationCard(
             combination = combination,
             onClick = { onCombinationClick(combination.id) },
-            onLikeClick = { onLikeClick(combination.id) },
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
         )
     }
@@ -73,7 +71,6 @@ private fun HomeCombinationListPreview() {
             HomeCombinationList(
                 combinations = mockCombinations,
                 onCombinationClick = {},
-                onLikeClick = {},
             )
         }
     }

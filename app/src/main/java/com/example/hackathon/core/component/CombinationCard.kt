@@ -289,7 +289,6 @@ private fun CombinationCardLikedPreview() {
                     createdAt = System.currentTimeMillis().toString(),
                 ),
             onClick = {},
-            onLikeClick = {},
         )
     }
 }
@@ -315,7 +314,6 @@ private fun CombinationCardNotLikedPreview() {
                     createdAt = System.currentTimeMillis().toString(),
                 ),
             onClick = {},
-            onLikeClick = {},
         )
     }
 }

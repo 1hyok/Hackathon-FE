@@ -9,6 +9,8 @@ interface CombinationService {
     @GET("combinations")
     suspend fun getCombinations(
         @Query("category") category: String? = null,
+        @Query("page") page: Int = 1,
+        @Query("pageSize") pageSize: Int = 10,
     ): BaseResponse<List<CombinationResponse>>
 
     @GET("combinations/{id}")

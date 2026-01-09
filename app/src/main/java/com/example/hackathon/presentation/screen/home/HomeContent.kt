@@ -1,10 +1,18 @@
 package com.example.hackathon.presentation.screen.home
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.domain.entity.Combination
 import com.example.hackathon.domain.entity.User
@@ -18,10 +26,31 @@ fun HomeContent(
     selectedCategory: Category,
     onCategorySelected: (Category) -> Unit,
     onCombinationClick: (String) -> Unit,
-    onLikeClick: (String) -> Unit,
+    onLoadMore: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
+    val listState = rememberLazyListState()
+    
+    // 스크롤이 마지막에 가까워지면 다음 페이지 로드
+    val shouldLoadMore by remember {
+        derivedStateOf {
+            val layoutInfo = listState.layoutInfo
+            val totalItemsCount = layoutInfo.totalItemsCount
+            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            
+            // 마지막에서 3개 아이템 전에 도달하면 다음 페이지 로드
+            totalItemsCount > 0 && lastVisibleItemIndex >= totalItemsCount - 3
+        }
+    }
+    
+    LaunchedEffect(shouldLoadMore) {
+        if (shouldLoadMore && uiState.hasMore && !uiState.isLoadingMore && !uiState.isLoading) {
+            onLoadMore()
+        }
+    }
+    
     LazyColumn(
+        state = listState,
         modifier = modifier.fillMaxWidth(),
     ) {
         item {
@@ -50,8 +79,18 @@ fun HomeContent(
                 HomeCombinationList(
                     combinations = uiState.combinations,
                     onCombinationClick = onCombinationClick,
-                    onLikeClick = onLikeClick,
                 )
+                
+                // 더 불러오기 로딩 인디케이터
+                if (uiState.isLoadingMore) {
+                    item {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                        )
+                    }
+                }
             }
         }
     }
@@ -66,7 +105,7 @@ private fun HomeContentLoadingPreview() {
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLikeClick = {},
+            onLoadMore = {},
         )
     }
 }
@@ -80,7 +119,7 @@ private fun HomeContentErrorPreview() {
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLikeClick = {},
+            onLoadMore = {},
         )
     }
 }
@@ -94,7 +133,7 @@ private fun HomeContentEmptyPreview() {
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLikeClick = {},
+            onLoadMore = {},
         )
     }
 }
@@ -144,7 +183,7 @@ private fun HomeContentWithCombinationsPreview() {
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLikeClick = {},
+            onLoadMore = {},
         )
     }
 }

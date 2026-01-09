@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hackathon.data.local.DummyData
 import com.example.hackathon.domain.entity.User
+import com.example.hackathon.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationViewModel
     @Inject
-    constructor() : ViewModel() {
+    constructor(
+        private val authRepository: AuthRepository,
+    ) : ViewModel() {
         private val _uiState = MutableStateFlow(RegistrationUiState())
         val uiState: StateFlow<RegistrationUiState> = _uiState.asStateFlow()
 
@@ -49,15 +52,43 @@ class RegistrationViewModel
         fun register() {
             viewModelScope.launch {
                 _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-                // TODO: API 연동
-                // 임시로 성공 처리 - 입력한 닉네임으로 사용자 정보 저장
-                DummyData.currentUser =
-                    User(
-                        id = "user_${System.currentTimeMillis()}",
-                        nickname = _uiState.value.name,
-                        profileImageUrl = null,
-                    )
-                _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
+
+                // 입력 검증
+                if (_uiState.value.name.isBlank() || _uiState.value.email.isBlank() || _uiState.value.password.isBlank()) {
+                    _uiState.value =
+                        _uiState.value.copy(
+                            isLoading = false,
+                            error = "모든 필드를 입력해주세요",
+                        )
+                    return@launch
+                }
+
+                if (_uiState.value.password != _uiState.value.passwordConfirm) {
+                    _uiState.value =
+                        _uiState.value.copy(
+                            isLoading = false,
+                            error = "비밀번호가 일치하지 않습니다",
+                        )
+                    return@launch
+                }
+
+                // API 호출
+                authRepository.signup(
+                    email = _uiState.value.email,
+                    password = _uiState.value.password,
+                    nickname = _uiState.value.name,
+                ).fold(
+                    onSuccess = {
+                        _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
+                    },
+                    onFailure = { throwable ->
+                        _uiState.value =
+                            _uiState.value.copy(
+                                isLoading = false,
+                                error = throwable.message ?: "회원가입에 실패했습니다",
+                            )
+                    },
+                )
             }
         }
 

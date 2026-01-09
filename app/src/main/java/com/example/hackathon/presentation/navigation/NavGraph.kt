@@ -1,6 +1,7 @@
 package com.example.hackathon.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -8,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.hackathon.domain.repository.AuthRepository
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.presentation.screen.auth.LoginScreen
 import com.example.hackathon.presentation.screen.auth.RegistrationScreen
@@ -24,8 +26,20 @@ import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
+    authRepository: AuthRepository,
     modifier: Modifier = Modifier,
 ) {
+    // 앱 시작 시 토큰 확인하여 자동 로그인
+    LaunchedEffect(Unit) {
+        val hasTokens = authRepository.hasValidTokens()
+        if (hasTokens) {
+            // 토큰이 있으면 홈 화면으로 이동
+            navController.navigate(Route.Home.route) {
+                popUpTo(0) { inclusive = true }
+            }
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination = Route.Onboarding.route,

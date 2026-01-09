@@ -20,14 +20,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.hackathon.domain.repository.AuthRepository
 import com.example.hackathon.presentation.navigation.AppNavGraph
 import com.example.hackathon.presentation.navigation.BottomNavItem
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.ui.theme.HackathonTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var authRepository: AuthRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // super.onCreate() 호출 전에 반드시 실행
         val splashScreen = installSplashScreen()
@@ -99,6 +104,7 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     AppNavGraph(
                         navController = navController,
+                        authRepository = authRepository,
                         modifier = Modifier.padding(innerPadding),
                     )
                 }

@@ -165,6 +165,31 @@ When stuck, provide a working workaround before investigating the perfect soluti
        Text(text = error)
    }
    ```
+6. **Interface Override Rule (CRITICAL - Prevents Compilation Errors)**:
+   - **NEVER** specify default parameter values in override functions.
+   - Default values should ONLY be in the interface/abstract class, NOT in the implementation.
+   ```kotlin
+   // ❌ Wrong - causes compilation error
+   interface MyRepository {
+       suspend fun getData(page: Int = 1): Result<List<Data>>
+   }
+   class MyRepositoryImpl : MyRepository {
+       override suspend fun getData(page: Int = 1): Result<List<Data>> { // ERROR!
+           // ...
+       }
+   }
+
+   // ✅ Correct - default value only in interface
+   interface MyRepository {
+       suspend fun getData(page: Int = 1): Result<List<Data>>
+   }
+   class MyRepositoryImpl : MyRepository {
+       override suspend fun getData(page: Int): Result<List<Data>> { // No default value
+           // ...
+       }
+   }
+   ```
+   - **Always check**: When overriding interface functions, remove ALL default parameter values from the override function signature.
 5. Follow [Kotlin Official Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html).
 6. Use Android Studio auto-formatting: `Ctrl + Alt + L` (Windows) before committing.
 

@@ -24,7 +24,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "BASE_URL", "\"https://api.example.com/\"")
+        // 서버 준비 전까지 Mock 모드 사용 (true: Mock, false: 실제 API)
+        buildConfigField("boolean", "USE_MOCK_API", "true")
+        buildConfigField("String", "BASE_URL", "\"http://13.125.27.133/\"")
     }
 
     buildFeatures {
@@ -81,6 +83,13 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
+    // Kotlin Metadata (메타데이터 버전 호환성 해결)
+    // Kotlin 2.0+에서는 kotlin-metadata-jvm 사용 (kotlinx가 아님)
+    implementation("org.jetbrains.kotlin:kotlin-metadata-jvm:2.0.0")
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:34.7.0"))

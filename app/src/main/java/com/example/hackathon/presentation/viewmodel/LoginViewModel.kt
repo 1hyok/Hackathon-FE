@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hackathon.data.local.DummyData
 import com.example.hackathon.domain.entity.User
+import com.example.hackathon.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel
     @Inject
-    constructor() : ViewModel() {
+    constructor(
+        private val authRepository: AuthRepository,
+    ) : ViewModel() {
         private val _uiState = MutableStateFlow(LoginUiState())
         val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
@@ -37,24 +40,32 @@ class LoginViewModel
         fun login() {
             viewModelScope.launch {
                 _uiState.value = _uiState.value.copy(isLoading = true, error = null, isSuccess = false)
-                // TODO: API 연동
-                // 임시로 검증 로직 추가
+
+                // 입력 검증
                 if (_uiState.value.id.isBlank() || _uiState.value.password.isBlank()) {
                     _uiState.value =
                         _uiState.value.copy(
                             isLoading = false,
-                            error = "닉네임과 비밀번호를 입력해주세요",
+                            error = "이메일과 비밀번호를 입력해주세요",
                         )
                     return@launch
                 }
-                // 임시로 성공 처리 - 입력한 닉네임으로 사용자 정보 저장
-                DummyData.currentUser =
-                    User(
-                        id = "user_${System.currentTimeMillis()}",
-                        nickname = _uiState.value.id,
-                        profileImageUrl = null,
-                    )
-                _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
+
+                // API 호출
+                authRepository.login(_uiState.value.id, _uiState.value.password).fold(
+                    onSuccess = { loginResult ->
+                        // 사용자 정보 저장
+                        DummyData.currentUser = loginResult.user
+                        _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
+                    },
+                    onFailure = { throwable ->
+                        _uiState.value =
+                            _uiState.value.copy(
+                                isLoading = false,
+                                error = throwable.message ?: "로그인에 실패했습니다",
+                            )
+                    },
+                )
             }
         }
 
