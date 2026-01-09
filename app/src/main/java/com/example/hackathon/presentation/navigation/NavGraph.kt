@@ -9,6 +9,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.hackathon.BuildConfig
+import com.example.hackathon.data.local.TokenManager
 import com.example.hackathon.domain.repository.AuthRepository
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.presentation.screen.auth.LoginScreen
@@ -27,10 +29,14 @@ import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 fun AppNavGraph(
     navController: NavHostController,
     authRepository: AuthRepository,
+    tokenManager: TokenManager,
     modifier: Modifier = Modifier,
 ) {
-    // 앱 시작 시 토큰 확인하여 자동 로그인
+    // 앱 시작 시 Mock 토큰 클리어 및 토큰 확인하여 자동 로그인
     LaunchedEffect(Unit) {
+        // Mock 모드가 해제된 경우, Mock 토큰이 있으면 클리어
+        tokenManager.clearMockTokensIfNeeded(BuildConfig.USE_MOCK_API)
+        
         val hasTokens = authRepository.hasValidTokens()
         if (hasTokens) {
             // 토큰이 있으면 홈 화면으로 이동

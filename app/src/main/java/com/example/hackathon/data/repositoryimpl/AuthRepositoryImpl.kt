@@ -9,6 +9,7 @@ import com.example.hackathon.data.local.DummyData
 import com.example.hackathon.data.local.TokenManager
 import com.example.hackathon.data.mapper.toEntity
 import com.example.hackathon.data.service.AuthService
+import com.example.hackathon.data.service.UserService
 import com.example.hackathon.domain.entity.User
 import com.example.hackathon.domain.repository.AuthRepository
 import com.example.hackathon.domain.repository.LoginResult
@@ -21,11 +22,11 @@ class AuthRepositoryImpl
     @Inject
     constructor(
         private val authService: AuthService,
+        private val userService: UserService,
         private val tokenManager: TokenManager,
     ) : AuthRepository {
         // 1. 회원가입
         override suspend fun signup(
-            email: String,
             password: String,
             nickname: String,
         ): Result<SignupResult> =
@@ -34,33 +35,38 @@ class AuthRepositoryImpl
                     // Mock 모드: 더미 데이터 반환
                     delay(800) // 네트워크 시뮬레이션
                     
-                    // 이메일 중복 체크 (간단한 Mock)
-                    if (email == "test@test.com") {
-                        throw Exception("이미 존재하는 이메일입니다")
+                    // 닉네임 중복 체크 (간단한 Mock)
+                    if (nickname == "test") {
+                        throw Exception("이미 존재하는 닉네임입니다")
                     }
                     
                     // 성공 응답
                     SignupResult(
                         id = System.currentTimeMillis(), // 임시 ID
-                        email = email,
+                        nickname = nickname,
                     )
                 } else {
-                    // 실제 API 호출
-                    val request = SignupRequest(email = email, password = password, nickname = nickname)
+                    // 실제 API 호출 (Swagger 스펙: nickname, password만 필요)
+                    // 서버 응답: text/plain "가입이 완료되었습니다" (200 OK)
+                    val request = SignupRequest(nickname = nickname, password = password)
                     val response = authService.signup(request)
-                    val data =
-                        response.data
-                            ?: throw IllegalStateException("Signup data is null")
-                    SignupResult(
-                        id = data.id,
-                        email = data.email,
-                    )
+                    
+                    if (response.isSuccessful) {
+                        // 성공: 서버가 text/plain으로 "가입이 완료되었습니다" 반환
+                        // ID는 서버에서 반환하지 않으므로 임시 ID 사용 (실제로는 로그인 후 사용자 정보에서 가져옴)
+                        SignupResult(
+                            id = System.currentTimeMillis(), // 임시 ID (실제로는 사용하지 않을 수 있음)
+                            nickname = nickname,
+                        )
+                    } else {
+                        throw Exception("회원가입 실패: ${response.code()}")
+                    }
                 }
             }
 
         // 2. 로그인
         override suspend fun login(
-            email: String,
+            nickname: String,
             password: String,
         ): Result<LoginResult> =
             runCatching {
@@ -77,10 +83,10 @@ class AuthRepositoryImpl
                     val mockAccessToken = "mock_access_token_${System.currentTimeMillis()}"
                     val mockRefreshToken = "mock_refresh_token_${System.currentTimeMillis()}"
                     
-                    // 사용자 정보 생성 (닉네임은 이메일에서 추출하거나 기본값 사용)
+                    // 사용자 정보 생성
                     val mockUser = User(
                         id = "user_${System.currentTimeMillis()}",
-                        nickname = email.split("@").firstOrNull() ?: "사용자",
+                        nickname = nickname,
                         profileImageUrl = null,
                     )
                     
@@ -96,20 +102,31 @@ class AuthRepositoryImpl
                         user = mockUser,
                     )
                 } else {
-                    // 실제 API 호출
-                    val request = LoginRequest(email = email, password = password)
-                    val response = authService.login(request)
-                    val data =
-                        response.data
-                            ?: throw IllegalStateException("Login data is null")
+                    // 실제 API 호출 (Swagger 스펙: nickname, password 사용)
+                    val request = LoginRequest(nickname = nickname, password = password)
+                    val loginResponse = authService.login(request)
 
                     // 토큰 저장
-                    tokenManager.saveTokens(data.accessToken, data.refreshToken)
+                    tokenManager.saveTokens(loginResponse.accessToken, loginResponse.refreshToken)
+
+                    // 사용자 정보 가져오기 (로그인 응답에 user가 없으면 /users/mypage로 조회)
+                    val user = if (loginResponse.user != null) {
+                        loginResponse.user.toEntity()
+                    } else {
+                        // 사용자 정보를 별도로 조회
+                        // 서버 응답: {"nickname":"...","myRecipeCount":0} (BaseResponse 래퍼 없음)
+                        val profile = userService.getMyPage()
+                        User(
+                            id = profile.id ?: "unknown",
+                            nickname = profile.nickname,
+                            profileImageUrl = profile.profileImageUrl,
+                        )
+                    }
 
                     LoginResult(
-                        accessToken = data.accessToken,
-                        refreshToken = data.refreshToken,
-                        user = data.user.toEntity(),
+                        accessToken = loginResponse.accessToken,
+                        refreshToken = loginResponse.refreshToken,
+                        user = user,
                     )
                 }
             }
@@ -135,19 +152,17 @@ class AuthRepositoryImpl
                     )
                 } else {
                     // 실제 API 호출
+                    // 서버 응답: {"accessToken":"...","refreshToken":"..."} (BaseResponse 래퍼 없음)
                     val request = ReissueRequest(refreshToken = refreshToken)
-                    val response = authService.reissue(request)
-                    val data =
-                        response.data
-                            ?: throw IllegalStateException("Reissue data is null")
+                    val reissueResponse = authService.reissue(request)
 
                     // 새 토큰 저장
-                    val newRefreshToken = data.refreshToken ?: refreshToken
-                    tokenManager.saveTokens(data.accessToken, newRefreshToken)
+                    val newRefreshToken = reissueResponse.refreshToken ?: refreshToken
+                    tokenManager.saveTokens(reissueResponse.accessToken, newRefreshToken)
 
                     ReissueResult(
-                        accessToken = data.accessToken,
-                        refreshToken = data.refreshToken,
+                        accessToken = reissueResponse.accessToken,
+                        refreshToken = reissueResponse.refreshToken,
                     )
                 }
             }
@@ -181,6 +196,18 @@ class AuthRepositoryImpl
 
         // 토큰 확인
         override suspend fun hasValidTokens(): Boolean {
+            // Mock 모드가 아닐 때만 실제 토큰 확인
+            // Mock 모드에서는 자동 로그인 비활성화 (더미 데이터로 자동 로그인 방지)
+            if (BuildConfig.USE_MOCK_API) {
+                return false
+            }
+            
+            val accessToken = tokenManager.getAccessToken()
+            // Mock 토큰이면 무시
+            if (accessToken != null && accessToken.startsWith("mock_")) {
+                return false
+            }
+            
             return tokenManager.hasTokens()
         }
     }
