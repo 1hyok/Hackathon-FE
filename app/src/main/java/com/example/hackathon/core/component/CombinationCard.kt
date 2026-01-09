@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -99,117 +100,123 @@ fun CombinationCard(
             ) {
                 Spacer(modifier = Modifier.height(12.dp))
 
-            // 태그 표시 (이미지 바로 아래)
-            if (combination.tags.isNotEmpty()) {
-                FlowRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalArrangement = Arrangement.spacedBy(6.dp),
-                ) {
-                    combination.tags.forEachIndexed { index, tag ->
-                        val isFirstTag = index == 0
-                        Box(
-                            modifier =
-                                Modifier
-                                    .then(
-                                        if (isFirstTag) {
-                                            Modifier.background(
-                                                Primary,
-                                                RoundedCornerShape(15.dp),
-                                            )
-                                        } else {
-                                            Modifier
-                                                .background(
-                                                    Color.White,
+                // 태그 표시 (이미지 바로 아래)
+                if (combination.tags.isNotEmpty()) {
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        combination.tags.forEachIndexed { index, tag ->
+                            val isFirstTag = index == 0
+                            Box(
+                                modifier =
+                                    Modifier
+                                        .then(
+                                            if (isFirstTag) {
+                                                Modifier.background(
+                                                    Primary,
                                                     RoundedCornerShape(15.dp),
                                                 )
-                                                .border(
-                                                    width = 1.dp,
-                                                    color = Primary,
-                                                    shape = RoundedCornerShape(15.dp),
-                                                )
-                                        },
-                                    )
-                                    .padding(horizontal = 10.dp, vertical = 4.dp),
-                        ) {
-                            Text(
-                                text = tag,
-                                style = HackathonTheme.typography.Caption_medium,
-                                color = if (isFirstTag) Color.White else Primary,
-                            )
+                                            } else {
+                                                Modifier
+                                                    .background(
+                                                        Color.White,
+                                                        RoundedCornerShape(15.dp),
+                                                    )
+                                                    .border(
+                                                        width = 1.dp,
+                                                        color = Primary,
+                                                        shape = RoundedCornerShape(15.dp),
+                                                    )
+                                            },
+                                        )
+                                        .padding(horizontal = 10.dp, vertical = 4.dp),
+                            ) {
+                                Text(
+                                    text = tag,
+                                    style = HackathonTheme.typography.Caption_medium,
+                                    color = if (isFirstTag) Color.White else Primary,
+                                )
+                            }
                         }
                     }
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
+
+                // 제목
+                Text(
+                    text = combination.title,
+                    style = HackathonTheme.typography.Sub1_semibold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    color = Color.Black,
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // 설명
+                Text(
+                    text = combination.description,
+                    style = HackathonTheme.typography.Body_medium,
+                    color = Color(0xFFC0C0C0),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+
+                HorizontalDivider(
+                    thickness = 0.5.dp,
+                    color = Color(0xFFC0C0C0),
+                    modifier = Modifier.padding(horizontal = 15.dp)
+                )
+
                 Spacer(modifier = Modifier.height(12.dp))
-            }
 
-            // 제목
-            Text(
-                text = combination.title,
-                style = HackathonTheme.typography.Sub1_semibold,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                color = Color.Black,
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // 설명
-            Text(
-                text = combination.description,
-                style = HackathonTheme.typography.Body_medium,
-                color = Gray700,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // 하단 정보: 좋아요 (왼쪽), 작성자 (오른쪽)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                // 좋아요 (왼쪽)
+                // 하단 정보: 좋아요 (왼쪽), 작성자 (오른쪽)
                 Row(
-                    modifier =
-                        Modifier
-                            .then(
-                                if (onLikeClick != null) {
-                                    Modifier.clickable(onClick = onLikeClick)
-                                } else {
-                                    Modifier
-                                },
-                            ),
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
                 ) {
-                    Icon(
-                        imageVector =
-                            if (combination.isLiked) {
-                                Icons.Filled.Favorite
-                            } else {
-                                Icons.Outlined.FavoriteBorder
-                            },
-                        contentDescription = "좋아요",
-                        tint = Primary,
-                        modifier = Modifier.size(18.dp),
-                    )
+                    // 좋아요 (왼쪽)
+                    Row(
+                        modifier =
+                            Modifier
+                                .then(
+                                    if (onLikeClick != null) {
+                                        Modifier.clickable(onClick = onLikeClick)
+                                    } else {
+                                        Modifier
+                                    },
+                                ),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        Icon(
+                            imageVector =
+                                if (combination.isLiked) {
+                                    Icons.Filled.Favorite
+                                } else {
+                                    Icons.Outlined.FavoriteBorder
+                                },
+                            contentDescription = "좋아요",
+                            tint = Primary,
+                            modifier = Modifier.size(18.dp),
+                        )
+                        Text(
+                            text = String.format("%,d", combination.likeCount),
+                            style = HackathonTheme.typography.Body_medium,
+                            color = Color.Black,
+                        )
+                    }
+
+                    // 작성자 닉네임 (오른쪽)
                     Text(
-                        text = String.format("%,d", combination.likeCount),
+                        text = combination.author.nickname,
                         style = HackathonTheme.typography.Body_medium,
                         color = Color.Black,
                     )
                 }
-
-                // 작성자 닉네임 (오른쪽)
-                Text(
-                    text = combination.author.nickname,
-                    style = HackathonTheme.typography.Body_medium,
-                    color = Color.Black,
-                )
-            }
             }
         }
     }
