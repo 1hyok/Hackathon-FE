@@ -1,4 +1,4 @@
-package com.example.hackathon.presentation.screen
+package com.example.hackathon.presentation.screen.auth
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

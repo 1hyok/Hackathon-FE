@@ -1,4 +1,4 @@
-package com.example.hackathon.presentation.screen
+package com.example.hackathon.presentation.screen.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
