@@ -50,14 +50,49 @@ jobs:
       - name: Get commit message
         id: commit
         run: |
-          echo "MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+          echo "MESSAGE=$(git log -1 --pretty=%s)" >> $GITHUB_OUTPUT
           echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Verify Firebase Secrets
+        run: |
+          echo "🔍 Checking Firebase Secrets..."
+          if [ -z "${{ secrets.FIREBASE_APP_ID }}" ]; then
+            echo "❌ FIREBASE_APP_ID is not set!"
+            exit 1
+          else
+            echo "✅ FIREBASE_APP_ID is set"
+          fi
+          
+          if [ -z "${{ secrets.FIREBASE_TOKEN }}" ]; then
+            echo "❌ FIREBASE_TOKEN is not set!"
+            echo "⚠️  Please add FIREBASE_TOKEN secret with Firebase service account JSON"
+            exit 1
+          else
+            echo "✅ FIREBASE_TOKEN is set"
+            # JSON 형식 기본 확인 (type: service_account 포함 여부)
+            if echo "${{ secrets.FIREBASE_TOKEN }}" | grep -q '"type".*"service_account"'; then
+              echo "✅ FIREBASE_TOKEN appears to be a valid service account JSON"
+            else
+              echo "⚠️  WARNING: FIREBASE_TOKEN may not be a valid service account JSON"
+              echo "   Expected format: { \"type\": \"service_account\", ... }"
+            fi
+          fi
 
       - name: Upload to Firebase App Distribution
         id: firebase_distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
+          # serviceCredentialsFileContent: Firebase 서비스 계정 JSON 파일의 전체 내용이 필요합니다
+          # GitHub Secrets에 저장된 값은 다음 형식이어야 합니다:
+          # {
+          #   "type": "service_account",
+          #   "project_id": "your-project-id",
+          #   "private_key": "...",
+          #   "client_email": "...",
+          #   ...
+          # }
+          # Secret 이름이 FIREBASE_SERVICE_ACCOUNT_JSON인 경우, 아래를 FIREBASE_SERVICE_ACCOUNT_JSON으로 변경하세요
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_TOKEN }}
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
