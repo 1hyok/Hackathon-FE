@@ -126,7 +126,7 @@ fun LoginScreen(
                     modifier = Modifier.width(237.71429.dp),
                     fontSize = 14.sp,
                     lineHeight = 16.sp,
-                    fontFamily = FontMedium,
+                    style = HackathonTheme.typography.Body_semibold,
                     fontWeight = FontWeight(500),
                     color = Color(0xFF000000),
                     textAlign = TextAlign.End,
