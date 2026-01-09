@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hackathon.domain.entity.RecipeDetail
 import com.example.hackathon.domain.repository.CombinationRepository
+import com.example.hackathon.domain.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +18,7 @@ class DetailViewModel
     @Inject
     constructor(
         private val repository: CombinationRepository,
+        private val recipeRepository: RecipeRepository,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(DetailUiState())
         val uiState: StateFlow<DetailUiState> = _uiState.asStateFlow()
@@ -54,6 +56,7 @@ class DetailViewModel
             val isLiked = current.userInteraction.isLiked
             val currentCount = current.stats.likesCount
 
+            // 낙관적 업데이트: UI를 먼저 업데이트
             val updated =
                 current.copy(
                     stats =
@@ -72,7 +75,32 @@ class DetailViewModel
                     recipeDetail = updated,
                 )
 
-            // TODO: repository.toggleLike(current.id)
+            // API 호출
+            viewModelScope.launch {
+                val result =
+                    if (isLiked) {
+                        recipeRepository.unlikeRecipe(current.id)
+                    } else {
+                        recipeRepository.likeRecipe(current.id)
+                    }
+
+                result.fold(
+                    onSuccess = {
+                        // API 호출 성공 - 이미 UI는 업데이트됨
+                    },
+                    onFailure = { throwable ->
+                        // API 호출 실패 시 원래 상태로 롤백
+                        _uiState.value =
+                            _uiState.value.copy(
+                                recipeDetail = current,
+                            )
+                        _uiState.value =
+                            _uiState.value.copy(
+                                error = throwable.message ?: "좋아요 처리에 실패했습니다",
+                            )
+                    },
+                )
+            }
         }
     }
 

@@ -18,7 +18,6 @@ fun HomeContent(
     selectedCategory: Category,
     onCategorySelected: (Category) -> Unit,
     onCombinationClick: (String) -> Unit,
-    onLikeClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -50,7 +49,6 @@ fun HomeContent(
                 HomeCombinationList(
                     combinations = uiState.combinations,
                     onCombinationClick = onCombinationClick,
-                    onLikeClick = onLikeClick,
                 )
             }
         }
@@ -66,7 +64,6 @@ private fun HomeContentLoadingPreview() {
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLikeClick = {},
         )
     }
 }
@@ -80,7 +77,6 @@ private fun HomeContentErrorPreview() {
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLikeClick = {},
         )
     }
 }
@@ -94,7 +90,6 @@ private fun HomeContentEmptyPreview() {
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLikeClick = {},
         )
     }
 }
@@ -144,7 +139,6 @@ private fun HomeContentWithCombinationsPreview() {
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLikeClick = {},
         )
     }
 }
