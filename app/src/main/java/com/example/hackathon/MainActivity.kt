@@ -4,14 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -45,7 +49,6 @@ class MainActivity : ComponentActivity() {
                 val bottomNavRoutes =
                     listOf(
                         Route.Home.route,
-                        Route.Search.route,
                         Route.Create.route,
                         Route.My.route,
                     )
@@ -60,7 +63,19 @@ class MainActivity : ComponentActivity() {
                         Box(
                             modifier =
                                 Modifier
-                                    .fillMaxWidth(),
+                                    .fillMaxWidth()
+                                    .shadow(
+                                        elevation = 12.dp,
+                                        shape =
+                                            RoundedCornerShape(
+                                                topStart = 30.dp,
+                                                topEnd = 30.dp,
+                                            ),
+                                        clip = false,
+                                    )
+                                    .background(
+                                        Color.White,
+                                    ),
                         ) {
                             BottomNavBar(
                                 visible = showBottomBar,
