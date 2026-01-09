@@ -42,7 +42,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,6 +54,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.hackathon.R
 import com.example.hackathon.core.component.TopAppLogoBar
+import com.example.hackathon.core.util.dropShadow
 import com.example.hackathon.data.local.DummyData
 import com.example.hackathon.presentation.viewmodel.DetailViewModel
 import com.example.hackathon.ui.theme.HackathonTheme
@@ -109,6 +112,22 @@ fun DetailScreen(
             // 오른쪽 더미 공간 (좌우 균형)
             Spacer(modifier = Modifier.size(48.dp))
         }
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(4.dp)
+                    .background(
+                        brush =
+                            Brush.verticalGradient(
+                                colors =
+                                    listOf(
+                                        Color.Black.copy(alpha = 0.15f),
+                                        Color.Transparent,
+                                    ),
+                            ),
+                    ),
+        )
 
         LazyColumn(
             modifier =
