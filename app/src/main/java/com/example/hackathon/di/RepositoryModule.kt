@@ -1,8 +1,10 @@
 package com.example.hackathon.di
 
+import com.example.hackathon.data.repositoryimpl.AuthRepositoryImpl
 import com.example.hackathon.data.repositoryimpl.CombinationRepositoryImpl
 import com.example.hackathon.data.repositoryimpl.RecipeRepositoryImpl
 import com.example.hackathon.data.repositoryimpl.UserRepositoryImpl
+import com.example.hackathon.domain.repository.AuthRepository
 import com.example.hackathon.domain.repository.CombinationRepository
 import com.example.hackathon.domain.repository.RecipeRepository
 import com.example.hackathon.domain.repository.UserRepository
@@ -26,4 +28,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindRecipeRepository(recipeRepositoryImpl: RecipeRepositoryImpl): RecipeRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hackathon.domain.entity.Combination
 import com.example.hackathon.domain.entity.User
+import com.example.hackathon.domain.repository.AuthRepository
 import com.example.hackathon.domain.repository.CombinationRepository
 import com.example.hackathon.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,7 @@ class MyPageViewModel
     constructor(
         private val userRepository: UserRepository,
         private val combinationRepository: CombinationRepository,
+        private val authRepository: AuthRepository,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(MyPageUiState())
         val uiState: StateFlow<MyPageUiState> = _uiState.asStateFlow()
@@ -111,8 +113,17 @@ class MyPageViewModel
         }
 
         fun logout() {
-            // TODO: 로그아웃 로직 구현
-            _uiState.value = _uiState.value.copy(isLoggedOut = true)
+            viewModelScope.launch {
+                authRepository.logout().fold(
+                    onSuccess = {
+                        _uiState.value = _uiState.value.copy(isLoggedOut = true)
+                    },
+                    onFailure = { error ->
+                        // 로그아웃 실패해도 로컬 토큰은 삭제하고 로그아웃 처리
+                        _uiState.value = _uiState.value.copy(isLoggedOut = true)
+                    },
+                )
+            }
         }
     }
 

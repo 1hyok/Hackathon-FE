@@ -81,6 +81,13 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
+    // Kotlin Metadata (메타데이터 버전 호환성 해결)
+    // Kotlin 2.0+에서는 kotlin-metadata-jvm 사용 (kotlinx가 아님)
+    implementation("org.jetbrains.kotlin:kotlin-metadata-jvm:2.0.0")
+
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
     implementation("com.google.firebase:firebase-analytics")

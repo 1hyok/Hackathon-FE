@@ -1,6 +1,7 @@
 package com.example.hackathon.di
 
 import com.example.hackathon.BuildConfig
+import com.example.hackathon.data.network.AuthInterceptor
 import com.example.hackathon.data.service.RecipeService
 import dagger.Module
 import dagger.Provides
@@ -20,13 +21,16 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun providesOkHttpClient(): OkHttpClient {
+    fun providesOkHttpClient(
+        authInterceptor: AuthInterceptor,
+    ): OkHttpClient {
         val loggingInterceptor =
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             }
 
         return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
             .addInterceptor(loggingInterceptor)
             .build()
     }
@@ -43,6 +47,7 @@ object NetworkModule {
         return json.asConverterFactory("application/json".toMediaType())
     }
 
+    @MainRetrofit
     @Provides
     @Singleton
     fun providesRetrofit(
@@ -55,6 +60,30 @@ object NetworkModule {
             .addConverterFactory(converterFactory)
             .build()
 
+    // 토큰 재발급용 별도 Retrofit (AuthInterceptor 없이)
+    @AuthRetrofit
     @Provides
-    fun provideRecipeService(retrofit: Retrofit): RecipeService = retrofit.create(RecipeService::class.java)
+    @Singleton
+    fun providesAuthRetrofit(
+        converterFactory: Converter.Factory,
+    ): Retrofit {
+        val loggingInterceptor =
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+
+        val authClient =
+            OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build()
+
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .client(authClient)
+            .addConverterFactory(converterFactory)
+            .build()
+    }
+
+    @Provides
+    fun provideRecipeService(@MainRetrofit retrofit: Retrofit): RecipeService = retrofit.create(RecipeService::class.java)
 }
