@@ -5,14 +5,13 @@ import com.example.hackathon.domain.entity.User
 interface AuthRepository {
     // 1. 회원가입
     suspend fun signup(
-        email: String,
         password: String,
         nickname: String,
     ): Result<SignupResult>
 
     // 2. 로그인
     suspend fun login(
-        email: String,
+        nickname: String,
         password: String,
     ): Result<LoginResult>
 
@@ -28,7 +27,7 @@ interface AuthRepository {
 
 data class SignupResult(
     val id: Long,
-    val email: String,
+    val nickname: String,
 )
 
 data class LoginResult(
