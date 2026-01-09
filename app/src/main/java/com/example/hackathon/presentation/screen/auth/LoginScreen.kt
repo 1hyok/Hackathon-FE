@@ -1,5 +1,6 @@
 package com.example.hackathon.presentation.screen.auth
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
@@ -39,16 +41,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.hackathon.R
 import com.example.hackathon.core.component.TopAppLogoBar
 import com.example.hackathon.presentation.viewmodel.LoginViewModel
+import com.example.hackathon.ui.theme.FontMedium
 import com.example.hackathon.ui.theme.Gray700
 import com.example.hackathon.ui.theme.HackathonTheme
 import com.example.hackathon.ui.theme.Primary
@@ -90,29 +100,35 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // 로고 영역 (최상단)
-            TopAppLogoBar()
+            Spacer(modifier.size(44.dp))
+            Image(
+                painter = painterResource(R.drawable.ic_logo),
+                contentDescription = "logo",
+                modifier = Modifier
+                    .size(
+                        width = 237.71429.dp,
+                        height = 65.dp,
+                    )
+            )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             // 태그라인
             Column(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 68.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Text(
-                    text = "어디선가 들어본 바로 그 조합",
-                    style = HackathonTheme.typography.Head2_bold,
-                    color = Color.Black,
+                    text = "어디선가 들어본 바로 그 조합\n모두 쩝쩝박사에서",
                     modifier = Modifier.fillMaxWidth(),
-                )
-                Text(
-                    text = "모두 쩝쩝박사에서",
-                    style = HackathonTheme.typography.Body_medium,
-                    color = Color.Black,
-                    modifier = Modifier.fillMaxWidth(),
+                    fontSize = 14.sp,
+                    lineHeight = 16.sp,
+                    fontFamily = FontMedium,
+                    fontWeight = FontWeight(500),
+                    color = Color(0xFF000000),
                     textAlign = TextAlign.End,
                 )
             }

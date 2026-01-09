@@ -19,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,6 +61,7 @@ fun OnboardingScreen(
                     painter = painterResource(R.drawable.ic_logo_rec),
                     contentDescription = "쩝쩝박사 로고",
                     modifier = Modifier.size(120.dp),
+                    contentScale = ContentScale.Fit,
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
