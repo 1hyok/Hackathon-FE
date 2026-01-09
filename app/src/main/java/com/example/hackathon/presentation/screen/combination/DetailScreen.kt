@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -58,6 +59,7 @@ import com.example.hackathon.core.util.dropShadow
 import com.example.hackathon.data.local.DummyData
 import com.example.hackathon.presentation.viewmodel.DetailViewModel
 import com.example.hackathon.ui.theme.HackathonTheme
+import com.example.hackathon.ui.theme.Primary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,7 +87,7 @@ fun DetailScreen(
                 Modifier
                     .fillMaxWidth()
                     .statusBarsPadding() // 상태바 침범 방지 (중요)
-                    .height(56.dp),
+                    .height(80.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(
@@ -267,31 +269,46 @@ fun DetailScreen(
                         )
 
                         if (recipe.tags.isNotEmpty()) {
-                            LazyRow(
-                                modifier =
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .padding(bottom = 12.dp),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            FlowRow(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                verticalArrangement = Arrangement.spacedBy(6.dp),
                             ) {
-                                items(recipe.tags) { tag ->
+                                recipe.tags.forEachIndexed { index, tag ->
+                                    val isFirstTag = index == 0
                                     Box(
                                         modifier =
                                             Modifier
-                                                .background(
-                                                    color = HackathonTheme.colors.primary,
-                                                    shape = RoundedCornerShape(20.dp),
+                                                .then(
+                                                    if (isFirstTag) {
+                                                        Modifier.background(
+                                                            Primary,
+                                                            RoundedCornerShape(15.dp),
+                                                        )
+                                                    } else {
+                                                        Modifier
+                                                            .background(
+                                                                Color.White,
+                                                                RoundedCornerShape(15.dp),
+                                                            )
+                                                            .border(
+                                                                width = 1.dp,
+                                                                color = Primary,
+                                                                shape = RoundedCornerShape(15.dp),
+                                                            )
+                                                    },
                                                 )
-                                                .padding(horizontal = 12.dp, vertical = 4.dp),
+                                                .padding(horizontal = 10.dp, vertical = 4.dp),
                                     ) {
                                         Text(
                                             text = tag,
                                             style = HackathonTheme.typography.Caption_medium,
-                                            color = HackathonTheme.colors.white,
+                                            color = if (isFirstTag) Color.White else Primary,
                                         )
                                     }
                                 }
                             }
+                            Spacer(modifier = Modifier.height(12.dp))
                         }
 
                         Text(
@@ -300,6 +317,8 @@ fun DetailScreen(
                             color = HackathonTheme.colors.gray700,
                             modifier = Modifier.padding(vertical = 15.dp),
                         )
+
+                        Spacer(modifier = Modifier.height(12.dp))
 
                         Column(
                             modifier =
