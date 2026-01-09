@@ -52,16 +52,24 @@ fun AppNavGraph(
             )
         }
         composable(
-            route = Route.Detail.route,
-            arguments = listOf(navArgument("id") { type = NavType.StringType }),
+            route = Route.Detail.route + "/{id}",
+            arguments =
+                listOf(
+                    navArgument("id") {
+                        type = NavType.StringType
+                    },
+                ),
         ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("id") ?: ""
+            val idString = backStackEntry.arguments?.getString("id")
+
+            val recipeId = idString?.toLongOrNull() ?: -1L
+
             DetailScreen(
-                modifier = modifier,
-                combinationId = id,
+                recipeId = recipeId,
                 onNavigateBack = { navController.popBackStack() },
             )
         }
+
         composable(route = Route.Create.route) {
             CreateCombinationScreen(
                 modifier = modifier,
