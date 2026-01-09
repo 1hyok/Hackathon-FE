@@ -2,18 +2,19 @@ package com.example.hackathon.presentation.screen.home.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,30 +40,43 @@ fun HomeScreen(
         mutableStateOf(Category.ALL)
     }
 
-    Column(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .background(HackathonTheme.colors.white),
-    ) {
-        Row(
+    Scaffold(
+        topBar = {
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .shadow(
+                            elevation = 6.dp,
+                            clip = false,
+                        )
+                        .background(HackathonTheme.colors.white)
+                        .padding(top = 30.dp, bottom = 20.dp),
+            ) {
+                Row(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(start = 10.dp, end = 10.dp, top = 25.dp),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    SearchComponent(
+                        onSearchClick = {
+                            navController.navigate("search")
+                        },
+                    )
+                }
+            }
+        },
+    ) { innerPadding ->
+        LazyColumn(
             modifier =
-                Modifier
+                modifier
                     .fillMaxWidth()
-                    .padding(bottom = 20.dp, start = 20.dp, top = 30.dp),
-            horizontalArrangement = Arrangement.Center,
+                    .padding(innerPadding),
         ) {
-            SearchComponent(
-                onSearchClick = {
-                navController.navigate("search")
-            },)
-        }
-
-        // TopAppLogoBar()
-        LazyColumn {
             item {
                 FilterBar(
-                    modifier = Modifier.padding(top = 20.dp),
                     categories = Category.entries.toList(),
                     selectedCategory = selectedCategory,
                     onCategorySelected = { category ->
@@ -72,9 +86,8 @@ fun HomeScreen(
             }
 
             item {
+                // TODO: 추후 Combination List 삽입
             }
         }
-
-        // TODO: 나중에 필터 따라 게시글 목룍 표시
     }
 }
