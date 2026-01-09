@@ -3,6 +3,7 @@ package com.example.hackathon.data.service
 import com.example.hackathon.data.dto.response.BaseResponse
 import com.example.hackathon.data.dto.response.DetailResponse
 import com.example.hackathon.data.dto.response.PostPreviewDto
+import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -48,18 +49,20 @@ interface RecipeService {
     /**
      * 좋아요 추가
      * POST /recipes/{postId}/likes
+     * 서버 응답: 200 OK with empty body (0 bytes)
      */
     @POST("recipes/{postId}/likes")
     suspend fun likeRecipe(
         @Path("postId") postId: Long,
-    ): BaseResponse<Unit>
+    ): Response<Unit>
 
     /**
      * 좋아요 취소
      * DELETE /recipes/{postId}/likes
+     * 서버 응답: 200 OK with empty body (0 bytes)
      */
     @DELETE("recipes/{postId}/likes")
     suspend fun unlikeRecipe(
         @Path("postId") postId: Long,
-    ): BaseResponse<Unit>
+    ): Response<Unit>
 }

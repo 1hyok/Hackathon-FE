@@ -144,12 +144,12 @@ class ExampleApiUsageViewModel
                 try {
                     val response = recipeService.likeRecipe(postId)
 
-                    if (response.code == 200) {
+                    if (response.isSuccessful) {
                         // 성공 시 목록 새로고침 또는 로컬 상태 업데이트
                         loadRecipes()
                     } else {
                         _recipeListState.value = _recipeListState.value.copy(
-                            error = response.message,
+                            error = "서버 오류: ${response.code()} ${response.message()}",
                         )
                     }
                 } catch (e: Exception) {
