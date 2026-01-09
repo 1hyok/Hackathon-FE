@@ -55,7 +55,6 @@ import com.example.hackathon.ui.theme.Primary
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-// 담당자: 일혁
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(

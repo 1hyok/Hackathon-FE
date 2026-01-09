@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-// 담당자: 예원
 // TODO: 디자인 확인 후 UI 조정 필요
 @HiltViewModel
 class HomeViewModel

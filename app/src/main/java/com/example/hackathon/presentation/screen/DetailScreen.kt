@@ -33,7 +33,6 @@ import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.presentation.viewmodel.DetailViewModel
 import com.example.hackathon.ui.theme.HackathonTheme
 
-// 담당자: 예원
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(

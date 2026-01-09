@@ -106,30 +106,6 @@ app/src/main/java/com/example/hackathon/
 
 ---
 
-## 📝 역할 분담
-
-### 예원
-- 홈 화면 (조합 목록)
-- 조합 상세 화면
-- 관련 ViewModel, Repository
-
-### 일혁
-- 로그인 화면
-- 회원가입 화면 (Registration/Sign Up)
-- 온보딩 화면 (Onboarding Screen)
-- 회원가입 완료 화면 (RegistrationSuccessScreen)
-- 조합 등록 화면
-- 검색 화면 (Search Screen)
-- 공통 컴포넌트 (카드, 칩, 검색바 등)
-- 폰트 설정
-- API 연동 (일혁 담당 화면들)
-- 에러 처리 개선
-- 로딩 상태 개선
-- 이미지 서버 업로드
-- 검색 기능 고도화
-
----
-
 ## 🚨 주의사항
 
 1. **DiaryScreen 변경 필요**: 현재 "일기" 화면인데, "조합 상세" 화면으로 변경해야 함
