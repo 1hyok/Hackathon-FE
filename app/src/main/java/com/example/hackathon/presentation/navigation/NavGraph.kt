@@ -2,6 +2,7 @@ package com.example.hackathon.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,6 +11,7 @@ import androidx.navigation.navArgument
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.presentation.screen.CreateCombinationScreen
 import com.example.hackathon.presentation.screen.DetailScreen
+import com.example.hackathon.presentation.screen.EditProfileScreen
 import com.example.hackathon.presentation.screen.LoginScreen
 import com.example.hackathon.presentation.screen.MyScreen
 import com.example.hackathon.presentation.screen.OnboardingScreen
@@ -17,6 +19,7 @@ import com.example.hackathon.presentation.screen.RegistrationScreen
 import com.example.hackathon.presentation.screen.RegistrationSuccessScreen
 import com.example.hackathon.presentation.screen.SearchScreen
 import com.example.hackathon.presentation.screen.home.screen.HomeScreen
+import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 
 @Composable
 fun AppNavGraph(
@@ -125,7 +128,20 @@ fun AppNavGraph(
                     }
                 },
                 onChangeNickname = {
-                    // TODO: 닉네임 변경 화면으로 이동
+                    navController.navigate(Route.EditProfile.route)
+                },
+            )
+        }
+        composable(route = Route.EditProfile.route) {
+            val myScreenViewModel = hiltViewModel<MyPageViewModel>()
+            EditProfileScreen(
+                modifier = modifier,
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onProfileUpdated = {
+                    // 프로필 저장 후 MyScreen의 프로필 새로고침
+                    myScreenViewModel.loadProfile()
                 },
             )
         }
