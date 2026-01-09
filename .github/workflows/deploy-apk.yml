@@ -53,6 +53,31 @@ jobs:
           echo "MESSAGE=$(git log -1 --pretty=%s)" >> $GITHUB_OUTPUT
           echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
+      - name: Verify Firebase Secrets
+        run: |
+          echo "🔍 Checking Firebase Secrets..."
+          if [ -z "${{ secrets.FIREBASE_APP_ID }}" ]; then
+            echo "❌ FIREBASE_APP_ID is not set!"
+            exit 1
+          else
+            echo "✅ FIREBASE_APP_ID is set"
+          fi
+          
+          if [ -z "${{ secrets.FIREBASE_TOKEN }}" ]; then
+            echo "❌ FIREBASE_TOKEN is not set!"
+            echo "⚠️  Please add FIREBASE_TOKEN secret with Firebase service account JSON"
+            exit 1
+          else
+            echo "✅ FIREBASE_TOKEN is set"
+            # JSON 형식 기본 확인 (type: service_account 포함 여부)
+            if echo "${{ secrets.FIREBASE_TOKEN }}" | grep -q '"type".*"service_account"'; then
+              echo "✅ FIREBASE_TOKEN appears to be a valid service account JSON"
+            else
+              echo "⚠️  WARNING: FIREBASE_TOKEN may not be a valid service account JSON"
+              echo "   Expected format: { \"type\": \"service_account\", ... }"
+            fi
+          fi
+
       - name: Upload to Firebase App Distribution
         id: firebase_distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
