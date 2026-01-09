@@ -1,13 +1,12 @@
 package com.example.hackathon.data.repositoryimpl
 
 import com.example.hackathon.data.local.DummyData
-import com.example.hackathon.data.mapper.toDomain
 import com.example.hackathon.data.service.CombinationService
 import com.example.hackathon.data.service.RecipeService
 import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.domain.entity.Combination
-import com.example.hackathon.domain.entity.RecipeDetail
 import com.example.hackathon.domain.entity.Ingredient
+import com.example.hackathon.domain.entity.RecipeDetail
 import com.example.hackathon.domain.entity.Stats
 import com.example.hackathon.domain.entity.UserInteraction
 import com.example.hackathon.domain.repository.CombinationRepository
@@ -233,29 +232,10 @@ class CombinationRepositoryImpl
         }
 
         override suspend fun getRecipeDetail(id: Long): Result<RecipeDetail> =
-            Result.success(
-                RecipeDetail(
-                    id = id,
-                    title = "임시 레시피",
-                    category = "하이디라오",
-                    description = "서버 없이 테스트 중인 더미 데이터입니다.",
-                    images = emptyList(),
-                    ingredients =
-                        listOf(
-                            Ingredient("땅콩소스", "1T"),
-                            Ingredient("칠리소스", "2T"),
-                        ),
-                    stats = Stats(likesCount = 123),
-                    userInteraction =
-                        UserInteraction(
-                            isLiked = true,
-                            isMine = false,
-                        ),
-                    tags = listOf("#mock"),
-                    createdAt = "",
-                    updatedAt = "",
-                ),
-            )
+            runCatching {
+                DummyData.getRecipeDetailById(id)
+                    ?: throw IllegalStateException("Recipe detail data is null")
+            }
 
             /*
              * TODO: 나중에 API 연동 후 아래 코드 사용
