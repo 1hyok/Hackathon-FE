@@ -96,21 +96,23 @@ fun LoginScreen(
 
             // 태그라인
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.padding(horizontal = 16.dp),
             ) {
                 Text(
                     text = "어디선가 들어본 바로 그 조합",
-                    style = HackathonTheme.typography.Body_medium,
-                    color = Gray700,
-                    textAlign = TextAlign.Center,
+                    style = HackathonTheme.typography.Head2_bold,
+                    color = Color.Black,
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 Text(
                     text = "모두 쩝쩝박사에서",
                     style = HackathonTheme.typography.Body_medium,
-                    color = Gray700,
-                    textAlign = TextAlign.Center,
+                    color = Color.Black,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.End,
                 )
             }
 
@@ -305,16 +307,6 @@ fun LoginScreen(
                         }
                     }
                 }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // 하단 문의 안내
-                Text(
-                    text = "닉네임/비밀번호를 잊어버렸다면? jjupjjup@naver.com으로 문의",
-                    style = HackathonTheme.typography.Caption_medium,
-                    color = Gray700,
-                    textAlign = TextAlign.Center,
-                )
 
                 Spacer(modifier = Modifier.height(24.dp))
             }
