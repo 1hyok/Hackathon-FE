@@ -5,6 +5,7 @@ data class RecipeDetail(
     val title: String,
     val category: String,
     val description: String,
+    val author: User,
     val images: List<String>,
     val ingredients: List<Ingredient>,
     val stats: Stats,
