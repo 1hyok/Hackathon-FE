@@ -38,6 +38,52 @@ class CreateCombinationViewModel
             _uiState.value = _uiState.value.copy(ingredients = ingredients)
         }
 
+        fun addIngredientTag(tag: String) {
+            val currentTags = _uiState.value.ingredientTags.toMutableList()
+            if (!currentTags.contains(tag)) {
+                currentTags.add(tag)
+                _uiState.value = _uiState.value.copy(ingredientTags = currentTags)
+            }
+        }
+
+        fun removeIngredientTag(tag: String) {
+            val currentTags = _uiState.value.ingredientTags.toMutableList()
+            currentTags.remove(tag)
+            _uiState.value = _uiState.value.copy(ingredientTags = currentTags)
+        }
+
+        fun updateIngredientName(
+            index: Int,
+            name: String,
+        ) {
+            val currentIngredients = _uiState.value.ingredientsList.toMutableList()
+            if (index < currentIngredients.size) {
+                currentIngredients[index] = currentIngredients[index].copy(name = name)
+            } else {
+                currentIngredients.add(com.example.hackathon.presentation.screen.component.IngredientItem(name, ""))
+            }
+            _uiState.value = _uiState.value.copy(ingredientsList = currentIngredients)
+        }
+
+        fun updateIngredientQuantity(
+            index: Int,
+            quantity: String,
+        ) {
+            val currentIngredients = _uiState.value.ingredientsList.toMutableList()
+            if (index < currentIngredients.size) {
+                currentIngredients[index] = currentIngredients[index].copy(quantity = quantity)
+            } else {
+                currentIngredients.add(com.example.hackathon.presentation.screen.component.IngredientItem("", quantity))
+            }
+            _uiState.value = _uiState.value.copy(ingredientsList = currentIngredients)
+        }
+
+        fun addIngredient() {
+            val currentIngredients = _uiState.value.ingredientsList.toMutableList()
+            currentIngredients.add(com.example.hackathon.presentation.screen.component.IngredientItem("", ""))
+            _uiState.value = _uiState.value.copy(ingredientsList = currentIngredients)
+        }
+
         fun updateSteps(steps: String) {
             _uiState.value = _uiState.value.copy(steps = steps)
         }
@@ -47,7 +93,17 @@ class CreateCombinationViewModel
         }
 
         fun updateImageUri(uri: android.net.Uri?) {
-            _uiState.value = _uiState.value.copy(imageUri = uri)
+            val currentUris = _uiState.value.imageUris.toMutableList()
+            if (uri != null && currentUris.size < 5) {
+                currentUris.add(uri)
+                _uiState.value = _uiState.value.copy(imageUris = currentUris)
+            }
+        }
+
+        fun removeImageUri(uri: android.net.Uri) {
+            val currentUris = _uiState.value.imageUris.toMutableList()
+            currentUris.remove(uri)
+            _uiState.value = _uiState.value.copy(imageUris = currentUris)
         }
 
         fun addTag(tag: String) {
@@ -72,18 +128,19 @@ class CreateCombinationViewModel
                 return
             }
 
-            val ingredientsList =
-                state.ingredients.split(",")
-                    .map { it.trim() }
-                    .filter { it.isNotBlank() }
+            // 재료 리스트에서 유효한 재료만 필터링
+            val validIngredients =
+                state.ingredientsList
+                    .filter { it.name.isNotBlank() && it.quantity.isNotBlank() }
+                    .map { "${it.name} ${it.quantity}" }
 
             val stepsList =
                 state.steps.split("\n")
                     .map { it.trim() }
                     .filter { it.isNotBlank() }
 
-            if (ingredientsList.isEmpty() || stepsList.isEmpty()) {
-                _uiState.value = state.copy(error = "재료와 만드는 방법을 입력해주세요")
+            if (validIngredients.isEmpty()) {
+                _uiState.value = state.copy(error = "재료를 입력해주세요")
                 return
             }
 
@@ -94,10 +151,10 @@ class CreateCombinationViewModel
                     title = state.title,
                     description = state.description,
                     category = state.category,
-                    ingredients = ingredientsList,
+                    ingredients = validIngredients,
                     steps = stepsList,
                     tags = state.tags,
-                    imageUri = state.imageUri,
+                    imageUri = state.imageUris.firstOrNull(),
                 ).fold(
                     onSuccess = { combination ->
                         _uiState.value = state.copy(isLoading = false)
@@ -124,9 +181,17 @@ data class CreateCombinationUiState(
     val description: String = "",
     val category: Category = Category.SUBWAY,
     val ingredients: String = "",
+    // 재료 리스트 (재료명, 용량 쌍)
+    val ingredientsList: List<com.example.hackathon.presentation.screen.component.IngredientItem> =
+        listOf(com.example.hackathon.presentation.screen.component.IngredientItem("", "")),
     val steps: String = "",
     val tags: List<String> = emptyList(),
+    // 하위 호환성 유지
     val imageUri: android.net.Uri? = null,
+    // 최대 5장
+    val imageUris: List<android.net.Uri> = emptyList(),
+    // 재료 태그 (고소한 맛, 매콤함 등)
+    val ingredientTags: List<String> = emptyList(),
     val isPublic: Boolean = true,
     val isLoading: Boolean = false,
     val error: String? = null,
