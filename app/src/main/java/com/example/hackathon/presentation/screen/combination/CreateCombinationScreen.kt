@@ -96,8 +96,8 @@ fun CreateCombinationScreen(
                     modifier =
                         Modifier
                             .fillMaxWidth()
-                            .statusBarsPadding()
-                            .height(60.dp),
+                            .height(80.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(
                         onClick = onNavigateBack,
