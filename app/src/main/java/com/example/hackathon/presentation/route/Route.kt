@@ -22,4 +22,6 @@ sealed class Route(
     data object Onboarding : Route(route = "onboarding")
 
     data object My : Route(route = "my")
+
+    data object EditProfile : Route(route = "edit_profile")
 }
