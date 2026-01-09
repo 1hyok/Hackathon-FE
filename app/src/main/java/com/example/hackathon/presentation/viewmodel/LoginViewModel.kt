@@ -30,6 +30,10 @@ class LoginViewModel
             _uiState.value = _uiState.value.copy(isPasswordVisible = !_uiState.value.isPasswordVisible)
         }
 
+        fun toggleAutoLogin() {
+            _uiState.value = _uiState.value.copy(isAutoLogin = !_uiState.value.isAutoLogin)
+        }
+
         fun login() {
             viewModelScope.launch {
                 _uiState.value = _uiState.value.copy(isLoading = true, error = null)
@@ -53,6 +57,7 @@ data class LoginUiState(
     val id: String = "",
     val password: String = "",
     val isPasswordVisible: Boolean = false,
+    val isAutoLogin: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
 )

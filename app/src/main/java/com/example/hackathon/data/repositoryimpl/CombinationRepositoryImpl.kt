@@ -198,4 +198,30 @@ class CombinationRepositoryImpl
                 Result.failure(e)
             }
         }
+
+        override suspend fun searchCombinations(query: String): Result<List<Combination>> {
+            return try {
+                delay(300)
+                val allCombinations = DummyData.dummyCombinations + createdCombinations
+                val searchResults =
+                    allCombinations
+                        .filter {
+                            it.title.contains(query, ignoreCase = true) ||
+                                it.description.contains(query, ignoreCase = true) ||
+                                it.tags.any { tag -> tag.contains(query, ignoreCase = true) } ||
+                                it.ingredients.any { ingredient -> ingredient.contains(query, ignoreCase = true) }
+                        }
+                        .map { combination ->
+                            val likeCount =
+                                combinationLikeCounts[combination.id] ?: combination.likeCount
+                            combination.copy(
+                                isLiked = likedCombinationIds.contains(combination.id),
+                                likeCount = likeCount,
+                            )
+                        }
+                Result.success(searchResults)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
     }
