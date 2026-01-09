@@ -28,55 +28,92 @@ class HomeViewModel
         private val _selectedCategory = MutableStateFlow(Category.ALL)
         val selectedCategory: StateFlow<Category> = _selectedCategory.asStateFlow()
 
+        private var currentPage = 1
+        private val pageSize = 10
+        private var hasMore = true
+        private var isLoadingMore = false
+
         init {
-            loadCombinations()
+            loadCombinations(reset = true)
         }
 
-        fun loadCombinations() {
+        fun loadCombinations(reset: Boolean = false) {
             viewModelScope.launch {
-                _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+                if (reset) {
+                    currentPage = 1
+                    hasMore = true
+                    _uiState.value = _uiState.value.copy(isLoading = true, error = null, combinations = emptyList())
+                } else {
+                    if (isLoadingMore || !hasMore) return@launch
+                    isLoadingMore = true
+                    _uiState.value = _uiState.value.copy(isLoadingMore = true)
+                }
 
                 val category = if (_selectedCategory.value == Category.ALL) null else _selectedCategory.value
-                repository.getCombinations(category).fold(
-                    onSuccess = { combinations ->
+                repository.getCombinations(category, currentPage, pageSize).fold(
+                    onSuccess = { newCombinations ->
                         val filtered =
                             if (_searchQuery.value.isBlank()) {
-                                combinations
+                                newCombinations
                             } else {
-                                combinations.filter {
+                                newCombinations.filter {
                                     it.title.contains(_searchQuery.value, ignoreCase = true) ||
                                         it.description.contains(_searchQuery.value, ignoreCase = true)
                                 }
                             }
+                        
+                        hasMore = filtered.size == pageSize
+                        
+                        val updatedCombinations = if (reset) {
+                            filtered
+                        } else {
+                            _uiState.value.combinations + filtered
+                        }
+                        
                         _uiState.value =
                             _uiState.value.copy(
-                                combinations = filtered,
+                                combinations = updatedCombinations,
                                 isLoading = false,
+                                isLoadingMore = false,
+                                hasMore = hasMore,
                             )
+                        
+                        if (!reset && hasMore) {
+                            currentPage++
+                        }
+                        isLoadingMore = false
                     },
                     onFailure = { error ->
                         _uiState.value =
                             _uiState.value.copy(
                                 isLoading = false,
+                                isLoadingMore = false,
                                 error = error.message ?: "오류가 발생했습니다",
                             )
+                        isLoadingMore = false
                     },
                 )
             }
         }
 
+        fun loadMore() {
+            if (!isLoadingMore && hasMore) {
+                loadCombinations(reset = false)
+            }
+        }
+
         fun updateSearchQuery(query: String) {
             _searchQuery.value = query
-            loadCombinations()
+            loadCombinations(reset = true)
         }
 
         fun selectCategory(category: Category) {
             _selectedCategory.value = category
-            loadCombinations()
+            loadCombinations(reset = true)
         }
 
         fun refresh() {
-            loadCombinations()
+            loadCombinations(reset = true)
         }
 
         fun toggleLike(combinationId: String) {
@@ -142,5 +179,7 @@ class HomeViewModel
 data class HomeUiState(
     val combinations: List<Combination> = emptyList(),
     val isLoading: Boolean = false,
+    val isLoadingMore: Boolean = false,
+    val hasMore: Boolean = true,
     val error: String? = null,
 )
