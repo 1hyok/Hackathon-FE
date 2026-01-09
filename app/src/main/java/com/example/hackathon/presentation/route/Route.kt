@@ -13,9 +13,15 @@ sealed class Route(
 
     data object Create : Route(route = "create")
 
-    data object My : Route(route = "my")
-
-    data object EditProfile : Route(route = "edit_profile")
+    data object Search : Route(route = "search")
 
     data object Login : Route(route = "login")
+
+    data object Registration : Route(route = "registration")
+
+    data object RegistrationSuccess : Route(route = "registration_success")
+
+    data object Onboarding : Route(route = "onboarding")
+
+    data object My : Route(route = "my")
 }

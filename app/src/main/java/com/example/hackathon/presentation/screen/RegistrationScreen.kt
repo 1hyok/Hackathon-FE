@@ -40,26 +40,25 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.core.component.TopAppLogoBar
-import com.example.hackathon.presentation.viewmodel.LoginViewModel
+import com.example.hackathon.presentation.viewmodel.RegistrationViewModel
 import com.example.hackathon.ui.theme.Gray700
 import com.example.hackathon.ui.theme.Primary
 
 // 담당자: 일혁
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(
+fun RegistrationScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = hiltViewModel(),
+    viewModel: RegistrationViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit = {},
-    onLoginSuccess: () -> Unit = {},
-    onNavigateToRegistration: () -> Unit = {},
+    onRegistrationSuccess: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // 로그인 성공 시 처리
+    // 회원가입 성공 시 처리
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            onLoginSuccess()
+            onRegistrationSuccess()
         }
     }
 
@@ -90,91 +89,75 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                // 입력 필드 영역
-                Column(
+                // 닉네임 입력 필드
+                OutlinedTextField(
+                    value = uiState.name,
+                    onValueChange = viewModel::updateName,
+                    placeholder = {
+                        Text(
+                            text = "닉네임",
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    },
                     modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                ) {
-                    // 닉네임 입력 필드
-                    OutlinedTextField(
-                        value = uiState.id,
-                        onValueChange = viewModel::updateId,
-                        placeholder = {
-                            Text(
-                                text = "닉네임",
-                                style = MaterialTheme.typography.bodyMedium,
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(15.dp),
-                        colors =
-                            OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Gray700,
-                                unfocusedBorderColor = Gray700,
-                                focusedTextColor = Color.Black,
-                                unfocusedTextColor = Color.Black,
-                            ),
-                        singleLine = true,
-                    )
+                    shape = RoundedCornerShape(15.dp),
+                    colors =
+                        OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Gray700,
+                            unfocusedBorderColor = Gray700,
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                        ),
+                    singleLine = true,
+                )
 
-                    // Password 입력 필드
-                    OutlinedTextField(
-                        value = uiState.password,
-                        onValueChange = viewModel::updatePassword,
-                        placeholder = {
-                            Text(
-                                text = "Password",
-                                style = MaterialTheme.typography.bodyMedium,
+                // Password 입력 필드
+                OutlinedTextField(
+                    value = uiState.password,
+                    onValueChange = viewModel::updatePassword,
+                    placeholder = {
+                        Text(
+                            text = "Password",
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(15.dp),
+                    visualTransformation =
+                        if (uiState.isPasswordVisible) {
+                            VisualTransformation.None
+                        } else {
+                            PasswordVisualTransformation()
+                        },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    trailingIcon = {
+                        IconButton(onClick = viewModel::togglePasswordVisibility) {
+                            Icon(
+                                imageVector =
+                                    if (uiState.isPasswordVisible) {
+                                        Icons.Default.VisibilityOff
+                                    } else {
+                                        Icons.Default.Visibility
+                                    },
+                                contentDescription =
+                                    if (uiState.isPasswordVisible) {
+                                        "비밀번호 숨기기"
+                                    } else {
+                                        "비밀번호 보기"
+                                    },
+                                tint = Gray700,
                             )
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(15.dp),
-                        visualTransformation =
-                            if (uiState.isPasswordVisible) {
-                                VisualTransformation.None
-                            } else {
-                                PasswordVisualTransformation()
-                            },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                        trailingIcon = {
-                            IconButton(onClick = viewModel::togglePasswordVisibility) {
-                                Icon(
-                                    imageVector =
-                                        if (uiState.isPasswordVisible) {
-                                            Icons.Default.VisibilityOff
-                                        } else {
-                                            Icons.Default.Visibility
-                                        },
-                                    contentDescription =
-                                        if (uiState.isPasswordVisible) {
-                                            "비밀번호 숨기기"
-                                        } else {
-                                            "비밀번호 보기"
-                                        },
-                                    tint = Gray700,
-                                )
-                            }
-                        },
-                        colors =
-                            OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Gray700,
-                                unfocusedBorderColor = Gray700,
-                                focusedTextColor = Color.Black,
-                                unfocusedTextColor = Color.Black,
-                            ),
-                        singleLine = true,
-                    )
-                }
-
-                // 에러 메시지 표시
-                uiState.error?.let { error ->
-                    Text(
-                        text = error,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(horizontal = 4.dp),
-                    )
-                }
+                        }
+                    },
+                    colors =
+                        OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Gray700,
+                            unfocusedBorderColor = Gray700,
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                        ),
+                    singleLine = true,
+                )
 
                 // 버튼 영역 (가로 배치)
                 Row(
@@ -183,32 +166,18 @@ fun LoginScreen(
                 ) {
                     // 계정생성 버튼
                     Button(
-                        onClick = onNavigateToRegistration,
-                        modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(15.dp),
-                        enabled = !uiState.isLoading,
-                        colors =
-                            ButtonDefaults.buttonColors(
-                                containerColor = Primary,
-                                contentColor = Color.White,
-                                disabledContainerColor = Primary.copy(alpha = 0.5f),
-                                disabledContentColor = Color.White.copy(alpha = 0.5f),
-                            ),
-                    ) {
-                        Text(
-                            text = "계정생성",
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-                    }
-
-                    // 로그인 버튼
-                    Button(
                         onClick = {
-                            viewModel.login()
+                            viewModel.register()
+                            if (uiState.isSuccess) {
+                                onRegistrationSuccess()
+                            }
                         },
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(15.dp),
-                        enabled = uiState.id.isNotBlank() && uiState.password.isNotBlank() && !uiState.isLoading,
+                        enabled =
+                            uiState.name.isNotBlank() &&
+                                uiState.password.isNotBlank() &&
+                                !uiState.isLoading,
                         colors =
                             ButtonDefaults.buttonColors(
                                 containerColor = Primary,
@@ -224,10 +193,30 @@ fun LoginScreen(
                             )
                         } else {
                             Text(
-                                text = "로그인",
+                                text = "계정생성",
                                 style = MaterialTheme.typography.titleMedium,
                             )
                         }
+                    }
+
+                    // 로그인 버튼 (회원가입 화면에서는 뒤로가기 역할)
+                    Button(
+                        onClick = onNavigateBack,
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(15.dp),
+                        enabled = !uiState.isLoading,
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = Primary,
+                                contentColor = Color.White,
+                                disabledContainerColor = Primary.copy(alpha = 0.5f),
+                                disabledContentColor = Color.White.copy(alpha = 0.5f),
+                            ),
+                    ) {
+                        Text(
+                            text = "로그인",
+                            style = MaterialTheme.typography.titleMedium,
+                        )
                     }
                 }
 
@@ -247,6 +236,6 @@ fun LoginScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun LoginScreenPreview() {
-    LoginScreen()
+private fun RegistrationScreenPreview() {
+    RegistrationScreen()
 }

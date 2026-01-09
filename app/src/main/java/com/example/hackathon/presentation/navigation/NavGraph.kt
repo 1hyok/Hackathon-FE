@@ -10,9 +10,11 @@ import androidx.navigation.navArgument
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.presentation.screen.CreateCombinationScreen
 import com.example.hackathon.presentation.screen.DetailScreen
-import com.example.hackathon.presentation.screen.EditProfileScreen
 import com.example.hackathon.presentation.screen.LoginScreen
 import com.example.hackathon.presentation.screen.MyScreen
+import com.example.hackathon.presentation.screen.OnboardingScreen
+import com.example.hackathon.presentation.screen.RegistrationScreen
+import com.example.hackathon.presentation.screen.RegistrationSuccessScreen
 import com.example.hackathon.presentation.screen.SearchScreen
 import com.example.hackathon.presentation.screen.home.screen.HomeScreen
 
@@ -23,7 +25,7 @@ fun AppNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Route.Home.route,
+        startDestination = Route.Onboarding.route,
     ) {
         composable(route = Route.Home.route) {
             HomeScreen(
@@ -41,6 +43,9 @@ fun AppNavGraph(
             SearchScreen(
                 modifier = modifier,
                 onNavigateBack = { navController.popBackStack() },
+                onCombinationClick = { id ->
+                    navController.navigate(Route.Detail.createRoute(id))
+                },
             )
         }
         composable(
@@ -60,39 +65,67 @@ fun AppNavGraph(
                 onNavigateBack = { navController.popBackStack() },
             )
         }
+        composable(route = Route.Login.route) {
+            LoginScreen(
+                modifier = modifier,
+                onNavigateBack = { navController.popBackStack() },
+                onLoginSuccess = {
+                    // 로그인 성공 시 홈 화면으로 이동
+                    navController.navigate(Route.Home.route) {
+                        popUpTo(Route.Onboarding.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+                onNavigateToRegistration = {
+                    navController.navigate(Route.Registration.route)
+                },
+            )
+        }
+        composable(route = Route.Registration.route) {
+            RegistrationScreen(
+                modifier = modifier,
+                onNavigateBack = { navController.popBackStack() },
+                onRegistrationSuccess = {
+                    // 회원가입 성공 시 가입완료 화면으로 이동
+                    navController.navigate(Route.RegistrationSuccess.route) {
+                        popUpTo(Route.Registration.route) { inclusive = true }
+                    }
+                },
+            )
+        }
+        composable(route = Route.RegistrationSuccess.route) {
+            RegistrationSuccessScreen(
+                modifier = modifier,
+                onNavigateToLogin = {
+                    navController.navigate(Route.Login.route) {
+                        popUpTo(Route.RegistrationSuccess.route) { inclusive = true }
+                    }
+                },
+            )
+        }
+        composable(route = Route.Onboarding.route) {
+            OnboardingScreen(
+                modifier = modifier,
+                onNavigateToLogin = {
+                    navController.navigate(Route.Login.route) {
+                        popUpTo(Route.Onboarding.route) { inclusive = true }
+                    }
+                },
+            )
+        }
         composable(route = Route.My.route) {
             MyScreen(
                 modifier = modifier,
                 onCombinationClick = { id ->
                     navController.navigate(Route.Detail.createRoute(id))
                 },
-                onEditProfileClick = {
-                    navController.navigate(Route.EditProfile.route)
-                },
                 onLogout = {
-                    // 로그인 화면으로 이동 (백 스택 초기화)
                     navController.navigate(Route.Login.route) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
+                        popUpTo(Route.My.route) { inclusive = true }
                     }
                 },
-            )
-        }
-        composable(route = Route.EditProfile.route) {
-            EditProfileScreen(
-                modifier = modifier,
-                onNavigateBack = { navController.popBackStack() },
-            )
-        }
-        composable(route = Route.Login.route) {
-            LoginScreen(
-                modifier = modifier,
-                onNavigateBack = { navController.popBackStack() },
-                onLoginSuccess = {
-                    // TODO: 로그인 성공 시 홈 화면으로 이동 또는 이전 화면으로 돌아가기
-                    navController.popBackStack()
+                onChangeNickname = {
+                    // TODO: 닉네임 변경 화면으로 이동
                 },
             )
         }

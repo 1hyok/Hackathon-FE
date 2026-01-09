@@ -4,24 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.hackathon.presentation.navigation.AppNavGraph
-import com.example.hackathon.presentation.navigation.BottomNavBar
-import com.example.hackathon.presentation.navigation.NavTab
+import com.example.hackathon.presentation.navigation.BottomNavItem
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.ui.theme.HackathonTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,65 +32,49 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         setContent {
             HackathonTheme {
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
+                val currentRoute = navBackStackEntry?.destination?.route
 
-                // 현재 선택된 탭
-                val currentTab: NavTab? =
-                    NavTab.entries.find { tab ->
-                        currentDestination?.route == tab.route
-                    }
-
-                // BottomNav가 보일 route
-                val bottomNavRoutes =
+                val bottomNavItems =
                     listOf(
-                        Route.Home.route,
-                        Route.Create.route,
-                        Route.My.route,
+                        BottomNavItem("홈", Route.Home.route, Icons.Default.Home),
+                        BottomNavItem("등록", Route.Create.route, Icons.Default.Add),
+                        BottomNavItem("My", Route.My.route, Icons.Default.Person),
                     )
 
-                val showBottomBar =
-                    currentDestination?.route in bottomNavRoutes
-
                 Scaffold(
-                    containerColor = Color.White,
-                    modifier = Modifier.fillMaxSize(),
                     bottomBar = {
-                        Box(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .shadow(
-                                        elevation = 12.dp,
-                                        shape =
-                                            RoundedCornerShape(
-                                                topStart = 30.dp,
-                                                topEnd = 30.dp,
-                                            ),
-                                        clip = false,
-                                    )
-                                    .background(
-                                        Color.White,
-                                    ),
+                        NavigationBar(
+                            containerColor = Color.White,
                         ) {
-                            BottomNavBar(
-                                visible = showBottomBar,
-                                tabs = NavTab.entries,
-                                currentTab = currentTab,
-                                onItemSelected = { tab ->
-                                    navController.navigate(tab.route) {
-                                        popUpTo(navController.graph.startDestinationId) {
-                                            saveState = true
+                            bottomNavItems.forEach { item ->
+                                NavigationBarItem(
+                                    selected = currentRoute == item.route,
+                                    onClick = {
+                                        navController.navigate(item.route) {
+                                            launchSingleTop = true
+                                            restoreState = true
+                                            popUpTo(navController.graph.startDestinationId) {
+                                                saveState = true
+                                            }
                                         }
-                                        launchSingleTop = true
-                                        restoreState = true
-                                    }
-                                },
-                            )
+                                    },
+                                    icon = {
+                                        Icon(
+                                            imageVector = item.icon,
+                                            contentDescription = item.label,
+                                        )
+                                    },
+                                    label = {
+                                        Text(
+                                            text = item.label,
+                                        )
+                                    },
+                                )
+                            }
                         }
                     },
                 ) { innerPadding ->

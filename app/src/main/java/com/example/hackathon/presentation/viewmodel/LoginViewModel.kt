@@ -30,13 +30,26 @@ class LoginViewModel
             _uiState.value = _uiState.value.copy(isPasswordVisible = !_uiState.value.isPasswordVisible)
         }
 
+        fun toggleAutoLogin() {
+            _uiState.value = _uiState.value.copy(isAutoLogin = !_uiState.value.isAutoLogin)
+        }
+
         fun login() {
             viewModelScope.launch {
-                _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+                _uiState.value = _uiState.value.copy(isLoading = true, error = null, isSuccess = false)
                 // TODO: API 연동
+                // 임시로 검증 로직 추가
+                if (_uiState.value.id.isBlank() || _uiState.value.password.isBlank()) {
+                    _uiState.value =
+                        _uiState.value.copy(
+                            isLoading = false,
+                            error = "닉네임과 비밀번호를 입력해주세요",
+                        )
+                    return@launch
+                }
                 // 임시로 성공 처리 - 현재 사용자 정보 저장
                 DummyData.currentUser = DummyData.dummyUser
-                _uiState.value = _uiState.value.copy(isLoading = false)
+                _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
             }
         }
 
@@ -53,7 +66,9 @@ data class LoginUiState(
     val id: String = "",
     val password: String = "",
     val isPasswordVisible: Boolean = false,
+    val isAutoLogin: Boolean = false,
     val isLoading: Boolean = false,
+    val isSuccess: Boolean = false,
     val error: String? = null,
 )
 
