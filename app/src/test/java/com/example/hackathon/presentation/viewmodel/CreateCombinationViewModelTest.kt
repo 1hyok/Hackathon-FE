@@ -81,7 +81,6 @@ class CreateCombinationViewModelTest {
                     imageUrl = null,
                     category = Category.SUBWAY,
                     ingredients = listOf("재료1 수량1", "재료2 수량2"),
-                    steps = listOf("단계1", "단계2"),
                     tags = emptyList(),
                     author = User(id = "user1", nickname = "테스트", profileImageUrl = null),
                     likeCount = 0,
@@ -94,17 +93,15 @@ class CreateCombinationViewModelTest {
             viewModel.updateIngredientQuantity(0, "수량1")
             viewModel.updateIngredientName(1, "재료2")
             viewModel.updateIngredientQuantity(1, "수량2")
-            viewModel.updateSteps("단계1\n단계2")
 
             coEvery {
                 repository.createCombination(
-                    any(),
-                    any(),
-                    any(),
-                    any(),
-                    any(),
-                    any(),
-                    any(),
+                    title = any(),
+                    description = any(),
+                    category = any(),
+                    ingredients = any(),
+                    tags = any(),
+                    imageUri = any(),
                 )
             } returns Result.success(mockCombination)
 
@@ -131,7 +128,6 @@ class CreateCombinationViewModelTest {
             viewModel.updateDescription("설명")
             viewModel.updateIngredientName(0, "재료1")
             viewModel.updateIngredientQuantity(0, "수량1")
-            viewModel.updateSteps("단계1")
 
             // When
             viewModel.createCombination {}
@@ -152,7 +148,6 @@ class CreateCombinationViewModelTest {
             viewModel.updateDescription("설명")
             // ingredientsList는 기본값으로 빈 IngredientItem("", "")이 있으므로
             // name과 quantity가 모두 비어있어서 validIngredients가 비어있게 됨
-            viewModel.updateSteps("단계1")
 
             // When
             viewModel.createCombination {}
@@ -173,17 +168,15 @@ class CreateCombinationViewModelTest {
             viewModel.updateDescription("설명")
             viewModel.updateIngredientName(0, "재료1")
             viewModel.updateIngredientQuantity(0, "수량1")
-            viewModel.updateSteps("단계1")
 
             coEvery {
                 repository.createCombination(
-                    any(),
-                    any(),
-                    any(),
-                    any(),
-                    any(),
-                    any(),
-                    any(),
+                    title = any(),
+                    description = any(),
+                    category = any(),
+                    ingredients = any(),
+                    tags = any(),
+                    imageUri = any(),
                 )
             } returns Result.failure(Exception("네트워크 오류"))
 
