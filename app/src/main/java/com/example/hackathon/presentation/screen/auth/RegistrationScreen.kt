@@ -155,6 +155,39 @@ fun RegistrationScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                // 이메일 입력 필드
+                Text(
+                    text = "이메일",
+                    style = HackathonTheme.typography.Body_medium,
+                    color = Color.Black,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+                OutlinedTextField(
+                    value = uiState.email,
+                    onValueChange = viewModel::updateEmail,
+                    placeholder = {
+                        Text(
+                            text = "이메일을 입력하세요",
+                            style = HackathonTheme.typography.Body_medium,
+                            color = Gray700,
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(15.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    colors =
+                        OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Primary,
+                            unfocusedBorderColor = Gray700,
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                        ),
+                    textStyle = HackathonTheme.typography.Body_medium,
+                    singleLine = true,
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 // Password 입력 필드
                 Text(
                     text = "Password",
@@ -222,7 +255,76 @@ fun RegistrationScreen(
                     singleLine = true,
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // 비밀번호 확인 입력 필드
+                Text(
+                    text = "Password 확인",
+                    style = HackathonTheme.typography.Body_medium,
+                    color = Color.Black,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+                OutlinedTextField(
+                    value = uiState.passwordConfirm,
+                    onValueChange = viewModel::updatePasswordConfirm,
+                    placeholder = {
+                        Text(
+                            text = "비밀번호를 다시 입력하세요",
+                            style = HackathonTheme.typography.Body_medium,
+                            color = Gray700,
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(15.dp),
+                    visualTransformation =
+                        if (uiState.isPasswordConfirmVisible) {
+                            VisualTransformation.None
+                        } else {
+                            PasswordVisualTransformation()
+                        },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    trailingIcon = {
+                        IconButton(onClick = viewModel::togglePasswordConfirmVisibility) {
+                            Icon(
+                                imageVector =
+                                    if (uiState.isPasswordConfirmVisible) {
+                                        Icons.Default.VisibilityOff
+                                    } else {
+                                        Icons.Default.Visibility
+                                    },
+                                contentDescription =
+                                    if (uiState.isPasswordConfirmVisible) {
+                                        "비밀번호 숨기기"
+                                    } else {
+                                        "비밀번호 보기"
+                                    },
+                                tint = Gray700,
+                            )
+                        }
+                    },
+                    colors =
+                        OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Primary,
+                            unfocusedBorderColor = Gray700,
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                        ),
+                    textStyle = HackathonTheme.typography.Body_medium,
+                    singleLine = true,
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // 에러 메시지 표시
+                uiState.error?.let { error ->
+                    Text(
+                        text = error,
+                        style = HackathonTheme.typography.Caption_medium,
+                        color = Color.Red,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
 
                 // 버튼 영역 (가로 배치)
                 Row(
@@ -238,7 +340,9 @@ fun RegistrationScreen(
                         shape = RoundedCornerShape(15.dp),
                         enabled =
                             uiState.name.isNotBlank() &&
+                                uiState.email.isNotBlank() &&
                                 uiState.password.isNotBlank() &&
+                                uiState.passwordConfirm.isNotBlank() &&
                                 !uiState.isLoading,
                         colors =
                             ButtonDefaults.buttonColors(

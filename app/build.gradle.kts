@@ -24,6 +24,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        // 서버 준비 전까지 Mock 모드 사용 (true: Mock, false: 실제 API)
+        buildConfigField("boolean", "USE_MOCK_API", "true")
         buildConfigField("String", "BASE_URL", "\"https://api.example.com/\"")
     }
 

@@ -194,9 +194,6 @@ fun SearchScreen(
                             .padding(innerPadding),
                     results = uiState.results,
                     onCombinationClick = onCombinationClick,
-                    onLikeClick = { combinationId ->
-                        viewModel.toggleLike(combinationId)
-                    },
                 )
             }
         }

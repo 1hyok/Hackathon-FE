@@ -40,9 +40,6 @@ fun HomeScreen(
                 viewModel.selectCategory(category)
             },
             onCombinationClick = onCombinationClick,
-            onLikeClick = { combinationId ->
-                viewModel.toggleLike(combinationId)
-            },
             modifier = modifier
                 .fillMaxWidth()
                 .padding(innerPadding),
@@ -89,7 +86,6 @@ private fun HomeScreenPreview() {
                 selectedCategory = Category.ALL,
                 onCategorySelected = {},
                 onCombinationClick = {},
-                onLikeClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(innerPadding),

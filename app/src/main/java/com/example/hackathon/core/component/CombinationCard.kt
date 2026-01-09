@@ -36,8 +36,6 @@ import com.example.hackathon.ui.theme.Primary
 fun CombinationCard(
     combination: Combination,
     onClick: () -> Unit,
-    // 좋아요 클릭 콜백 (null이면 비활성화)
-    onLikeClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -178,17 +176,9 @@ fun CombinationCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    // 좋아요 (왼쪽)
+                    // 좋아요 (왼쪽) - 상세 화면에서만 클릭 가능
                     Row(
-                        modifier =
-                            Modifier
-                                .then(
-                                    if (onLikeClick != null) {
-                                        Modifier.clickable(onClick = onLikeClick)
-                                    } else {
-                                        Modifier
-                                    },
-                                ),
+                        modifier = Modifier,
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
                     ) {
@@ -243,7 +233,6 @@ private fun CombinationCardLikedPreview() {
                     createdAt = System.currentTimeMillis().toString(),
                 ),
             onClick = {},
-            onLikeClick = {},
         )
     }
 }
@@ -269,7 +258,6 @@ private fun CombinationCardNotLikedPreview() {
                     createdAt = System.currentTimeMillis().toString(),
                 ),
             onClick = {},
-            onLikeClick = {},
         )
     }
 }
