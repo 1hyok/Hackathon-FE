@@ -2,8 +2,13 @@ package com.example.hackathon.data.repositoryimpl
 
 import com.example.hackathon.data.local.DummyData
 import com.example.hackathon.data.service.CombinationService
+import com.example.hackathon.data.service.RecipeService
 import com.example.hackathon.domain.entity.Category
 import com.example.hackathon.domain.entity.Combination
+import com.example.hackathon.domain.entity.Ingredient
+import com.example.hackathon.domain.entity.RecipeDetail
+import com.example.hackathon.domain.entity.Stats
+import com.example.hackathon.domain.entity.UserInteraction
 import com.example.hackathon.domain.repository.CombinationRepository
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -12,6 +17,7 @@ class CombinationRepositoryImpl
     @Inject
     constructor(
         private val combinationService: CombinationService,
+        private val recipeService: RecipeService,
     ) : CombinationRepository {
         // 임시로 새로 등록한 조합을 저장하는 리스트 (서버 API 연동 전까지 사용)
         private val createdCombinations = mutableListOf<Combination>()
@@ -224,4 +230,44 @@ class CombinationRepositoryImpl
                 Result.failure(e)
             }
         }
+
+        override suspend fun getRecipeDetail(id: Long): Result<RecipeDetail> =
+
+            Result.success(
+                RecipeDetail(
+                    id = id,
+                    title = "임시 레시피",
+                    category = "하이디라오",
+                    description = "서버 없이 테스트 중인 더미 데이터입니다.",
+                    images = emptyList(),
+                    ingredients =
+                        listOf(
+                            Ingredient("땅콩소스", "1T"),
+                            Ingredient("칠리소스", "2T"),
+                        ),
+                    stats = Stats(likesCount = 123),
+                    userInteraction =
+                        UserInteraction(
+                            isLiked = true,
+                            isMine = false,
+                        ),
+                    tags = listOf("#mock"),
+                    createdAt = "",
+                    updatedAt = "",
+                ),
+            )
+
+            /*
+             * TODO: 나중에 API 연동 후 아래 코드 사용
+             *
+             * override suspend fun getRecipeDetail(id: Long): Result<RecipeDetail> =
+             *     runCatching {
+             *         val response = recipeService.getRecipeDetail(id)
+             *         val data =
+             *             response.data
+             *                 ?: throw IllegalStateException("Recipe detail data is null")
+             *
+             *         data.toDomain()
+             *     }
+             */
     }
