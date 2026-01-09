@@ -12,58 +12,60 @@ import javax.inject.Inject
 
 // 담당자: 일혁
 @HiltViewModel
-class LoginViewModel
+class RegistrationViewModel
     @Inject
     constructor() : ViewModel() {
-        private val _uiState = MutableStateFlow(LoginUiState())
-        val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+        private val _uiState = MutableStateFlow(RegistrationUiState())
+        val uiState: StateFlow<RegistrationUiState> = _uiState.asStateFlow()
+
+        fun updateName(name: String) {
+            _uiState.value = _uiState.value.copy(name = name)
+        }
 
         fun updateId(id: String) {
             _uiState.value = _uiState.value.copy(id = id)
+        }
+
+        fun updateEmail(email: String) {
+            _uiState.value = _uiState.value.copy(email = email)
         }
 
         fun updatePassword(password: String) {
             _uiState.value = _uiState.value.copy(password = password)
         }
 
+        fun updatePasswordConfirm(passwordConfirm: String) {
+            _uiState.value = _uiState.value.copy(passwordConfirm = passwordConfirm)
+        }
+
         fun togglePasswordVisibility() {
             _uiState.value = _uiState.value.copy(isPasswordVisible = !_uiState.value.isPasswordVisible)
         }
 
-        fun toggleAutoLogin() {
-            _uiState.value = _uiState.value.copy(isAutoLogin = !_uiState.value.isAutoLogin)
+        fun togglePasswordConfirmVisibility() {
+            _uiState.value = _uiState.value.copy(isPasswordConfirmVisible = !_uiState.value.isPasswordConfirmVisible)
         }
 
-        fun login() {
+        fun register() {
             viewModelScope.launch {
                 _uiState.value = _uiState.value.copy(isLoading = true, error = null)
                 // TODO: API 연동
-                // 임시로 성공 처리 - 현재 사용자 정보 저장
+                // 임시로 성공 처리
                 DummyData.currentUser = DummyData.dummyUser
-                _uiState.value = _uiState.value.copy(isLoading = false)
-            }
-        }
-
-        fun socialLogin(provider: SocialLoginProvider) {
-            viewModelScope.launch {
-                _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-                // TODO: 소셜 로그인 API 연동
-                _uiState.value = _uiState.value.copy(isLoading = false)
+                _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
             }
         }
     }
 
-data class LoginUiState(
+data class RegistrationUiState(
+    val name: String = "",
     val id: String = "",
+    val email: String = "",
     val password: String = "",
+    val passwordConfirm: String = "",
     val isPasswordVisible: Boolean = false,
-    val isAutoLogin: Boolean = false,
+    val isPasswordConfirmVisible: Boolean = false,
     val isLoading: Boolean = false,
+    val isSuccess: Boolean = false,
     val error: String? = null,
 )
-
-enum class SocialLoginProvider {
-    KAKAO,
-    NAVER,
-    GOOGLE,
-}

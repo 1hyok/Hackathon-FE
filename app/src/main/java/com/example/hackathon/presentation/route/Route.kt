@@ -16,4 +16,8 @@ sealed class Route(
     data object EditProfile : Route(route = "edit_profile")
 
     data object Login : Route(route = "login")
+
+    data object Registration : Route(route = "registration")
+
+    data object Splash : Route(route = "splash")
 }
