@@ -5,8 +5,8 @@ sealed class Route(
 ) {
     data object Home : Route(route = "home")
 
-    data object Detail : Route(route = "detail/{id}") {
-        fun createRoute(id: String) = "detail/$id"
+    data object Detail : Route("detail") {
+        fun createRoute(id: String) = "$route/$id"
     }
 
     data object Create : Route(route = "create")
