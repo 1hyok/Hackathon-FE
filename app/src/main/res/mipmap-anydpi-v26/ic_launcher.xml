@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
-    <background android:drawable="@color/ic_launcher_background"/>
-    <!-- 이미지에 이미 빨간색 배경이 포함되어 있으므로 background는 동일한 색상 유지 -->
-    <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+    <!-- 배경색: 빨간색 -->
+    <background android:drawable="@color/ic_launcher_background" />
+    
+    <!-- 전경: 22% 축소하여 안전 영역 내 배치 -->
+    <foreground>
+        <inset
+            android:drawable="@mipmap/ic_launcher_foreground"
+            android:inset="22%" />
+    </foreground>
 </adaptive-icon>
