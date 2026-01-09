@@ -80,7 +80,7 @@ class CreateCombinationViewModelTest {
                     description = "테스트 설명",
                     imageUrl = null,
                     category = Category.SUBWAY,
-                    ingredients = listOf("재료1", "재료2"),
+                    ingredients = listOf("재료1 수량1", "재료2 수량2"),
                     steps = listOf("단계1", "단계2"),
                     tags = emptyList(),
                     author = User(id = "user1", nickname = "테스트", profileImageUrl = null),
@@ -90,7 +90,10 @@ class CreateCombinationViewModelTest {
 
             viewModel.updateTitle("테스트 조합")
             viewModel.updateDescription("테스트 설명")
-            viewModel.updateIngredients("재료1, 재료2")
+            viewModel.updateIngredientName(0, "재료1")
+            viewModel.updateIngredientQuantity(0, "수량1")
+            viewModel.updateIngredientName(1, "재료2")
+            viewModel.updateIngredientQuantity(1, "수량2")
             viewModel.updateSteps("단계1\n단계2")
 
             coEvery {
@@ -126,7 +129,8 @@ class CreateCombinationViewModelTest {
             // Given
             viewModel.updateTitle("")
             viewModel.updateDescription("설명")
-            viewModel.updateIngredients("재료1")
+            viewModel.updateIngredientName(0, "재료1")
+            viewModel.updateIngredientQuantity(0, "수량1")
             viewModel.updateSteps("단계1")
 
             // When
@@ -146,7 +150,8 @@ class CreateCombinationViewModelTest {
             // Given
             viewModel.updateTitle("제목")
             viewModel.updateDescription("설명")
-            viewModel.updateIngredients("")
+            // ingredientsList는 기본값으로 빈 IngredientItem("", "")이 있으므로
+            // name과 quantity가 모두 비어있어서 validIngredients가 비어있게 됨
             viewModel.updateSteps("단계1")
 
             // When
@@ -155,7 +160,7 @@ class CreateCombinationViewModelTest {
             // Then
             viewModel.uiState.test {
                 val state = awaitItem()
-                assertEquals("재료와 만드는 방법을 입력해주세요", state.error)
+                assertEquals("재료를 입력해주세요", state.error)
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -166,7 +171,8 @@ class CreateCombinationViewModelTest {
             // Given
             viewModel.updateTitle("제목")
             viewModel.updateDescription("설명")
-            viewModel.updateIngredients("재료1")
+            viewModel.updateIngredientName(0, "재료1")
+            viewModel.updateIngredientQuantity(0, "수량1")
             viewModel.updateSteps("단계1")
 
             coEvery {
