@@ -73,7 +73,7 @@ fun BottomNavBar(
                             contentDescription = tab.label,
                             tint =
                                 if (isSelected) {
-                                    HackathonTheme.colors.primary
+                                    HackathonTheme.colors.black
                                 } else {
                                     Color(0xFF8B91A1)
                                 },
@@ -83,7 +83,7 @@ fun BottomNavBar(
                             fontSize = 12.sp,
                             color =
                                 if (isSelected) {
-                                    HackathonTheme.colors.primary
+                                    HackathonTheme.colors.black
                                 } else {
                                     Color(0xFF939DA9)
                                 },

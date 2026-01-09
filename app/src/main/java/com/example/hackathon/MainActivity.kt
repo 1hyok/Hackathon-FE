@@ -22,7 +22,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.hackathon.domain.repository.AuthRepository
 import com.example.hackathon.presentation.navigation.AppNavGraph
+import com.example.hackathon.presentation.navigation.BottomNavBar
 import com.example.hackathon.presentation.navigation.BottomNavItem
+import com.example.hackathon.presentation.navigation.NavTab
 import com.example.hackathon.presentation.route.Route
 import com.example.hackathon.ui.theme.HackathonTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,75 +32,54 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     @Inject
     lateinit var authRepository: AuthRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // super.onCreate() 호출 전에 반드시 실행
         val splashScreen = installSplashScreen()
-
         super.onCreate(savedInstanceState)
-
-        // 시스템 스플래시를 즉시 닫도록 설정
         splashScreen.setKeepOnScreenCondition { false }
 
         enableEdgeToEdge()
+
         setContent {
             HackathonTheme {
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 
-                val bottomNavItems =
-                    listOf(
-                        BottomNavItem("홈", Route.Home.route, Icons.Default.Home),
-                        BottomNavItem("등록", Route.Create.route, Icons.Default.Add),
-                        BottomNavItem("My", Route.My.route, Icons.Default.Person),
-                    )
+                // ⭐ Route → NavTab 매핑 (이게 핵심)
+                val currentTab: NavTab? =
+                    NavTab.entries.find { it.route == currentRoute }
 
                 // 하단 네비게이션 바를 숨겨야 하는 화면들
                 val shouldHideBottomBar =
                     currentRoute == Route.Login.route ||
-                        currentRoute == Route.Registration.route ||
-                        currentRoute == Route.RegistrationSuccess.route ||
-                        currentRoute == Route.Onboarding.route ||
-                        currentRoute == Route.EditProfile.route ||
-                        currentRoute == Route.Detail.route ||
-                        currentRoute == Route.Create.route ||
-                        currentRoute == Route.Search.route
+                            currentRoute == Route.Registration.route ||
+                            currentRoute == Route.RegistrationSuccess.route ||
+                            currentRoute == Route.Onboarding.route ||
+                            currentRoute == Route.EditProfile.route ||
+                            currentRoute == Route.Detail.route ||
+                            currentRoute == Route.Search.route
 
                 Scaffold(
                     bottomBar = {
                         if (!shouldHideBottomBar) {
-                            NavigationBar(
-                                containerColor = Color.White,
-                            ) {
-                                bottomNavItems.forEach { item ->
-                                    NavigationBarItem(
-                                        selected = currentRoute == item.route,
-                                        onClick = {
-                                            navController.navigate(item.route) {
-                                                launchSingleTop = true
-                                                restoreState = true
-                                                popUpTo(navController.graph.startDestinationId) {
-                                                    saveState = true
-                                                }
-                                            }
-                                        },
-                                        icon = {
-                                            Icon(
-                                                imageVector = item.icon,
-                                                contentDescription = item.label,
-                                            )
-                                        },
-                                        label = {
-                                            Text(
-                                                text = item.label,
-                                            )
-                                        },
-                                    )
-                                }
-                            }
+                            BottomNavBar(
+                                visible = true,
+                                tabs = NavTab.entries,
+                                currentTab = currentTab,
+                                onItemSelected = { tab ->
+                                    navController.navigate(tab.route) {
+                                        launchSingleTop = true
+                                        restoreState = true
+                                        popUpTo(navController.graph.startDestinationId) {
+                                            saveState = true
+                                        }
+                                    }
+                                },
+                            )
                         }
                     },
                 ) { innerPadding ->
@@ -112,3 +93,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+

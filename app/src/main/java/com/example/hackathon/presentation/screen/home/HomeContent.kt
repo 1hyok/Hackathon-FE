@@ -51,7 +51,7 @@ fun HomeContent(
 
     LazyColumn(
         state = listState,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(top = 5.dp),
     ) {
         item {
             FilterBar(
