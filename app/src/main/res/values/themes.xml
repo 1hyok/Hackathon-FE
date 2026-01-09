@@ -7,7 +7,7 @@
     <style name="Theme.ArchiveatProject.Splash"
         parent="Theme.SplashScreen">
 
-        <item name="windowSplashScreenBackground">#FF3700B3</item>
+        <item name="windowSplashScreenBackground">#FFE10818</item>
 
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_logo_rec</item>
 
