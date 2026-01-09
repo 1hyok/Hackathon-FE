@@ -1,4 +1,4 @@
-﻿name: Build and Release APK (GitHub Releases)
+name: Build and Release APK (GitHub Releases)
 
 on:
   push:
@@ -18,6 +18,27 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'gradle'
+
+      - name: Create google-services.json
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: |
+          # Base64 디코딩 (줄바꿈 제거 후 디코딩)
+          echo "$GOOGLE_SERVICES_JSON" | tr -d '\n' | base64 --decode > app/google-services.json
+          
+          # 파일 생성 확인
+          if [ ! -f app/google-services.json ]; then
+            echo "❌ google-services.json 파일 생성 실패!"
+            exit 1
+          fi
+          
+          # JSON 유효성 검증 (기본 확인)
+          if ! cat app/google-services.json | grep -q '"project_info"'; then
+            echo "❌ google-services.json 파일이 유효한 JSON 형식이 아닙니다!"
+            exit 1
+          fi
+          
+          echo "✅ google-services.json 파일 생성 완료"
 
       - name: Build APK
         run: |
