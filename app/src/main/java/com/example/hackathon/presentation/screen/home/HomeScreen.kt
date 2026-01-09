@@ -1,32 +1,20 @@
 package com.example.hackathon.presentation.screen.home
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.hackathon.core.component.CombinationCard
 import com.example.hackathon.domain.entity.Category
-import com.example.hackathon.presentation.component.FilterBar
-import com.example.hackathon.presentation.component.SearchComponent
+import com.example.hackathon.domain.entity.Combination
+import com.example.hackathon.domain.entity.User
+import com.example.hackathon.presentation.viewmodel.HomeUiState
 import com.example.hackathon.presentation.viewmodel.HomeViewModel
-import com.example.hackathon.ui.theme.Gray700
 import com.example.hackathon.ui.theme.HackathonTheme
 
 @Composable
@@ -42,114 +30,70 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .shadow(
-                            elevation = 6.dp,
-                            clip = false,
-                        )
-                        .background(HackathonTheme.colors.white)
-                        .padding(top = 30.dp, bottom = 20.dp),
-            ) {
-                Row(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(start = 10.dp, end = 10.dp, top = 25.dp),
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    SearchComponent(
-                        onSearchClick = {
-                            navController.navigate("search")
-                        },
-                    )
-                }
-            }
+            HomeTopBar(navController = navController)
         },
     ) { innerPadding ->
-        LazyColumn(
-            modifier =
-                modifier
+        HomeContent(
+            uiState = uiState,
+            selectedCategory = selectedCategory,
+            onCategorySelected = { category ->
+                viewModel.selectCategory(category)
+            },
+            onCombinationClick = onCombinationClick,
+            onLikeClick = { combinationId ->
+                viewModel.toggleLike(combinationId)
+            },
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(innerPadding),
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Home Screen")
+@Composable
+private fun HomeScreenPreview() {
+    HackathonTheme {
+        val mockUser = User(
+            id = "user1",
+            nickname = "테스트유저",
+            profileImageUrl = null,
+        )
+        val mockCombinations =
+            listOf(
+                Combination(
+                    id = "1",
+                    title = "하이디라오 꿀조합",
+                    description = "맛있는 하이디라오 조합입니다",
+                    imageUrl = null,
+                    category = Category.HAIDILAO,
+                    ingredients = listOf("재료1", "재료2"),
+                    steps = listOf("단계1", "단계2"),
+                    tags = listOf("태그1", "태그2"),
+                    author = mockUser,
+                    likeCount = 10,
+                    isLiked = false,
+                    createdAt = "2024-01-01",
+                ),
+            )
+        // ViewModel 없이 직접 상태를 전달하는 프리뷰
+        Scaffold(
+            topBar = {
+                HomeTopBar(
+                    onSearchClick = {},
+                )
+            },
+        ) { innerPadding ->
+            HomeContent(
+                uiState = HomeUiState(combinations = mockCombinations),
+                selectedCategory = Category.ALL,
+                onCategorySelected = {},
+                onCombinationClick = {},
+                onLikeClick = {},
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(innerPadding),
-        ) {
-            item {
-                FilterBar(
-                    categories = Category.entries.toList(),
-                    selectedCategory = selectedCategory,
-                    onCategorySelected = { category ->
-                        viewModel.selectCategory(category)
-                    },
-                )
-            }
-
-            when {
-                uiState.isLoading -> {
-                    item {
-                        Box(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 40.dp, bottom = 200.dp),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
-                }
-
-                uiState.error != null -> {
-                    item {
-                        Box(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 40.dp, bottom = 200.dp),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(
-                                text = uiState.error ?: "오류가 발생했습니다",
-                                style = HackathonTheme.typography.Body_medium,
-                                color = Gray700,
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-                    }
-                }
-
-                uiState.combinations.isEmpty() && !uiState.isLoading -> {
-                    item {
-                        Box(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 40.dp, bottom = 200.dp),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(
-                                text = "아직 등록된 조합이 없어요 ㅠㅠ",
-                                style = HackathonTheme.typography.Body_medium,
-                                color = Gray700,
-                                textAlign = TextAlign.Center,
-                            )
-                        }
-                    }
-                }
-
-                else -> {
-                    // 조합 목록
-                    items(uiState.combinations) { combination ->
-                        CombinationCard(
-                            combination = combination,
-                            onClick = { onCombinationClick(combination.id) },
-                            onLikeClick = { viewModel.toggleLike(combination.id) },
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
-                        )
-                    }
-                }
-            }
+            )
         }
     }
 }
