@@ -178,6 +178,8 @@ class AuthRepositoryImpl
                     // Mock 모드: 토큰만 삭제
                     delay(300)
                     tokenManager.clearTokens()
+                    // 사용자 정보도 초기화
+                    DummyData.currentUser = null
                     Result.success(Unit)
                 } else {
                     // 실제 API 호출
@@ -187,8 +189,13 @@ class AuthRepositoryImpl
                     if (response.code == 200) {
                         // 토큰 삭제
                         tokenManager.clearTokens()
+                        // 사용자 정보도 초기화
+                        DummyData.currentUser = null
                         Result.success(Unit)
                     } else {
+                        // 로그아웃 실패해도 로컬 데이터는 초기화
+                        tokenManager.clearTokens()
+                        DummyData.currentUser = null
                         Result.failure(Exception(response.message))
                     }
                 }

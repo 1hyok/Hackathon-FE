@@ -24,7 +24,9 @@ class UserRepositoryImpl
                 // }
 
                 // 임시로 더미 데이터 반환
-                Result.success(DummyData.currentUser)
+                val currentUser = DummyData.currentUser
+                    ?: return Result.failure(Exception("User not logged in"))
+                Result.success(currentUser)
             } catch (e: Exception) {
                 Result.failure(e)
             }
@@ -48,8 +50,10 @@ class UserRepositoryImpl
                 // }
 
                 // 임시로 로컬 사용자 정보 업데이트
+                val currentUser = DummyData.currentUser
+                    ?: return Result.failure(Exception("User not logged in"))
                 val updatedUser =
-                    DummyData.currentUser.copy(
+                    currentUser.copy(
                         nickname = nickname,
                         profileImageUrl = profileImageUrl,
                     )

@@ -43,7 +43,13 @@ fun AppNavGraph(
             navController.navigate(Route.Home.route) {
                 popUpTo(0) { inclusive = true }
             }
+        } else {
+            // 토큰이 없으면 로그인 화면으로 이동 (Onboarding 건너뛰기)
+            navController.navigate(Route.Login.route) {
+                popUpTo(0) { inclusive = true }
+            }
         }
+        // currentUser는 Application.onCreate()에서 이미 null로 초기화됨
     }
 
     NavHost(
