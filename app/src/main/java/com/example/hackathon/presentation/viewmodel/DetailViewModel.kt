@@ -24,21 +24,25 @@ class DetailViewModel
 
         fun loadCombination(id: String) {
             viewModelScope.launch {
-                _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+                _uiState.value =
+                    _uiState.value.copy(
+                        isLoading = true,
+                        error = null,
+                    )
 
                 repository.getCombinationById(id).fold(
-                    onSuccess = { combination ->
+                    onSuccess = { result ->
                         _uiState.value =
                             _uiState.value.copy(
-                                combination = combination,
                                 isLoading = false,
+                                combination = result,
                             )
                     },
-                    onFailure = { error ->
+                    onFailure = { throwable ->
                         _uiState.value =
                             _uiState.value.copy(
                                 isLoading = false,
-                                error = error.message ?: "조합을 불러올 수 없습니다",
+                                error = throwable.message ?: "레시피를 불러오지 못했습니다",
                             )
                     },
                 )
@@ -46,35 +50,32 @@ class DetailViewModel
         }
 
         fun toggleLike() {
-            val combination = _uiState.value.combination ?: return
-            val wasLiked = combination.isLiked
+            val current = _uiState.value.combination ?: return
 
-            viewModelScope.launch {
-                repository.likeCombination(combination.id).fold(
-                    onSuccess = {
-                        // 좋아요 상태와 좋아요 수 업데이트
-                        _uiState.value =
-                            _uiState.value.copy(
-                                combination =
-                                    combination.copy(
-                                        isLiked = !wasLiked,
-                                        likeCount =
-                                            if (!wasLiked) {
-                                                combination.likeCount + 1
-                                            } else {
-                                                (combination.likeCount - 1).coerceAtLeast(0)
-                                            },
-                                    ),
-                            )
-                    },
-                    onFailure = { /* 에러 처리 */ },
+            val isLiked = current.isLiked
+            val newLikeCount =
+                if (isLiked) {
+                    current.likeCount - 1
+                } else {
+                    current.likeCount + 1
+                }
+
+            _uiState.value =
+                _uiState.value.copy(
+                    combination =
+                        current.copy(
+                            isLiked = !isLiked,
+                            likeCount = newLikeCount,
+                        ),
                 )
-            }
+
+            // TODO: 서버에 좋아요/취소 요청
+            // repository.toggleLike(current.id)
         }
     }
 
 data class DetailUiState(
-    val combination: Combination? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
+    val combination: Combination? = null,
 )
