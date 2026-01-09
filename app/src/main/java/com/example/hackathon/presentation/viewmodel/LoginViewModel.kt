@@ -46,12 +46,12 @@ class LoginViewModel
                     _uiState.value =
                         _uiState.value.copy(
                             isLoading = false,
-                            error = "이메일과 비밀번호를 입력해주세요",
+                            error = "닉네임과 비밀번호를 입력해주세요",
                         )
                     return@launch
                 }
 
-                // API 호출
+                // API 호출 (닉네임으로 로그인)
                 authRepository.login(_uiState.value.id, _uiState.value.password).fold(
                     onSuccess = { loginResult ->
                         // 사용자 정보 저장
@@ -63,6 +63,57 @@ class LoginViewModel
                             _uiState.value.copy(
                                 isLoading = false,
                                 error = throwable.message ?: "로그인에 실패했습니다",
+                            )
+                    },
+                )
+            }
+        }
+
+        /**
+         * 계정 생성 후 자동 로그인
+         * 닉네임과 비밀번호만으로 계정을 생성하고 바로 로그인합니다.
+         */
+        fun signupAndLogin() {
+            viewModelScope.launch {
+                _uiState.value = _uiState.value.copy(isLoading = true, error = null, isSuccess = false)
+
+                // 입력 검증
+                if (_uiState.value.id.isBlank() || _uiState.value.password.isBlank()) {
+                    _uiState.value =
+                        _uiState.value.copy(
+                            isLoading = false,
+                            error = "닉네임과 비밀번호를 입력해주세요",
+                        )
+                    return@launch
+                }
+
+                // 1. 계정 생성 (Swagger 스펙: nickname, password만 필요)
+                authRepository.signup(
+                    password = _uiState.value.password,
+                    nickname = _uiState.value.id,
+                ).fold(
+                    onSuccess = {
+                        // 2. 계정 생성 성공 시 바로 로그인 (nickname으로 로그인)
+                        authRepository.login(_uiState.value.id, _uiState.value.password).fold(
+                            onSuccess = { loginResult ->
+                                // 사용자 정보 저장
+                                DummyData.currentUser = loginResult.user
+                                _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
+                            },
+                            onFailure = { throwable ->
+                                _uiState.value =
+                                    _uiState.value.copy(
+                                        isLoading = false,
+                                        error = throwable.message ?: "로그인에 실패했습니다",
+                                    )
+                            },
+                        )
+                    },
+                    onFailure = { throwable ->
+                        _uiState.value =
+                            _uiState.value.copy(
+                                isLoading = false,
+                                error = throwable.message ?: "계정 생성에 실패했습니다",
                             )
                     },
                 )

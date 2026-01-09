@@ -275,12 +275,14 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    // 계정생성 버튼
+                    // 계정생성 버튼 (현재 화면에서 계정 생성 후 자동 로그인)
                     Button(
-                        onClick = onNavigateToRegistration,
+                        onClick = {
+                            viewModel.signupAndLogin()
+                        },
                         modifier = Modifier.weight(0.4f).height(44.dp),
                         shape = RoundedCornerShape(15.dp),
-                        enabled = !uiState.isLoading,
+                        enabled = uiState.id.isNotBlank() && uiState.password.isNotBlank() && !uiState.isLoading,
                         colors =
                             ButtonDefaults.buttonColors(
                                 containerColor = Gray700,
@@ -289,10 +291,17 @@ fun LoginScreen(
                                 disabledContentColor = Color.White.copy(alpha = 0.5f),
                             ),
                     ) {
-                        Text(
-                            text = "계정생성",
-                            style = HackathonTheme.typography.Sub1_semibold,
-                        )
+                        if (uiState.isLoading) {
+                            androidx.compose.material3.CircularProgressIndicator(
+                                modifier = Modifier.size(20.dp),
+                                color = Color.White,
+                            )
+                        } else {
+                            Text(
+                                text = "계정생성",
+                                style = HackathonTheme.typography.Sub1_semibold,
+                            )
+                        }
                     }
 
                     // 로그인 버튼
