@@ -1,5 +1,6 @@
 package com.example.hackathon.presentation.screen.home.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.R
 import com.example.hackathon.core.util.noRippleClickable
@@ -34,15 +34,15 @@ fun SearchComponent(
                 alignment = Alignment.CenterHorizontally,
             ),
     ) {
-        Icon(
+        Image(
             painter = painterResource(R.drawable.ic_logo_rec),
             contentDescription = "logo",
-            modifier = Modifier.size(width = 35.dp, height = 35.dp),
+            modifier = Modifier.size(width = 50.dp, height = 50.dp),
         )
         Row(
             modifier =
                 modifier
-                    .size(width = 300.dp, height = 35.dp)
+                    .size(width = 300.dp, height = 50.dp)
                     .noRippleClickable { onSearchClick() }
                     .border(
                         color = HackathonTheme.colors.primary,
@@ -69,4 +69,3 @@ fun SearchComponent(
         }
     }
 }
-
