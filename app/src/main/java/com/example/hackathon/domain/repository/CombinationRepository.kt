@@ -16,6 +16,7 @@ interface CombinationRepository {
         ingredients: List<String>,
         tags: List<String> = emptyList(),
         imageUri: android.net.Uri? = null,
+        isPublic: Boolean = true,
     ): Result<Combination>
 
     suspend fun updateCombination(
@@ -26,6 +27,7 @@ interface CombinationRepository {
         ingredients: List<String>,
         tags: List<String> = emptyList(),
         imageUri: android.net.Uri? = null,
+        isPublic: Boolean = true,
     ): Result<Combination>
 
     suspend fun deleteCombination(id: String): Result<Unit>

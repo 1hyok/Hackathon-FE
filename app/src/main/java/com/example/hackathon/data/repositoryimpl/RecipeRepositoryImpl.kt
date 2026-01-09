@@ -17,21 +17,23 @@ class RecipeRepositoryImpl
         // 1. 전체 랭킹 조회(홈화면)
         override suspend fun getRecipeRanking(page: Int?): Result<RecipeRanking> =
             runCatching {
-                val response = recipeService.getRecipeRanking(page)
+                val response = recipeService.getRecipes(page = page, category = null)
                 val data =
                     response.data
                         ?: throw IllegalStateException("Recipe ranking data is null")
-                data.toDomain()
+                // List<PostPreviewDto>를 RecipeRanking으로 변환
+                data.toDomain(currentCategory = "ALL")
             }
 
         // 2. 특정 카테고리 랭킹조회
         override suspend fun getRecipeRankingByCategory(categoryId: String): Result<RecipeRanking> =
             runCatching {
-                val response = recipeService.getRecipeRankingByCategory(categoryId)
+                val response = recipeService.getRecipes(page = null, category = categoryId)
                 val data =
                     response.data
                         ?: throw IllegalStateException("Recipe ranking data is null")
-                data.toDomain()
+                // List<PostPreviewDto>를 RecipeRanking으로 변환
+                data.toDomain(currentCategory = categoryId)
             }
 
         // 3. 검색/해시태그검색
@@ -41,7 +43,8 @@ class RecipeRepositoryImpl
                 val data =
                     response.data
                         ?: throw IllegalStateException("Recipe search data is null")
-                data.toDomain()
+                // List<PostPreviewDto>를 RecipeRanking으로 변환
+                data.toDomain(currentCategory = "SEARCH")
             }
 
         // 4. 레시피 상세조회
@@ -51,6 +54,7 @@ class RecipeRepositoryImpl
                 val data =
                     response.data
                         ?: throw IllegalStateException("Recipe detail data is null")
+                // DetailResponse를 RecipeDetail로 변환
                 data.toDomain()
             }
 
