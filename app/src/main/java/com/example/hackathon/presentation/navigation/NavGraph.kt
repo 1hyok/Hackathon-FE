@@ -9,16 +9,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.hackathon.presentation.route.Route
-import com.example.hackathon.presentation.screen.CreateCombinationScreen
-import com.example.hackathon.presentation.screen.DetailScreen
-import com.example.hackathon.presentation.screen.EditProfileScreen
-import com.example.hackathon.presentation.screen.LoginScreen
-import com.example.hackathon.presentation.screen.MyScreen
-import com.example.hackathon.presentation.screen.OnboardingScreen
-import com.example.hackathon.presentation.screen.RegistrationScreen
-import com.example.hackathon.presentation.screen.RegistrationSuccessScreen
-import com.example.hackathon.presentation.screen.SearchScreen
-import com.example.hackathon.presentation.screen.HomeScreen
+import com.example.hackathon.presentation.screen.auth.LoginScreen
+import com.example.hackathon.presentation.screen.auth.RegistrationScreen
+import com.example.hackathon.presentation.screen.auth.RegistrationSuccessScreen
+import com.example.hackathon.presentation.screen.combination.CreateCombinationScreen
+import com.example.hackathon.presentation.screen.combination.DetailScreen
+import com.example.hackathon.presentation.screen.home.HomeScreen
+import com.example.hackathon.presentation.screen.home.SearchScreen
+import com.example.hackathon.presentation.screen.onboarding.OnboardingScreen
+import com.example.hackathon.presentation.screen.profile.EditProfileScreen
+import com.example.hackathon.presentation.screen.profile.MyScreen
 import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 
 @Composable

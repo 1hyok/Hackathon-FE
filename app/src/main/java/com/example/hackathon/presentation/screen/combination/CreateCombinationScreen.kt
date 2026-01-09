@@ -1,4 +1,4 @@
-package com.example.hackathon.presentation.screen
+package com.example.hackathon.presentation.screen.combination
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
