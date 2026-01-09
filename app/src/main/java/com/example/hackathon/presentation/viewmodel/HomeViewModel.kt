@@ -78,6 +78,65 @@ class HomeViewModel
         fun refresh() {
             loadCombinations()
         }
+
+        fun toggleLike(combinationId: String) {
+            viewModelScope.launch {
+                repository.likeCombination(combinationId).fold(
+                    onSuccess = {
+                        // 홈 화면 조합 목록 업데이트
+                        val currentCombinations = _uiState.value.combinations
+                        val updatedCombinations =
+                            currentCombinations.map { combination ->
+                                if (combination.id == combinationId) {
+                                    val isLiked = combination.isLiked
+                                    val newLikeCount =
+                                        if (isLiked) {
+                                            combination.likeCount - 1
+                                        } else {
+                                            combination.likeCount + 1
+                                        }
+                                    combination.copy(
+                                        isLiked = !isLiked,
+                                        likeCount = newLikeCount,
+                                    )
+                                } else {
+                                    combination
+                                }
+                            }
+                        _uiState.value =
+                            _uiState.value.copy(
+                                combinations = updatedCombinations,
+                            )
+                    },
+                    onFailure = {
+                        // 에러 발생 시에도 UI는 업데이트 (낙관적 업데이트)
+                        val currentCombinations = _uiState.value.combinations
+                        val updatedCombinations =
+                            currentCombinations.map { combination ->
+                                if (combination.id == combinationId) {
+                                    val isLiked = combination.isLiked
+                                    val newLikeCount =
+                                        if (isLiked) {
+                                            combination.likeCount - 1
+                                        } else {
+                                            combination.likeCount + 1
+                                        }
+                                    combination.copy(
+                                        isLiked = !isLiked,
+                                        likeCount = newLikeCount,
+                                    )
+                                } else {
+                                    combination
+                                }
+                            }
+                        _uiState.value =
+                            _uiState.value.copy(
+                                combinations = updatedCombinations,
+                            )
+                    },
+                )
+            }
+        }
     }
 
 data class HomeUiState(
