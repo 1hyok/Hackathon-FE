@@ -73,7 +73,7 @@ val defaultHackathonTypography =
         Sub2_semibold =
             TextStyle(
                 fontFamily = FontSemiBold,
-                fontSize = 24.sp,
+                fontSize = 16.sp,
                 lineHeight = 28.sp,
             ),
         Sub2_medium =
