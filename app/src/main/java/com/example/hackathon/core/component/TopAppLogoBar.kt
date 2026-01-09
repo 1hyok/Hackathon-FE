@@ -21,7 +21,7 @@ fun TopAppLogoBar(modifier: Modifier = Modifier) {
             modifier
                 .fillMaxWidth()
                 .background(HackathonTheme.colors.white)
-                .padding(start = 20.dp, top = 14.dp, bottom = 20.dp),
+                .padding(start = 20.dp, top = 10.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
