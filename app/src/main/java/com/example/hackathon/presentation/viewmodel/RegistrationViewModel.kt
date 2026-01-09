@@ -54,11 +54,11 @@ class RegistrationViewModel
                 _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
                 // 입력 검증
-                if (_uiState.value.name.isBlank() || _uiState.value.email.isBlank() || _uiState.value.password.isBlank()) {
+                if (_uiState.value.name.isBlank() || _uiState.value.password.isBlank()) {
                     _uiState.value =
                         _uiState.value.copy(
                             isLoading = false,
-                            error = "모든 필드를 입력해주세요",
+                            error = "닉네임과 비밀번호를 입력해주세요",
                         )
                     return@launch
                 }
@@ -72,9 +72,8 @@ class RegistrationViewModel
                     return@launch
                 }
 
-                // API 호출
+                // API 호출 (Swagger 스펙: nickname, password만 필요)
                 authRepository.signup(
-                    email = _uiState.value.email,
                     password = _uiState.value.password,
                     nickname = _uiState.value.name,
                 ).fold(

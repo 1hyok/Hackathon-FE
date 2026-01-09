@@ -145,6 +145,7 @@ class CreateCombinationViewModel
                     ingredients = validIngredients,
                     tags = state.tags,
                     imageUri = state.imageUris.firstOrNull(),
+                    isPublic = state.isPublic,
                 ).fold(
                     onSuccess = { combination ->
                         _uiState.value = state.copy(isLoading = false)
