@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -20,14 +22,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,11 +49,7 @@ fun SearchScreen(
     onCombinationClick: (String) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    // query 변경 시 ViewModel에 반영
-    LaunchedEffect(uiState.query) {
-        // query는 ViewModel에서 관리하므로 별도 처리 불필요
-    }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         topBar = {
@@ -103,11 +102,23 @@ fun SearchScreen(
                                 modifier =
                                     Modifier.clickable {
                                         viewModel.onSearch(uiState.query)
+                                        keyboardController?.hide()
                                     },
                             )
                         },
                         singleLine = true,
                         textStyle = HackathonTheme.typography.Body_medium,
+                        keyboardOptions =
+                            KeyboardOptions(
+                                imeAction = ImeAction.Search,
+                            ),
+                        keyboardActions =
+                            KeyboardActions(
+                                onSearch = {
+                                    viewModel.onSearch(uiState.query)
+                                    keyboardController?.hide()
+                                },
+                            ),
                         colors =
                             TextFieldDefaults.colors(
                                 focusedContainerColor = HackathonTheme.colors.white,
@@ -180,6 +191,9 @@ fun SearchScreen(
                             .padding(innerPadding),
                     results = uiState.results,
                     onCombinationClick = onCombinationClick,
+                    onLikeClick = { combinationId ->
+                        viewModel.toggleLike(combinationId)
+                    },
                 )
             }
         }

@@ -24,6 +24,7 @@ fun CombinationList(
     modifier: Modifier = Modifier,
     results: List<Combination>,
     onCombinationClick: (String) -> Unit = {},
+    onLikeClick: ((String) -> Unit)? = null,
 ) {
     if (results.isEmpty()) {
         Box(
@@ -50,6 +51,7 @@ fun CombinationList(
                 CombinationCard(
                     combination = combination,
                     onClick = { onCombinationClick(combination.id) },
+                    onLikeClick = onLikeClick?.let { { it(combination.id) } },
                     modifier = Modifier.fillMaxWidth(),
                 )
             }

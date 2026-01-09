@@ -65,4 +65,63 @@ class SearchViewModel
                 )
             }
         }
+
+        fun toggleLike(combinationId: String) {
+            viewModelScope.launch {
+                repository.likeCombination(combinationId).fold(
+                    onSuccess = {
+                        // 검색 결과 업데이트
+                        val currentResults = _uiState.value.results
+                        val updatedResults =
+                            currentResults.map { combination ->
+                                if (combination.id == combinationId) {
+                                    val isLiked = combination.isLiked
+                                    val newLikeCount =
+                                        if (isLiked) {
+                                            combination.likeCount - 1
+                                        } else {
+                                            combination.likeCount + 1
+                                        }
+                                    combination.copy(
+                                        isLiked = !isLiked,
+                                        likeCount = newLikeCount,
+                                    )
+                                } else {
+                                    combination
+                                }
+                            }
+                        _uiState.value =
+                            _uiState.value.copy(
+                                results = updatedResults,
+                            )
+                    },
+                    onFailure = {
+                        // 에러 발생 시에도 UI는 업데이트 (낙관적 업데이트)
+                        val currentResults = _uiState.value.results
+                        val updatedResults =
+                            currentResults.map { combination ->
+                                if (combination.id == combinationId) {
+                                    val isLiked = combination.isLiked
+                                    val newLikeCount =
+                                        if (isLiked) {
+                                            combination.likeCount - 1
+                                        } else {
+                                            combination.likeCount + 1
+                                        }
+                                    combination.copy(
+                                        isLiked = !isLiked,
+                                        likeCount = newLikeCount,
+                                    )
+                                } else {
+                                    combination
+                                }
+                            }
+                        _uiState.value =
+                            _uiState.value.copy(
+                                results = updatedResults,
+                            )
+                    },
+                )
+            }
+        }
     }
