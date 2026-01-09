@@ -21,7 +21,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -45,6 +44,7 @@ import com.example.hackathon.presentation.viewmodel.MyPageTab
 import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 import com.example.hackathon.ui.theme.Gray50
 import com.example.hackathon.ui.theme.Gray700
+import com.example.hackathon.ui.theme.HackathonTheme
 import com.example.hackathon.ui.theme.Primary
 
 // 담당자: 일혁
@@ -127,8 +127,8 @@ fun MyScreen(
                         // 프로필 이미지가 없을 때 닉네임 첫 글자 표시
                         Text(
                             text = user?.nickname?.firstOrNull()?.toString() ?: "?",
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = Primary,
+                            style = HackathonTheme.typography.Head2_bold,
+                            color = Color.White,
                         )
                     }
                 }
@@ -141,13 +141,13 @@ fun MyScreen(
                 ) {
                     Text(
                         text = user?.nickname ?: "사용자",
-                        style = MaterialTheme.typography.headlineSmall,
+                        style = HackathonTheme.typography.Head2_bold,
                         color = Color.Black,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "로그아웃",
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = HackathonTheme.typography.Body_medium,
                         color = Gray700,
                         modifier = Modifier.clickable { viewModel.logout() },
                     )
@@ -165,7 +165,7 @@ fun MyScreen(
                 ) {
                     Text(
                         text = "닉네임 변경",
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = HackathonTheme.typography.Body_medium,
                     )
                 }
             }
@@ -184,7 +184,7 @@ fun MyScreen(
                     text = {
                         Text(
                             text = "나의 레시피",
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = HackathonTheme.typography.Body_semibold,
                         )
                     },
                 )
@@ -194,7 +194,7 @@ fun MyScreen(
                     text = {
                         Text(
                             text = "좋아요한 조합",
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = HackathonTheme.typography.Body_semibold,
                         )
                     },
                 )
@@ -217,7 +217,7 @@ fun MyScreen(
                         ) {
                             Text(
                                 text = "아직 나만의 레시피가 없어요 ㅠㅠ",
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = HackathonTheme.typography.Body_medium,
                                 color = Gray700,
                                 textAlign = TextAlign.Center,
                             )
@@ -252,7 +252,7 @@ fun MyScreen(
                         ) {
                             Text(
                                 text = "아직 마음에 드는 조합이 없어요 ㅠㅠ",
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = HackathonTheme.typography.Body_medium,
                                 color = Gray700,
                                 textAlign = TextAlign.Center,
                             )
