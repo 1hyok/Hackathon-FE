@@ -72,6 +72,8 @@ fun MyScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    // 로그아웃 상태일 때만 로그인 화면으로 이동
+    // (API 호출 실패는 에러로 표시하고, 명시적 로그아웃만 처리)
     LaunchedEffect(uiState.isLoggedOut) {
         if (uiState.isLoggedOut) {
             onLogout()

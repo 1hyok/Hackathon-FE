@@ -63,4 +63,55 @@ class TokenManager
             val refreshToken = getRefreshToken()
             return !accessToken.isNullOrBlank() && !refreshToken.isNullOrBlank()
         }
+
+        /**
+         * Mock 모드가 해제된 경우, Mock 토큰이 있으면 클리어
+         * 앱 시작 시 호출하여 이전 Mock 토큰을 제거
+         */
+        suspend fun clearMockTokensIfNeeded(useMockApi: Boolean) {
+            if (!useMockApi) {
+                val accessToken = getAccessToken()
+                // Mock 토큰인지 확인 (mock_access_token으로 시작)
+                if (accessToken != null && accessToken.startsWith("mock_")) {
+                    clearTokens()
+                }
+            }
+        }
+
+        /**
+         * JWT 토큰에서 userId 추출
+         * JWT payload의 "sub" 필드에서 userId를 가져옴
+         */
+        suspend fun getUserIdFromToken(): Long? {
+            val accessToken = getAccessToken() ?: return null
+            return try {
+                // JWT는 header.payload.signature 형식
+                val parts = accessToken.split(".")
+                if (parts.size != 3) return null
+                
+                // payload 부분 디코딩
+                val payload = parts[1]
+                // Base64 URL-safe 디코딩
+                // 패딩이 없을 수 있으므로 추가
+                val paddedPayload = when (payload.length % 4) {
+                    0 -> payload
+                    2 -> "$payload=="
+                    3 -> "$payload="
+                    else -> payload
+                }
+                
+                val decodedBytes = android.util.Base64.decode(
+                    paddedPayload,
+                    android.util.Base64.URL_SAFE
+                )
+                val payloadJson = String(decodedBytes, Charsets.UTF_8)
+                
+                // JSON 파싱
+                val jsonObject = org.json.JSONObject(payloadJson)
+                val sub = jsonObject.optString("sub", null)
+                sub?.toLongOrNull()
+            } catch (e: Exception) {
+                null
+            }
+        }
     }
