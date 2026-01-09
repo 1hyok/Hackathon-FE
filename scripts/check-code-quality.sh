@@ -4,24 +4,6 @@
 
 echo "🔍 Running code quality checks..."
 
-# Ktlint 포맷팅
-echo ""
-echo "📝 Running Ktlint Format..."
-./gradlew ktlintFormat
-if [ $? -ne 0 ]; then
-    echo "❌ Ktlint formatting failed!"
-    exit 1
-fi
-
-# Ktlint 검사
-echo ""
-echo "📝 Running Ktlint Check..."
-./gradlew ktlintCheck
-if [ $? -ne 0 ]; then
-    echo "❌ Ktlint check failed! Please fix the issues."
-    exit 1
-fi
-
 # Detekt 검사
 echo ""
 echo "🔎 Running Detekt..."

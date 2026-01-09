@@ -21,7 +21,7 @@ object DummyData {
                 id = "1",
                 title = "서브웨이 꿀조합: 에그마요 + 아보카도",
                 description = "에그마요에 아보카도를 추가하면 완벽한 조합이에요!",
-                imageUrl = null,
+                imageUrl = "https://picsum.photos/800/600?random=1",
                 category = Category.SUBWAY,
                 ingredients =
                     listOf(
@@ -47,7 +47,7 @@ object DummyData {
                 id = "2",
                 title = "하이디라오 소스 조합: 마늘 + 고추기름",
                 description = "하이디라오에서 가장 맛있는 소스 조합입니다!",
-                imageUrl = null,
+                imageUrl = "https://picsum.photos/800/600?random=2",
                 category = Category.HAIDILAO,
                 ingredients =
                     listOf(
@@ -73,7 +73,7 @@ object DummyData {
                 id = "3",
                 title = "편의점 꿀조합: 불닭볶음면 + 치즈",
                 description = "편의점에서 바로 먹을 수 있는 간단한 조합",
-                imageUrl = null,
+                imageUrl = "https://picsum.photos/800/600?random=3",
                 category = Category.CONVENIENCE,
                 ingredients =
                     listOf(

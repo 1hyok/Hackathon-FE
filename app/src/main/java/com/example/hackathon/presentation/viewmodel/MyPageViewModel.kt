@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-// 담당자: 일혁
 @HiltViewModel
 class MyPageViewModel
     @Inject

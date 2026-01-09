@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Hackathon" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Hackathon" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Android 12+ 시스템 스플래시 설정 -->
+        <!-- 배경색을 OnboardingScreen과 동일하게 (흰색) -->
+        <item name="android:windowSplashScreenBackground">@color/white</item>
+        <!-- 아이콘을 투명하게 설정하여 첫 번째 화면에서 아이콘이 안 보이게 -->
+        <item name="android:windowSplashScreenAnimatedIcon">@android:color/transparent</item>
+        <!-- 스플래시 지속 시간 최소화 -->
+        <item name="android:windowSplashScreenAnimationDuration">0</item>
+    </style>
 
     <!-- Splash Screen 전용 테마 -->
     <style name="Theme.ArchiveatProject.Splash"
