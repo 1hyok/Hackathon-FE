@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.hackathon.core.util.noRippleClickable
-import com.example.hackathon.ui.theme.HackathonTheme
+import com.example.hackathon.core.designsystem.util.noRippleClickable
+import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import kotlin.enums.EnumEntries
 
 @Composable

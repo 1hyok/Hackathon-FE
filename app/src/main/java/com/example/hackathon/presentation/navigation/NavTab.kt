@@ -1,7 +1,7 @@
 package com.example.hackathon.presentation.navigation
 
 import androidx.compose.material.icons.filled.Home
-import com.example.hackathon.R
+import com.example.hackathon.core.designsystem.R
 import com.example.hackathon.presentation.route.Route
 
 enum class NavTab(
