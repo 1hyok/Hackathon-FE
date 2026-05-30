@@ -31,7 +31,7 @@ import com.example.hackathon.presentation.navigation.BottomNavBar
 import com.example.hackathon.presentation.navigation.BottomNavItem
 import com.example.hackathon.presentation.navigation.NavTab
 import com.example.hackathon.presentation.route.Route
-import com.example.hackathon.ui.theme.HackathonTheme
+import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

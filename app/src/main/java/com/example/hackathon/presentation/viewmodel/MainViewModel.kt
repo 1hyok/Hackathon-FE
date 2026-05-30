@@ -3,8 +3,8 @@ package com.example.hackathon.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hackathon.BuildConfig
-import com.example.hackathon.domain.repository.AuthRepository
-import com.example.hackathon.data.local.TokenManager
+import com.example.hackathon.core.domain.repository.AuthRepository
+import com.example.hackathon.core.datastore.TokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
