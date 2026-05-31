@@ -235,11 +235,13 @@ constructor(
             val registerRequest =
                 RegisterRequest(
                     title = title,
-                    categories = listOf(category.name), // 단일 카테고리를 배열로 변환
+                    // 단일 카테고리를 배열로 변환
+                    categories = listOf(category.name),
                     ingredients = ingredientDtos,
                     images = imageStrings,
                     description = description,
-                    isPrivate = !isPublic // isPublic = true면 isPrivate = false (전체 공개), isPublic = false면 isPrivate = true (나만 보기)
+                    // isPublic=true → isPrivate=false(전체 공개), false → true(나만 보기)
+                    isPrivate = !isPublic
                 )
 
             val response = combinationService.register(userId, registerRequest)

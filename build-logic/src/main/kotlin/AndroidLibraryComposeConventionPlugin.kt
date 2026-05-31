@@ -1,8 +1,8 @@
 import com.android.build.api.dsl.LibraryExtension
-import com.example.hackathon.buildlogic.configureAndroidCompose
+import com.example.hackathon.buildlogic.configureComposeLibrary
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
 
 /**
  * Compose 를 사용하는 안드로이드 라이브러리 모듈 플러그인.
@@ -16,8 +16,8 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.plugin.compose")
             }
 
-            val extension = extensions.getByType(LibraryExtension::class.java)
-            configureAndroidCompose(extension)
+            val extension = extensions.getByType<LibraryExtension>()
+            configureComposeLibrary(extension)
         }
     }
 }
