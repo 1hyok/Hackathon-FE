@@ -1,9 +1,8 @@
 import com.android.build.api.dsl.LibraryExtension
-import com.example.hackathon.buildlogic.configureKotlinAndroid
+import com.example.hackathon.buildlogic.configureAndroidLibrary
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 
 /**
  * 안드로이드 라이브러리 모듈 공통 플러그인.
@@ -18,9 +17,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<LibraryExtension> {
-                configureKotlinAndroid(this)
-                defaultConfig.testInstrumentationRunner =
-                    "androidx.test.runner.AndroidJUnitRunner"
+                configureAndroidLibrary(this)
             }
         }
     }

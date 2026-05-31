@@ -1,12 +1,12 @@
 import com.android.build.api.dsl.ApplicationExtension
-import com.example.hackathon.buildlogic.configureKotlinAndroid
+import com.example.hackathon.buildlogic.configureAndroidApplication
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
 /**
  * 안드로이드 애플리케이션(:app) 모듈 공통 플러그인.
- * com.android.application + Kotlin 적용 + 공통 SDK/Java/Kotlin 설정 + targetSdk.
+ * com.android.application + Kotlin 적용 + 공통 SDK/Java/Kotlin 설정.
  */
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -17,10 +17,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<ApplicationExtension> {
-                configureKotlinAndroid(this)
-                defaultConfig.targetSdk = 36
-                defaultConfig.testInstrumentationRunner =
-                    "androidx.test.runner.AndroidJUnitRunner"
+                configureAndroidApplication(this)
             }
         }
     }
