@@ -14,25 +14,22 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.hackathon.feature.auth.LoginScreen
+import com.example.hackathon.feature.auth.RegistrationScreen
+import com.example.hackathon.feature.auth.RegistrationSuccessScreen
+import com.example.hackathon.feature.combination.CreateCombinationScreen
+import com.example.hackathon.feature.combination.DetailScreen
+import com.example.hackathon.feature.home.HomeScreen
+import com.example.hackathon.feature.home.SearchScreen
+import com.example.hackathon.feature.onboarding.OnboardingScreen
+import com.example.hackathon.feature.profile.EditProfileScreen
+import com.example.hackathon.feature.profile.MyPageViewModel
+import com.example.hackathon.feature.profile.MyScreen
 import com.example.hackathon.presentation.route.Route
-import com.example.hackathon.presentation.screen.auth.LoginScreen
-import com.example.hackathon.presentation.screen.auth.RegistrationScreen
-import com.example.hackathon.presentation.screen.auth.RegistrationSuccessScreen
-import com.example.hackathon.presentation.screen.combination.CreateCombinationScreen
-import com.example.hackathon.presentation.screen.combination.DetailScreen
-import com.example.hackathon.presentation.screen.home.HomeScreen
-import com.example.hackathon.presentation.screen.home.SearchScreen
-import com.example.hackathon.presentation.screen.onboarding.OnboardingScreen
-import com.example.hackathon.presentation.screen.profile.EditProfileScreen
-import com.example.hackathon.presentation.screen.profile.MyScreen
 import com.example.hackathon.presentation.viewmodel.MainViewModel
-import com.example.hackathon.presentation.viewmodel.MyPageViewModel
 
 @Composable
-fun AppNavGraph(
-    navController: NavHostController,
-    modifier: Modifier = Modifier,
-) {
+fun AppNavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
     // 인증 상태 확인을 위한 ViewModel
     val mainViewModel: MainViewModel = hiltViewModel()
     val isLoggedIn by mainViewModel.isLoggedIn.collectAsStateWithLifecycle()
@@ -41,7 +38,7 @@ fun AppNavGraph(
     if (isLoggedIn == null) {
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
         }
@@ -50,7 +47,7 @@ fun AppNavGraph(
         // isLoggedIn 상태에 따라 startDestination 결정
         NavHost(
             navController = navController,
-            startDestination = if (isLoggedIn == true) Route.Home.route else Route.Login.route,
+            startDestination = if (isLoggedIn == true) Route.Home.route else Route.Login.route
         ) {
             composable(route = Route.Home.route) {
                 HomeScreen(
@@ -61,7 +58,7 @@ fun AppNavGraph(
                     },
                     onCreateClick = {
                         navController.navigate(Route.Create.route)
-                    },
+                    }
                 )
             }
             composable(route = Route.Search.route) {
@@ -70,7 +67,7 @@ fun AppNavGraph(
                     onNavigateBack = { navController.popBackStack() },
                     onCombinationClick = { id ->
                         navController.navigate(Route.Detail.createRoute(id))
-                    },
+                    }
                 )
             }
             composable(
@@ -79,8 +76,8 @@ fun AppNavGraph(
                     listOf(
                         navArgument("id") {
                             type = NavType.StringType
-                        },
-                    ),
+                        }
+                    )
             ) { backStackEntry ->
                 val idString = backStackEntry.arguments?.getString("id")
 
@@ -88,14 +85,14 @@ fun AppNavGraph(
 
                 DetailScreen(
                     recipeId = recipeId,
-                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateBack = { navController.popBackStack() }
                 )
             }
 
             composable(route = Route.Create.route) {
                 CreateCombinationScreen(
                     modifier = modifier,
-                    onNavigateBack = { navController.popBackStack() },
+                    onNavigateBack = { navController.popBackStack() }
                 )
             }
             composable(route = Route.Login.route) {
@@ -111,7 +108,7 @@ fun AppNavGraph(
                     },
                     onNavigateToRegistration = {
                         navController.navigate(Route.Registration.route)
-                    },
+                    }
                 )
             }
             composable(route = Route.Registration.route) {
@@ -123,7 +120,7 @@ fun AppNavGraph(
                         navController.navigate(Route.RegistrationSuccess.route) {
                             popUpTo(Route.Registration.route) { inclusive = true }
                         }
-                    },
+                    }
                 )
             }
             composable(route = Route.RegistrationSuccess.route) {
@@ -133,7 +130,7 @@ fun AppNavGraph(
                         navController.navigate(Route.Login.route) {
                             popUpTo(Route.RegistrationSuccess.route) { inclusive = true }
                         }
-                    },
+                    }
                 )
             }
             composable(route = Route.Onboarding.route) {
@@ -143,7 +140,7 @@ fun AppNavGraph(
                         navController.navigate(Route.Login.route) {
                             popUpTo(Route.Onboarding.route) { inclusive = true }
                         }
-                    },
+                    }
                 )
             }
             composable(route = Route.My.route) {
@@ -159,7 +156,7 @@ fun AppNavGraph(
                     },
                     onChangeNickname = {
                         navController.navigate(Route.EditProfile.route)
-                    },
+                    }
                 )
             }
             composable(route = Route.EditProfile.route) {
@@ -172,7 +169,7 @@ fun AppNavGraph(
                     onProfileUpdated = {
                         // 프로필 저장 후 MyScreen의 프로필 새로고침
                         myScreenViewModel.loadProfile()
-                    },
+                    }
                 )
             }
         }

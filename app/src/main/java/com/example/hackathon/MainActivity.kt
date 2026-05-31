@@ -26,18 +26,17 @@ import androidx.compose.ui.unit.dp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.presentation.navigation.AppNavGraph
 import com.example.hackathon.presentation.navigation.BottomNavBar
 import com.example.hackathon.presentation.navigation.BottomNavItem
 import com.example.hackathon.presentation.navigation.NavTab
 import com.example.hackathon.presentation.route.Route
-import com.example.hackathon.ui.theme.HackathonTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -57,31 +56,35 @@ class MainActivity : ComponentActivity() {
                 // 하단 네비게이션 바를 숨겨야 하는 화면들
                 val shouldHideBottomBar =
                     currentRoute == Route.Login.route ||
-                            currentRoute == Route.Registration.route ||
-                            currentRoute == Route.RegistrationSuccess.route ||
-                            currentRoute == Route.Onboarding.route ||
-                            currentRoute == Route.EditProfile.route ||
-                            currentRoute == Route.Detail.route ||
-                            currentRoute == Route.Search.route
+                        currentRoute == Route.Registration.route ||
+                        currentRoute == Route.RegistrationSuccess.route ||
+                        currentRoute == Route.Onboarding.route ||
+                        currentRoute == Route.EditProfile.route ||
+                        currentRoute == Route.Detail.route ||
+                        currentRoute == Route.Search.route
 
                 Scaffold(
                     bottomBar = {
                         if (!shouldHideBottomBar) {
                             Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .shadow(
-                                        elevation = 12.dp,
-                                        shape = RoundedCornerShape(
-                                            topStart = 30.dp,
-                                            topEnd = 30.dp
-                                        ),
-                                        clip = false
-                                    )
-                                    .background(
-                                        Color.White,
-                                        shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
-                                    )
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .shadow(
+                                            elevation = 12.dp,
+                                            shape =
+                                                RoundedCornerShape(
+                                                    topStart = 30.dp,
+                                                    topEnd = 30.dp
+                                                ),
+                                            clip = false
+                                        ).background(
+                                            Color.White,
+                                            shape = RoundedCornerShape(
+                                                topStart = 30.dp,
+                                                topEnd = 30.dp
+                                            )
+                                        )
                             ) {
                                 BottomNavBar(
                                     visible = true,
@@ -95,19 +98,18 @@ class MainActivity : ComponentActivity() {
                                                 saveState = true
                                             }
                                         }
-                                    },
+                                    }
                                 )
                             }
                         }
-                    },
+                    }
                 ) { innerPadding ->
                     AppNavGraph(
                         navController = navController,
-                        modifier = Modifier.padding(innerPadding),
+                        modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
         }
     }
 }
-
