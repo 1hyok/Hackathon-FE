@@ -14,25 +14,14 @@ data class RecipeDetailResponse(
     val userInteraction: UserInteractionDto,
     val tags: List<String>,
     val createdAt: String,
-    val updatedAt: String,
+    val updatedAt: String
 )
-
 
 @Serializable
-data class IngredientDto(
-    val name: String,
-    val amount: String,
-)
-
+data class IngredientDto(val name: String, val amount: String)
 
 @Serializable
-data class StatsDto(
-    val likesCount: Int,
-)
-
+data class StatsDto(val likesCount: Int)
 
 @Serializable
-data class UserInteractionDto(
-    val isLiked: Boolean,
-    val isMine: Boolean,
-)
+data class UserInteractionDto(val isLiked: Boolean, val isMine: Boolean)

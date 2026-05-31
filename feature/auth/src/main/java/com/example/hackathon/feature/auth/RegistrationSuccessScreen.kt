@@ -28,12 +28,9 @@ import com.example.hackathon.core.designsystem.theme.Primary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistrationSuccessScreen(
-    modifier: Modifier = Modifier,
-    onNavigateToLogin: () -> Unit = {},
-) {
+fun RegistrationSuccessScreen(modifier: Modifier = Modifier, onNavigateToLogin: () -> Unit = {}) {
     Scaffold(
-        modifier = modifier,
+        modifier = modifier
     ) { paddingValues ->
         Column(
             modifier =
@@ -42,7 +39,7 @@ fun RegistrationSuccessScreen(
                     .padding(paddingValues)
                     .background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
             // 로고 영역
             TopAppLogoBar()
@@ -53,20 +50,20 @@ fun RegistrationSuccessScreen(
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
                     text = "가입 완료",
                     style = HackathonTheme.typography.Head1_bold,
                     color = Color.Black,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
 
                 Text(
                     text = "회원가입이 완료되었습니다.\n로그인 후 이용해주세요.",
                     style = HackathonTheme.typography.Body_medium,
                     color = Gray700,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
@@ -79,12 +76,12 @@ fun RegistrationSuccessScreen(
                     colors =
                         ButtonDefaults.buttonColors(
                             containerColor = Primary,
-                            contentColor = Color.White,
-                        ),
+                            contentColor = Color.White
+                        )
                 ) {
                     Text(
                         text = "로그인하기",
-                        style = HackathonTheme.typography.Sub1_semibold,
+                        style = HackathonTheme.typography.Sub1_semibold
                     )
                 }
             }

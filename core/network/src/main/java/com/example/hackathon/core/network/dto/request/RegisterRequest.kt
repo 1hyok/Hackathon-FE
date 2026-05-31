@@ -18,7 +18,8 @@ data class RegisterRequest(
     val ingredients: List<IngredientDto>,
     val images: List<String>,
     val description: String,
-    val isPrivate: Boolean = false, // false = 전체 공개, true = 나만 보기
+    // false = 전체 공개, true = 나만 보기
+    val isPrivate: Boolean = false
 )
 
 /**
@@ -32,5 +33,6 @@ data class UpdateRegisterRequest(
     val ingredients: List<IngredientDto>,
     val images: List<String>,
     val description: String,
-    val isPrivate: Boolean = false, // false = 전체 공개, true = 나만 보기
+    // false = 전체 공개, true = 나만 보기
+    val isPrivate: Boolean = false
 )

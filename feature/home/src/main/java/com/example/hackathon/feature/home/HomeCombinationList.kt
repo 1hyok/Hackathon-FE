@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:function-naming") // LazyListScope DSL 확장은 PascalCase 관용
+
 package com.example.hackathon.feature.home
 
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,20 +11,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.component.CombinationCard
+import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.model.Category
 import com.example.hackathon.core.model.Combination
 import com.example.hackathon.core.model.User
-import com.example.hackathon.core.designsystem.theme.HackathonTheme
 
 fun LazyListScope.HomeCombinationList(
     combinations: List<Combination>,
-    onCombinationClick: (String) -> Unit,
+    onCombinationClick: (String) -> Unit
 ) {
     items(combinations) { combination ->
         CombinationCard(
             combination = combination,
             onClick = { onCombinationClick(combination.id) },
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
         )
     }
 }
@@ -31,11 +33,12 @@ fun LazyListScope.HomeCombinationList(
 @Composable
 private fun HomeCombinationListPreview() {
     HackathonTheme {
-        val mockUser = User(
-            id = "user1",
-            nickname = "테스트유저",
-            profileImageUrl = null,
-        )
+        val mockUser =
+            User(
+                id = "user1",
+                nickname = "테스트유저",
+                profileImageUrl = null
+            )
         val mockCombinations =
             listOf(
                 Combination(
@@ -49,7 +52,7 @@ private fun HomeCombinationListPreview() {
                     author = mockUser,
                     likeCount = 10,
                     isLiked = false,
-                    createdAt = "2024-01-01",
+                    createdAt = "2024-01-01"
                 ),
                 Combination(
                     id = "2",
@@ -62,13 +65,13 @@ private fun HomeCombinationListPreview() {
                     author = mockUser,
                     likeCount = 5,
                     isLiked = true,
-                    createdAt = "2024-01-02",
-                ),
+                    createdAt = "2024-01-02"
+                )
             )
         androidx.compose.foundation.lazy.LazyColumn {
             HomeCombinationList(
                 combinations = mockCombinations,
-                onCombinationClick = {},
+                onCombinationClick = {}
             )
         }
     }

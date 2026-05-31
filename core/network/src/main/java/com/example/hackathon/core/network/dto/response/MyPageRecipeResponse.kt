@@ -14,5 +14,5 @@ data class MyPageRecipeResponse(
     val thumbnailUrl: String? = null,
     val likesCount: Int = 0,
     val viewCount: Int = 0,
-    val createdAt: String,
+    val createdAt: String
 )

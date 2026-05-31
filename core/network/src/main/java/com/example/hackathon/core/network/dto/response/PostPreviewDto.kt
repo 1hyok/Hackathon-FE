@@ -15,12 +15,8 @@ data class PostPreviewDto(
     val author: AuthorDto,
     val likesCount: Int = 0,
     val viewCount: Int = 0,
-    val createdAt: String,
+    val createdAt: String
 )
 
 @Serializable
-data class AuthorDto(
-    val userId: String,
-    val nickname: String,
-    val profileImageUrl: String? = null,
-)
+data class AuthorDto(val userId: String, val nickname: String, val profileImageUrl: String? = null)

@@ -12,5 +12,5 @@ data class CombinationResponse(
     val ingredients: List<String>,
     val author: UserResponse,
     val likeCount: Int,
-    val createdAt: String,
+    val createdAt: String
 )

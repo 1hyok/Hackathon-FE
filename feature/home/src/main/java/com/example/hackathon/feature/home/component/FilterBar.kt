@@ -17,15 +17,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.R
 import com.example.hackathon.core.designsystem.component.CategoryChip
-import com.example.hackathon.core.model.Category
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
+import com.example.hackathon.core.model.Category
 
 @Composable
 fun FilterBar(
     categories: List<Category>,
     selectedCategory: Category,
     onCategorySelected: (Category) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column {
         Row(
@@ -33,13 +33,13 @@ fun FilterBar(
                 Modifier
                     .fillMaxWidth()
                     .padding(start = 20.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_logo),
                 contentDescription = "hot",
                 modifier = Modifier.width(90.dp),
-                tint = HackathonTheme.colors.primary,
+                tint = HackathonTheme.colors.primary
             )
         }
 
@@ -49,7 +49,7 @@ fun FilterBar(
                     .fillMaxWidth()
                     .background(HackathonTheme.colors.white)
                     .padding(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(categories) { category ->
                 CategoryChip(
@@ -57,7 +57,7 @@ fun FilterBar(
                     isSelected = category == selectedCategory,
                     onClick = {
                         onCategorySelected(category)
-                    },
+                    }
                 )
             }
         }

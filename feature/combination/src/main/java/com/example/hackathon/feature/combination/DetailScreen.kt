@@ -49,10 +49,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.hackathon.core.designsystem.R
-import com.example.hackathon.core.model.DummyData
-import com.example.hackathon.feature.combination.DetailViewModel
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.designsystem.theme.Primary
+import com.example.hackathon.core.model.DummyData
+import com.example.hackathon.feature.combination.DetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,7 +60,7 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     recipeId: Long,
     viewModel: DetailViewModel = hiltViewModel(),
-    onNavigateBack: () -> Unit = {},
+    onNavigateBack: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -73,7 +73,7 @@ fun DetailScreen(
     val recipe = uiState.recipeDetail
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize()
     ) {
         Row(
             modifier =
@@ -81,26 +81,26 @@ fun DetailScreen(
                     .fillMaxWidth()
                     .statusBarsPadding() // 상태바 침범 방지 (중요)
                     .height(80.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
                 onClick = onNavigateBack,
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(48.dp)
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "뒤로가기",
+                    contentDescription = "뒤로가기"
                 )
             }
 
             Box(
                 modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.Center,
+                contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_logo),
                     contentDescription = "logo",
-                    modifier = Modifier.width(90.dp),
+                    modifier = Modifier.width(90.dp)
                 )
             }
 
@@ -118,23 +118,23 @@ fun DetailScreen(
                                 colors =
                                     listOf(
                                         Color.Black.copy(alpha = 0.15f),
-                                        Color.Transparent,
-                                    ),
-                            ),
-                    ),
+                                        Color.Transparent
+                                    )
+                            )
+                    )
         )
 
         LazyColumn(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(start = 20.dp, end = 20.dp, top = 20.dp),
+                    .padding(start = 20.dp, end = 20.dp, top = 20.dp)
         ) {
             item {
                 when {
                     uiState.isLoading -> {
                         CircularProgressIndicator(
-                            modifier = Modifier.padding(20.dp),
+                            modifier = Modifier.padding(20.dp)
                         )
                     }
 
@@ -142,14 +142,14 @@ fun DetailScreen(
                         Text(
                             text = uiState.error ?: "오류가 발생했습니다",
                             color = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.padding(20.dp),
+                            modifier = Modifier.padding(20.dp)
                         )
                     }
 
                     recipe == null -> {
                         Text(
                             text = "레시피를 찾을 수 없습니다",
-                            modifier = Modifier.padding(20.dp),
+                            modifier = Modifier.padding(20.dp)
                         )
                     }
 
@@ -163,7 +163,7 @@ fun DetailScreen(
                                     modifier =
                                         Modifier
                                             .fillMaxWidth()
-                                            .height(260.dp),
+                                            .height(260.dp)
                                 ) { page ->
                                     AsyncImage(
                                         model = recipe.images[page],
@@ -172,7 +172,7 @@ fun DetailScreen(
                                         modifier =
                                             Modifier
                                                 .fillMaxSize()
-                                                .clip(RoundedCornerShape(16.dp)),
+                                                .clip(RoundedCornerShape(16.dp))
                                     )
                                 }
 
@@ -180,7 +180,7 @@ fun DetailScreen(
 
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.Center,
+                                    horizontalArrangement = Arrangement.Center
                                 ) {
                                     repeat(recipe.images.size) { index ->
                                         Box(
@@ -188,16 +188,21 @@ fun DetailScreen(
                                                 Modifier
                                                     .padding(4.dp)
                                                     .size(
-                                                        if (pagerState.currentPage == index) 8.dp else 6.dp,
-                                                    )
-                                                    .clip(CircleShape)
+                                                        if (pagerState.currentPage ==
+                                                            index
+                                                        ) {
+                                                            8.dp
+                                                        } else {
+                                                            6.dp
+                                                        }
+                                                    ).clip(CircleShape)
                                                     .background(
                                                         if (pagerState.currentPage == index) {
                                                             HackathonTheme.colors.primary
                                                         } else {
                                                             HackathonTheme.colors.gray50
-                                                        },
-                                                    ),
+                                                        }
+                                                    )
                                         )
                                     }
                                 }
@@ -209,14 +214,14 @@ fun DetailScreen(
                                 Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = recipe.title,
                                 style = HackathonTheme.typography.Head2_bold,
                                 color = HackathonTheme.colors.black,
                                 maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
+                                overflow = TextOverflow.Ellipsis
                             )
 
                             Spacer(modifier = Modifier.weight(1f))
@@ -240,7 +245,7 @@ fun DetailScreen(
                                         .size(20.dp)
                                         .clickable {
                                             viewModel.toggleLike()
-                                        },
+                                        }
                             )
 
                             Spacer(modifier = Modifier.width(4.dp))
@@ -248,7 +253,7 @@ fun DetailScreen(
                             Text(
                                 text = recipe.stats.likesCount.toString(),
                                 style = HackathonTheme.typography.Body_medium,
-                                color = HackathonTheme.colors.gray700,
+                                color = HackathonTheme.colors.gray700
                             )
                         }
 
@@ -258,14 +263,14 @@ fun DetailScreen(
                             text = authorText,
                             style = HackathonTheme.typography.Body_medium,
                             color = Color(0xFF555555),
-                            modifier = Modifier.padding(bottom = 10.dp),
+                            modifier = Modifier.padding(bottom = 10.dp)
                         )
 
                         if (recipe.tags.isNotEmpty()) {
                             FlowRow(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp),
-                                verticalArrangement = Arrangement.spacedBy(6.dp),
+                                verticalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
                                 recipe.tags.forEachIndexed { index, tag ->
                                     val isFirstTag = index == 0
@@ -276,27 +281,25 @@ fun DetailScreen(
                                                     if (isFirstTag) {
                                                         Modifier.background(
                                                             Primary,
-                                                            RoundedCornerShape(15.dp),
+                                                            RoundedCornerShape(15.dp)
                                                         )
                                                     } else {
                                                         Modifier
                                                             .background(
                                                                 Color.White,
-                                                                RoundedCornerShape(15.dp),
-                                                            )
-                                                            .border(
+                                                                RoundedCornerShape(15.dp)
+                                                            ).border(
                                                                 width = 1.dp,
                                                                 color = Primary,
-                                                                shape = RoundedCornerShape(15.dp),
+                                                                shape = RoundedCornerShape(15.dp)
                                                             )
-                                                    },
-                                                )
-                                                .padding(horizontal = 10.dp, vertical = 4.dp),
+                                                    }
+                                                ).padding(horizontal = 10.dp, vertical = 4.dp)
                                     ) {
                                         Text(
                                             text = tag,
                                             style = HackathonTheme.typography.Caption_medium,
-                                            color = if (isFirstTag) Color.White else Primary,
+                                            color = if (isFirstTag) Color.White else Primary
                                         )
                                     }
                                 }
@@ -308,7 +311,7 @@ fun DetailScreen(
                             text = recipe.description,
                             style = HackathonTheme.typography.Caption_medium,
                             color = HackathonTheme.colors.gray700,
-                            modifier = Modifier.padding(vertical = 15.dp),
+                            modifier = Modifier.padding(vertical = 15.dp)
                         )
 
                         Spacer(modifier = Modifier.height(12.dp))
@@ -319,34 +322,33 @@ fun DetailScreen(
                                     .fillMaxWidth()
                                     .background(
                                         Color(0xFFF7F7F7),
-                                        shape = RoundedCornerShape(10.dp),
-                                    )
-                                    .border(
+                                        shape = RoundedCornerShape(10.dp)
+                                    ).border(
                                         shape = RoundedCornerShape(10.dp),
                                         color = Color(0xFFCCCCCC),
-                                        width = 1.dp,
-                                    )
-                                    .padding(horizontal = 20.dp, vertical = 15.dp),
+                                        width = 1.dp
+                                    ).padding(horizontal = 20.dp, vertical = 15.dp)
                         ) {
                             Text(
                                 text = authorText + "님의 레시피",
                                 style = HackathonTheme.typography.Sub1_semibold,
-                                color = HackathonTheme.colors.black,
+                                color = HackathonTheme.colors.black
                             )
 
                             Spacer(modifier = Modifier.height(12.dp))
 
                             recipe.ingredients.forEach {
                                 Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 4.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier =
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
                                         text = it.name,
                                         style = HackathonTheme.typography.Body_medium,
-                                        color = HackathonTheme.colors.black,
+                                        color = HackathonTheme.colors.black
                                     )
 
                                     Spacer(modifier = Modifier.weight(1f))
@@ -354,7 +356,7 @@ fun DetailScreen(
                                     Text(
                                         text = it.amount,
                                         style = HackathonTheme.typography.Body_medium,
-                                        color = HackathonTheme.colors.black,
+                                        color = HackathonTheme.colors.black
                                     )
                                 }
                             }

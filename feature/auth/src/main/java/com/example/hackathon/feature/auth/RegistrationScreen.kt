@@ -47,10 +47,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.core.designsystem.component.TopAppLogoBar
-import com.example.hackathon.feature.auth.RegistrationViewModel
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.designsystem.theme.Primary
+import com.example.hackathon.feature.auth.RegistrationViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -60,7 +60,7 @@ fun RegistrationScreen(
     modifier: Modifier = Modifier,
     viewModel: RegistrationViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit = {},
-    onRegistrationSuccess: () -> Unit = {},
+    onRegistrationSuccess: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
@@ -70,7 +70,7 @@ fun RegistrationScreen(
 
     Scaffold(
         modifier = modifier,
-        contentWindowInsets = WindowInsets.ime,
+        contentWindowInsets = WindowInsets.ime
     ) { paddingValues ->
         Column(
             modifier =
@@ -78,7 +78,7 @@ fun RegistrationScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .verticalScroll(scrollState),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // 로고 영역 (최상단)
             TopAppLogoBar()
@@ -89,19 +89,19 @@ fun RegistrationScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = 16.dp)
             ) {
                 Text(
                     text = "어디선가 들어본 바로 그 조합",
                     style = HackathonTheme.typography.Body_semibold,
                     color = Gray700,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = "모두 쩝쩝박사에서",
                     style = HackathonTheme.typography.Body_semibold,
                     color = Gray700,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
             }
 
@@ -110,14 +110,14 @@ fun RegistrationScreen(
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // 닉네임 입력 필드
                 Text(
                     text = "닉네임",
                     style = HackathonTheme.typography.Body_medium,
                     color = Color.Black,
-                    modifier = Modifier.padding(bottom = 8.dp),
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
                 OutlinedTextField(
                     value = uiState.name,
@@ -126,7 +126,7 @@ fun RegistrationScreen(
                         Text(
                             text = "닉네임을 입력하세요",
                             style = HackathonTheme.typography.Body_medium,
-                            color = Gray700,
+                            color = Gray700
                         )
                     },
                     modifier =
@@ -147,10 +147,10 @@ fun RegistrationScreen(
                             focusedBorderColor = Primary,
                             unfocusedBorderColor = Gray700,
                             focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black
                         ),
                     textStyle = HackathonTheme.typography.Body_medium,
-                    singleLine = true,
+                    singleLine = true
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -160,7 +160,7 @@ fun RegistrationScreen(
                     text = "이메일",
                     style = HackathonTheme.typography.Body_medium,
                     color = Color.Black,
-                    modifier = Modifier.padding(bottom = 8.dp),
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
                 OutlinedTextField(
                     value = uiState.email,
@@ -169,7 +169,7 @@ fun RegistrationScreen(
                         Text(
                             text = "이메일을 입력하세요",
                             style = HackathonTheme.typography.Body_medium,
-                            color = Gray700,
+                            color = Gray700
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -180,10 +180,10 @@ fun RegistrationScreen(
                             focusedBorderColor = Primary,
                             unfocusedBorderColor = Gray700,
                             focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black
                         ),
                     textStyle = HackathonTheme.typography.Body_medium,
-                    singleLine = true,
+                    singleLine = true
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -193,7 +193,7 @@ fun RegistrationScreen(
                     text = "Password",
                     style = HackathonTheme.typography.Body_medium,
                     color = Color.Black,
-                    modifier = Modifier.padding(bottom = 8.dp),
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
                 OutlinedTextField(
                     value = uiState.password,
@@ -202,7 +202,7 @@ fun RegistrationScreen(
                         Text(
                             text = "비밀번호를 입력하세요",
                             style = HackathonTheme.typography.Body_medium,
-                            color = Gray700,
+                            color = Gray700
                         )
                     },
                     modifier =
@@ -240,7 +240,7 @@ fun RegistrationScreen(
                                     } else {
                                         "비밀번호 보기"
                                     },
-                                tint = Gray700,
+                                tint = Gray700
                             )
                         }
                     },
@@ -249,10 +249,10 @@ fun RegistrationScreen(
                             focusedBorderColor = Primary,
                             unfocusedBorderColor = Gray700,
                             focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black
                         ),
                     textStyle = HackathonTheme.typography.Body_medium,
-                    singleLine = true,
+                    singleLine = true
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -262,7 +262,7 @@ fun RegistrationScreen(
                     text = "Password 확인",
                     style = HackathonTheme.typography.Body_medium,
                     color = Color.Black,
-                    modifier = Modifier.padding(bottom = 8.dp),
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
                 OutlinedTextField(
                     value = uiState.passwordConfirm,
@@ -271,7 +271,7 @@ fun RegistrationScreen(
                         Text(
                             text = "비밀번호를 다시 입력하세요",
                             style = HackathonTheme.typography.Body_medium,
-                            color = Gray700,
+                            color = Gray700
                         )
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -298,7 +298,7 @@ fun RegistrationScreen(
                                     } else {
                                         "비밀번호 보기"
                                     },
-                                tint = Gray700,
+                                tint = Gray700
                             )
                         }
                     },
@@ -307,10 +307,10 @@ fun RegistrationScreen(
                             focusedBorderColor = Primary,
                             unfocusedBorderColor = Gray700,
                             focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black
                         ),
                     textStyle = HackathonTheme.typography.Body_medium,
-                    singleLine = true,
+                    singleLine = true
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -321,7 +321,7 @@ fun RegistrationScreen(
                         text = error,
                         style = HackathonTheme.typography.Caption_medium,
                         color = Color.Red,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }
@@ -329,7 +329,7 @@ fun RegistrationScreen(
                 // 버튼 영역 (가로 배치)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     // 계정생성 버튼
                     Button(
@@ -349,18 +349,18 @@ fun RegistrationScreen(
                                 containerColor = Primary,
                                 contentColor = Color.White,
                                 disabledContainerColor = Primary.copy(alpha = 0.5f),
-                                disabledContentColor = Color.White.copy(alpha = 0.5f),
-                            ),
+                                disabledContentColor = Color.White.copy(alpha = 0.5f)
+                            )
                     ) {
                         if (uiState.isLoading) {
                             androidx.compose.material3.CircularProgressIndicator(
                                 modifier = Modifier.size(20.dp),
-                                color = Color.White,
+                                color = Color.White
                             )
                         } else {
                             Text(
                                 text = "계정생성",
-                                style = HackathonTheme.typography.Sub1_semibold,
+                                style = HackathonTheme.typography.Sub1_semibold
                             )
                         }
                     }
@@ -376,12 +376,12 @@ fun RegistrationScreen(
                                 containerColor = Gray700,
                                 contentColor = Color.White,
                                 disabledContainerColor = Gray700.copy(alpha = 0.5f),
-                                disabledContentColor = Color.White.copy(alpha = 0.5f),
-                            ),
+                                disabledContentColor = Color.White.copy(alpha = 0.5f)
+                            )
                     ) {
                         Text(
                             text = "로그인",
-                            style = HackathonTheme.typography.Sub1_semibold,
+                            style = HackathonTheme.typography.Sub1_semibold
                         )
                     }
                 }
@@ -393,7 +393,7 @@ fun RegistrationScreen(
                     text = "닉네임/비밀번호를 잊어버렸다면? jjupjjup@naver.com으로 문의",
                     style = HackathonTheme.typography.Caption_medium,
                     color = Gray700,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -411,17 +411,17 @@ fun RegistrationScreen(
             title = {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
                         text = "닉네임 : ${uiState.name}",
                         style = HackathonTheme.typography.Body_medium,
-                        color = Color.Black,
+                        color = Color.Black
                     )
                     Text(
                         text = "가입이 완료되었습니다",
                         style = HackathonTheme.typography.Body_medium,
-                        color = Color.Black,
+                        color = Color.Black
                     )
                 }
             },
@@ -436,17 +436,17 @@ fun RegistrationScreen(
                     colors =
                         ButtonDefaults.buttonColors(
                             containerColor = Primary,
-                            contentColor = Color.White,
-                        ),
+                            contentColor = Color.White
+                        )
                 ) {
                     Text(
                         text = "확인",
-                        style = HackathonTheme.typography.Sub1_semibold,
+                        style = HackathonTheme.typography.Sub1_semibold
                     )
                 }
             },
             containerColor = Color.White,
-            shape = RoundedCornerShape(15.dp),
+            shape = RoundedCornerShape(15.dp)
         )
     }
 }

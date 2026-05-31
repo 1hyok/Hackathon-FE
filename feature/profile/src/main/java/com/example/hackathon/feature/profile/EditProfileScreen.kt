@@ -41,10 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.example.hackathon.feature.profile.EditProfileViewModel
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.designsystem.theme.Primary
+import com.example.hackathon.feature.profile.EditProfileViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,7 +52,7 @@ fun EditProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: EditProfileViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit = {},
-    onProfileUpdated: () -> Unit = {},
+    onProfileUpdated: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -72,7 +72,7 @@ fun EditProfileScreen(
                     Text(
                         text = "프로필 수정",
                         style = HackathonTheme.typography.Head2_bold,
-                        color = Color.White,
+                        color = Color.White
                     )
                 },
                 navigationIcon = {
@@ -80,16 +80,16 @@ fun EditProfileScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "뒤로가기",
-                            tint = Color.White,
+                            tint = Color.White
                         )
                     }
                 },
                 colors =
                     TopAppBarDefaults.topAppBarColors(
-                        containerColor = Primary,
-                    ),
+                        containerColor = Primary
+                    )
             )
-        },
+        }
     ) { paddingValues ->
         when {
             uiState.isLoading -> {
@@ -98,11 +98,12 @@ fun EditProfileScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(paddingValues),
-                    contentAlignment = Alignment.Center,
+                    contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
             }
+
             uiState.error != null && uiState.nickname.isEmpty() -> {
                 // 프로필 로드 실패
                 Column(
@@ -112,13 +113,13 @@ fun EditProfileScreen(
                             .padding(paddingValues)
                             .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = uiState.error ?: "프로필을 불러올 수 없습니다",
                         style = HackathonTheme.typography.Body_medium,
                         color = androidx.compose.material3.MaterialTheme.colorScheme.error,
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
@@ -126,16 +127,17 @@ fun EditProfileScreen(
                         colors =
                             ButtonDefaults.buttonColors(
                                 containerColor = Primary,
-                                contentColor = Color.White,
-                            ),
+                                contentColor = Color.White
+                            )
                     ) {
                         Text(
                             text = "다시 시도",
-                            style = HackathonTheme.typography.Body_medium,
+                            style = HackathonTheme.typography.Body_medium
                         )
                     }
                 }
             }
+
             else -> {
                 // 정상 상태 - 프로필 수정 폼
                 Column(
@@ -146,7 +148,7 @@ fun EditProfileScreen(
                             .verticalScroll(rememberScrollState())
                             .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
                     // 프로필 이미지 영역
                     Box(
@@ -159,22 +161,26 @@ fun EditProfileScreen(
                                         Color.Transparent
                                     } else {
                                         Primary.copy(alpha = 0.2f)
-                                    },
+                                    }
                                 ),
-                        contentAlignment = Alignment.Center,
+                        contentAlignment = Alignment.Center
                     ) {
                         if (uiState.profileImageUrl != null) {
                             AsyncImage(
                                 model = uiState.profileImageUrl,
                                 contentDescription = "프로필 이미지",
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier.fillMaxSize()
                             )
                         } else {
-                            val displayText = uiState.nickname.trim().firstOrNull()?.toString() ?: "?"
+                            val displayText =
+                                uiState.nickname
+                                    .trim()
+                                    .firstOrNull()
+                                    ?.toString() ?: "?"
                             Text(
                                 text = displayText,
                                 style = HackathonTheme.typography.Head2_bold,
-                                color = Color.White,
+                                color = Color.White
                             )
                         }
                     }
@@ -182,12 +188,12 @@ fun EditProfileScreen(
                     // 닉네임 입력 필드
                     Column(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
                             text = "닉네임",
                             style = HackathonTheme.typography.Body_medium,
-                            color = Color.Black,
+                            color = Color.Black
                         )
                         OutlinedTextField(
                             value = uiState.nickname,
@@ -197,7 +203,7 @@ fun EditProfileScreen(
                                 Text(
                                     text = "닉네임을 입력하세요",
                                     style = HackathonTheme.typography.Body_medium,
-                                    color = Gray700,
+                                    color = Gray700
                                 )
                             },
                             modifier = Modifier.fillMaxWidth(),
@@ -206,8 +212,8 @@ fun EditProfileScreen(
                             colors =
                                 OutlinedTextFieldDefaults.colors(
                                     focusedBorderColor = Primary,
-                                    unfocusedBorderColor = Gray700,
-                                ),
+                                    unfocusedBorderColor = Gray700
+                                )
                         )
                     }
 
@@ -221,25 +227,25 @@ fun EditProfileScreen(
                                 containerColor = Primary,
                                 contentColor = Color.White,
                                 disabledContainerColor = Gray700.copy(alpha = 0.3f),
-                                disabledContentColor = Color.White.copy(alpha = 0.6f),
+                                disabledContentColor = Color.White.copy(alpha = 0.6f)
                             ),
-                        shape = RoundedCornerShape(15.dp),
+                        shape = RoundedCornerShape(15.dp)
                     ) {
                         if (uiState.isSaving) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(20.dp),
                                 color = Color.White,
-                                strokeWidth = 2.dp,
+                                strokeWidth = 2.dp
                             )
                             Spacer(modifier = Modifier.size(8.dp))
                             Text(
                                 text = "저장 중...",
-                                style = HackathonTheme.typography.Body_medium,
+                                style = HackathonTheme.typography.Body_medium
                             )
                         } else {
                             Text(
                                 text = "저장",
-                                style = HackathonTheme.typography.Body_medium,
+                                style = HackathonTheme.typography.Body_medium
                             )
                         }
                     }
@@ -251,7 +257,7 @@ fun EditProfileScreen(
                             style = HackathonTheme.typography.Caption_medium,
                             color = androidx.compose.material3.MaterialTheme.colorScheme.error,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
                 }

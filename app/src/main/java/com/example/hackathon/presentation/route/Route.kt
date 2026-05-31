@@ -1,8 +1,6 @@
 package com.example.hackathon.presentation.route
 
-sealed class Route(
-    val route: String,
-) {
+sealed class Route(val route: String) {
     data object Home : Route(route = "home")
 
     data object Detail : Route("detail") {

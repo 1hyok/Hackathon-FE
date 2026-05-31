@@ -47,11 +47,11 @@ fun ImageUploadSection(
     imageUris: List<Uri>,
     onImageClick: () -> Unit,
     onRemoveImage: (Uri) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // 메인 이미지 업로드 영역
         if (imageUris.isEmpty()) {
@@ -72,33 +72,31 @@ fun ImageUploadSection(
                                         width = strokeWidth,
                                         pathEffect =
                                             PathEffect.dashPathEffect(
-                                                floatArrayOf(dashWidth, dashGap),
-                                            ),
+                                                floatArrayOf(dashWidth, dashGap)
+                                            )
                                     ),
-                                cornerRadius = CornerRadius(12.dp.toPx()),
+                                cornerRadius = CornerRadius(12.dp.toPx())
                             )
-                        }
-                        .background(
+                        }.background(
                             color = Color(0xFFFFF3F3),
-                            shape = RoundedCornerShape(12.dp),
-                        )
-                        .clickable { onImageClick() },
-                contentAlignment = Alignment.Center,
+                            shape = RoundedCornerShape(12.dp)
+                        ).clickable { onImageClick() },
+                contentAlignment = Alignment.Center
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_camera),
                         contentDescription = "이미지 등록",
                         tint = Gray700,
-                        modifier = Modifier.size(32.dp),
+                        modifier = Modifier.size(32.dp)
                     )
                     Text(
                         text = "사진 등록 (최대 5장)",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Gray700,
+                        color = Gray700
                     )
                 }
             }
@@ -108,7 +106,7 @@ fun ImageUploadSection(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .height(180.dp),
+                        .height(180.dp)
             ) {
                 AsyncImage(
                     model = imageUris.first(),
@@ -118,7 +116,7 @@ fun ImageUploadSection(
                             .fillMaxWidth()
                             .height(180.dp)
                             .clip(RoundedCornerShape(12.dp)),
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.Crop
                 )
                 // 이미지 제거 버튼
                 IconButton(
@@ -126,7 +124,7 @@ fun ImageUploadSection(
                     modifier =
                         Modifier
                             .align(Alignment.TopEnd)
-                            .padding(8.dp),
+                            .padding(8.dp)
                 ) {
                     Box(
                         modifier =
@@ -134,15 +132,15 @@ fun ImageUploadSection(
                                 .size(32.dp)
                                 .background(
                                     Color.Black.copy(alpha = 0.6f),
-                                    CircleShape,
+                                    CircleShape
                                 ),
-                        contentAlignment = Alignment.Center,
+                        contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "이미지 제거",
                             tint = Color.White,
-                            modifier = Modifier.size(20.dp),
+                            modifier = Modifier.size(20.dp)
                         )
                     }
                 }
@@ -152,7 +150,7 @@ fun ImageUploadSection(
             if (imageUris.size > 1) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     imageUris.drop(1).forEach { uri ->
                         Box(
@@ -160,20 +158,20 @@ fun ImageUploadSection(
                                 Modifier
                                     .weight(1f)
                                     .height(60.dp)
-                                    .clip(RoundedCornerShape(8.dp)),
+                                    .clip(RoundedCornerShape(8.dp))
                         ) {
                             AsyncImage(
                                 model = uri,
                                 contentDescription = "썸네일",
                                 modifier = Modifier.fillMaxSize(),
-                                contentScale = ContentScale.Crop,
+                                contentScale = ContentScale.Crop
                             )
                             IconButton(
                                 onClick = { onRemoveImage(uri) },
                                 modifier =
                                     Modifier
                                         .align(Alignment.TopEnd)
-                                        .size(20.dp),
+                                        .size(20.dp)
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -184,9 +182,8 @@ fun ImageUploadSection(
                                             .size(16.dp)
                                             .background(
                                                 Color.Black.copy(alpha = 0.6f),
-                                                CircleShape,
-                                            )
-                                            .padding(4.dp),
+                                                CircleShape
+                                            ).padding(4.dp)
                                 )
                             }
                         }
@@ -199,15 +196,19 @@ fun ImageUploadSection(
                                     .weight(1f)
                                     .height(60.dp)
                                     .background(Gray50, RoundedCornerShape(8.dp))
-                                    .border(1.dp, Gray700.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
+                                    .border(
+                                        1.dp,
+                                        Gray700.copy(alpha = 0.3f),
+                                        RoundedCornerShape(8.dp)
+                                    )
                                     .clickable { onImageClick() },
-                            contentAlignment = Alignment.Center,
+                            contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
                                 contentDescription = "이미지 추가",
                                 tint = Gray700,
-                                modifier = Modifier.size(24.dp),
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                     }
@@ -216,7 +217,7 @@ fun ImageUploadSection(
                 // 첫 번째 이미지만 있을 때 추가 버튼
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     repeat(4) {
                         Box(
@@ -225,15 +226,19 @@ fun ImageUploadSection(
                                     .weight(1f)
                                     .height(60.dp)
                                     .background(Gray50, RoundedCornerShape(8.dp))
-                                    .border(1.dp, Gray700.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
+                                    .border(
+                                        1.dp,
+                                        Gray700.copy(alpha = 0.3f),
+                                        RoundedCornerShape(8.dp)
+                                    )
                                     .clickable { onImageClick() },
-                            contentAlignment = Alignment.Center,
+                            contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
                                 contentDescription = "이미지 추가",
                                 tint = Gray700,
-                                modifier = Modifier.size(24.dp),
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                     }
@@ -249,6 +254,6 @@ private fun ImageUploadSectionPreview() {
     ImageUploadSection(
         imageUris = emptyList(),
         onImageClick = {},
-        onRemoveImage = {},
+        onRemoveImage = {}
     )
 }

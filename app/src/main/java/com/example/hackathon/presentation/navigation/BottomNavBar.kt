@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.hackathon.core.designsystem.util.noRippleClickable
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
+import com.example.hackathon.core.designsystem.util.noRippleClickable
 import kotlin.enums.EnumEntries
 
 @Composable
@@ -27,7 +27,7 @@ fun BottomNavBar(
     visible: Boolean,
     tabs: EnumEntries<NavTab>,
     currentTab: NavTab?,
-    onItemSelected: (NavTab) -> Unit,
+    onItemSelected: (NavTab) -> Unit
 ) {
     if (!visible) return
 
@@ -39,11 +39,10 @@ fun BottomNavBar(
                     elevation = 0.5.dp,
                     clip = true,
                     ambientColor = Color.Black.copy(alpha = 0.6f),
-                    spotColor = Color.Black.copy(alpha = 0.9f),
+                    spotColor = Color.Black.copy(alpha = 0.9f)
+                ).background(
+                    color = Color.White
                 )
-                .background(
-                    color = Color.White,
-                ),
     ) {
         Column {
             Row(
@@ -53,7 +52,7 @@ fun BottomNavBar(
                         .navigationBarsPadding()
                         .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 tabs.forEach { tab ->
                     val isSelected = tab == currentTab
@@ -66,7 +65,7 @@ fun BottomNavBar(
                                     onItemSelected(tab)
                                 },
                         verticalArrangement = Arrangement.spacedBy(2.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
                             painter = painterResource(id = tab.icon),
@@ -76,7 +75,7 @@ fun BottomNavBar(
                                     HackathonTheme.colors.black
                                 } else {
                                     Color(0xFF8B91A1)
-                                },
+                                }
                         )
                         Text(
                             text = tab.label,
@@ -86,7 +85,7 @@ fun BottomNavBar(
                                     HackathonTheme.colors.black
                                 } else {
                                     Color(0xFF939DA9)
-                                },
+                                }
                         )
                     }
                 }

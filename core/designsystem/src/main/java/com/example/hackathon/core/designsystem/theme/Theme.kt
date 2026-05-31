@@ -20,18 +20,18 @@ private val LightColorScheme =
         onBackground = Black,
         onSurface = Black,
         error = Error,
-        onError = White,
+        onError = White
     )
 
 @Composable
 fun HackathonTheme(
     // 다크 모드 미지원 - 항상 라이트 모드만 사용
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     MaterialTheme(
         colorScheme = LightColorScheme,
         typography = Typography,
-        content = content,
+        content = content
     )
 }
 

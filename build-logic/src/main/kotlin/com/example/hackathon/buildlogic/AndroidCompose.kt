@@ -11,9 +11,7 @@ import org.gradle.kotlin.dsl.getByType
  * buildFeatures.compose 활성화 + Compose BOM 기반 의존성을 모듈에 주입한다.
  * org.jetbrains.kotlin.plugin.compose 플러그인은 각 Compose 모듈에서 별도 적용한다.
  */
-internal fun Project.configureAndroidCompose(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
-) {
+internal fun Project.configureAndroidCompose(commonExtension: CommonExtension<*, *, *, *, *, *>) {
     commonExtension.apply {
         buildFeatures {
             compose = true

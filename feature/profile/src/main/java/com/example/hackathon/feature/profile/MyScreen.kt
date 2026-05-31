@@ -54,12 +54,12 @@ import coil3.compose.AsyncImage
 import com.example.hackathon.core.designsystem.R
 import com.example.hackathon.core.designsystem.component.CombinationCard
 import com.example.hackathon.core.designsystem.component.TopAppLogoBar
-import com.example.hackathon.feature.profile.MyPageTab
-import com.example.hackathon.feature.profile.MyPageViewModel
 import com.example.hackathon.core.designsystem.theme.Gray50
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.designsystem.theme.Primary
+import com.example.hackathon.feature.profile.MyPageTab
+import com.example.hackathon.feature.profile.MyPageViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +68,7 @@ fun MyScreen(
     viewModel: MyPageViewModel = hiltViewModel(),
     onCombinationClick: (String) -> Unit = {},
     onLogout: () -> Unit = {},
-    onChangeNickname: () -> Unit = {},
+    onChangeNickname: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -98,7 +98,7 @@ fun MyScreen(
 
     Scaffold(
         modifier = modifier,
-        contentWindowInsets = WindowInsets(0),
+        contentWindowInsets = WindowInsets(0)
     ) { paddingValues ->
 
         Column(
@@ -106,7 +106,7 @@ fun MyScreen(
                 Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .background(Color.White),
+                    .background(Color.White)
         ) {
             Column {
                 Row(
@@ -117,11 +117,11 @@ fun MyScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_logo),
-                            contentDescription = "logo",
-                            modifier = Modifier.width(90.dp),
-                        )
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_logo),
+                        contentDescription = "logo",
+                        modifier = Modifier.width(90.dp)
+                    )
                 }
 
                 Box(
@@ -132,18 +132,18 @@ fun MyScreen(
                             .background(
                                 brush =
                                     Brush.verticalGradient(
-                                        colors = listOf(
-                                            Color.Black.copy(alpha = 0.15f),
-                                            Color.Transparent,
-                                        ),
-                                    ),
-                            ),
+                                        colors =
+                                            listOf(
+                                                Color.Black.copy(alpha = 0.15f),
+                                                Color.Transparent
+                                            )
+                                    )
+                            )
                 )
             }
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
             ) {
-
                 item {
                     val user = uiState.user
                     Row(
@@ -151,7 +151,7 @@ fun MyScreen(
                             Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp, vertical = 20.dp),
-                        verticalAlignment = Alignment.CenterVertically,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
                             modifier =
@@ -163,21 +163,21 @@ fun MyScreen(
                                             Color.Transparent
                                         } else {
                                             Primary.copy(alpha = 0.2f)
-                                        },
+                                        }
                                     ),
-                            contentAlignment = Alignment.Center,
+                            contentAlignment = Alignment.Center
                         ) {
                             if (user?.profileImageUrl != null) {
                                 AsyncImage(
                                     model = user.profileImageUrl,
                                     contentDescription = "프로필 이미지",
-                                    modifier = Modifier.fillMaxSize(),
+                                    modifier = Modifier.fillMaxSize()
                                 )
                             } else {
                                 Text(
                                     text = user?.nickname?.firstOrNull()?.toString() ?: "?",
                                     style = HackathonTheme.typography.Head2_bold,
-                                    color = Color.White,
+                                    color = Color.White
                                 )
                             }
                         }
@@ -187,14 +187,14 @@ fun MyScreen(
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = user?.nickname ?: "사용자",
-                                style = HackathonTheme.typography.Head2_bold,
+                                style = HackathonTheme.typography.Head2_bold
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = "로그아웃",
                                 style = HackathonTheme.typography.Body_medium,
                                 color = Gray700,
-                                modifier = Modifier.clickable { viewModel.logout() },
+                                modifier = Modifier.clickable { viewModel.logout() }
                             )
                         }
 
@@ -203,9 +203,9 @@ fun MyScreen(
                             colors =
                                 ButtonDefaults.buttonColors(
                                     containerColor = Gray50,
-                                    contentColor = Color.Black,
+                                    contentColor = Color.Black
                                 ),
-                            shape = RoundedCornerShape(15.dp),
+                            shape = RoundedCornerShape(15.dp)
                         ) {
                             Text("닉네임 변경")
                         }
@@ -217,17 +217,17 @@ fun MyScreen(
                 item {
                     TabRow(
                         selectedTabIndex =
-                            if (uiState.selectedTab == MyPageTab.MY_RECIPES) 0 else 1,
+                            if (uiState.selectedTab == MyPageTab.MY_RECIPES) 0 else 1
                     ) {
                         Tab(
                             selected = uiState.selectedTab == MyPageTab.MY_RECIPES,
                             onClick = { viewModel.selectTab(MyPageTab.MY_RECIPES) },
-                            text = { Text("나의 레시피") },
+                            text = { Text("나의 레시피") }
                         )
                         Tab(
                             selected = uiState.selectedTab == MyPageTab.LIKED_COMBINATIONS,
                             onClick = { viewModel.selectTab(MyPageTab.LIKED_COMBINATIONS) },
-                            text = { Text("좋아요한 조합") },
+                            text = { Text("좋아요한 조합") }
                         )
                     }
                 }
@@ -237,11 +237,11 @@ fun MyScreen(
                     MyPageTab.MY_RECIPES -> {
                         items(uiState.myRecipes) { combination ->
                             Box(
-                                modifier = Modifier.padding(horizontal = 10.dp),
+                                modifier = Modifier.padding(horizontal = 10.dp)
                             ) {
                                 CombinationCard(
                                     combination = combination,
-                                    onClick = { onCombinationClick(combination.id) },
+                                    onClick = { onCombinationClick(combination.id) }
                                 )
                             }
                         }
@@ -250,11 +250,11 @@ fun MyScreen(
                     MyPageTab.LIKED_COMBINATIONS -> {
                         items(uiState.likedCombinations) { combination ->
                             Box(
-                                modifier = Modifier.padding(horizontal = 10.dp),
+                                modifier = Modifier.padding(horizontal = 10.dp)
                             ) {
                                 CombinationCard(
                                     combination = combination,
-                                    onClick = { onCombinationClick(combination.id) },
+                                    onClick = { onCombinationClick(combination.id) }
                                 )
                             }
                         }

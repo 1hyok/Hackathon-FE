@@ -28,11 +28,11 @@ fun HashTagInputSection(
     onTagInputChange: (String) -> Unit,
     onAddTag: (String) -> Unit,
     onRemoveTag: (String) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // 해시태그 입력
         OutlinedTextField(
@@ -41,7 +41,8 @@ fun HashTagInputSection(
                 // 공백, 쉼표, 엔터 입력 시 자동으로 태그 추가
                 if (newValue.endsWith(" ") || newValue.endsWith(",") || newValue.endsWith("\n")) {
                     val tagText =
-                        newValue.substringBeforeLast(" ")
+                        newValue
+                            .substringBeforeLast(" ")
                             .substringBeforeLast(",")
                             .substringBeforeLast("\n")
                     val normalized = tagText.trim().trimStart('#').trim()
@@ -59,23 +60,27 @@ fun HashTagInputSection(
                 Text(
                     text = "띄어쓰기로 입력 (1개~5개)",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = com.example.hackathon.core.designsystem.theme.Gray700,
+                    color = com.example.hackathon.core.designsystem.theme.Gray700
                 )
             },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
+            shape =
+                androidx.compose.foundation.shape
+                    .RoundedCornerShape(12.dp),
             colors =
                 androidx.compose.material3.OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = com.example.hackathon.core.designsystem.theme.Primary,
-                    unfocusedBorderColor = com.example.hackathon.core.designsystem.theme.Primary.copy(alpha = 0.5f),
+                    unfocusedBorderColor =
+                        com.example.hackathon.core.designsystem.theme.Primary
+                            .copy(alpha = 0.5f)
                 ),
             leadingIcon = {
                 Text(
                     text = "#",
                     style = MaterialTheme.typography.bodyLarge,
                     color = com.example.hackathon.core.designsystem.theme.Primary,
-                    modifier = Modifier.padding(start = 16.dp),
+                    modifier = Modifier.padding(start = 16.dp)
                 )
             },
             trailingIcon = {
@@ -87,27 +92,27 @@ fun HashTagInputSection(
                                 onAddTag(normalized)
                                 onTagInputChange("")
                             }
-                        },
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = "태그 추가",
+                            contentDescription = "태그 추가"
                         )
                     }
                 }
-            },
+            }
         )
 
         if (tags.isNotEmpty()) {
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 tags.forEach { tag ->
                     TagChip(
                         text = tag,
-                        onRemove = { onRemoveTag(tag) },
+                        onRemove = { onRemoveTag(tag) }
                     )
                 }
             }
@@ -123,6 +128,6 @@ private fun HashTagInputSectionPreview() {
         tags = listOf("#서브웨이", "#편의점"),
         onTagInputChange = {},
         onAddTag = { },
-        onRemoveTag = {},
+        onRemoveTag = {}
     )
 }

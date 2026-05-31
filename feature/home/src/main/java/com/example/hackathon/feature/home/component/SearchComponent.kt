@@ -19,27 +19,24 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.R
-import com.example.hackathon.core.designsystem.util.noRippleClickable
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
+import com.example.hackathon.core.designsystem.util.noRippleClickable
 
 @Composable
-fun SearchComponent(
-    modifier: Modifier = Modifier,
-    onSearchClick: () -> Unit,
-) {
+fun SearchComponent(modifier: Modifier = Modifier, onSearchClick: () -> Unit) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement =
             Arrangement.spacedBy(
                 space = 10.dp,
-                alignment = Alignment.CenterHorizontally,
-            ),
+                alignment = Alignment.CenterHorizontally
+            )
     ) {
         Image(
             painter = painterResource(R.drawable.ic_logo_rec),
             contentDescription = "logo",
             modifier = Modifier.size(width = 50.dp, height = 50.dp),
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.Fit
         )
         Row(
             modifier =
@@ -49,24 +46,22 @@ fun SearchComponent(
                     .border(
                         color = HackathonTheme.colors.primary,
                         width = 1.5.dp,
-                        shape = RoundedCornerShape(30.dp),
-                    )
-                    .background(
+                        shape = RoundedCornerShape(30.dp)
+                    ).background(
                         HackathonTheme.colors.white,
-                        shape = RoundedCornerShape(30.dp),
-                    )
-                    .padding(start = 14.dp),
-            verticalAlignment = Alignment.CenterVertically,
+                        shape = RoundedCornerShape(30.dp)
+                    ).padding(start = 14.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_search),
                 contentDescription = "search component",
-                tint = Color(0xFF8B91A1),
+                tint = Color(0xFF8B91A1)
             )
             Text(
                 text = "오늘은 어떤 꿀조합을 찾고 싶으신가요?",
                 style = HackathonTheme.typography.Caption_medium,
-                color = Color(0xFF8B91A1),
+                color = Color(0xFF8B91A1)
             )
         }
     }

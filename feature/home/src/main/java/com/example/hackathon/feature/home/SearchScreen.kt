@@ -38,17 +38,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.core.designsystem.R
-import com.example.hackathon.feature.home.component.CombinationList
-import com.example.hackathon.feature.home.SearchViewModel
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
+import com.example.hackathon.feature.home.SearchViewModel
+import com.example.hackathon.feature.home.component.CombinationList
 
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = hiltViewModel(),
     onNavigateBack: () -> Unit = {},
-    onCombinationClick: (String) -> Unit = {},
+    onCombinationClick: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -61,10 +61,9 @@ fun SearchScreen(
                         .fillMaxWidth()
                         .shadow(
                             elevation = 6.dp,
-                            clip = false,
-                        )
-                        .background(HackathonTheme.colors.white)
-                        .padding(top = 52.dp, bottom = 20.dp),
+                            clip = false
+                        ).background(HackathonTheme.colors.white)
+                        .padding(top = 52.dp, bottom = 20.dp)
             ) {
                 Row(
                     modifier =
@@ -72,7 +71,7 @@ fun SearchScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_logo_rec),
@@ -81,7 +80,7 @@ fun SearchScreen(
                             Modifier
                                 .size(50.dp)
                                 .clickable { onNavigateBack() },
-                        contentScale = ContentScale.Fit,
+                        contentScale = ContentScale.Fit
                     )
 
                     TextField(
@@ -95,7 +94,7 @@ fun SearchScreen(
                                 .border(
                                     width = 1.5.dp,
                                     color = HackathonTheme.colors.primary,
-                                    shape = RoundedCornerShape(30.dp),
+                                    shape = RoundedCornerShape(30.dp)
                                 ),
                         trailingIcon = {
                             Icon(
@@ -106,21 +105,21 @@ fun SearchScreen(
                                     Modifier.clickable {
                                         viewModel.onSearch(uiState.query)
                                         keyboardController?.hide()
-                                    },
+                                    }
                             )
                         },
                         singleLine = true,
                         textStyle = HackathonTheme.typography.Body_medium,
                         keyboardOptions =
                             KeyboardOptions(
-                                imeAction = ImeAction.Search,
+                                imeAction = ImeAction.Search
                             ),
                         keyboardActions =
                             KeyboardActions(
                                 onSearch = {
                                     viewModel.onSearch(uiState.query)
                                     keyboardController?.hide()
-                                },
+                                }
                             ),
                         colors =
                             TextFieldDefaults.colors(
@@ -129,12 +128,12 @@ fun SearchScreen(
                                 disabledContainerColor = HackathonTheme.colors.white,
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = HackathonTheme.colors.black,
-                            ),
+                                cursorColor = HackathonTheme.colors.black
+                            )
                     )
                 }
             }
-        },
+        }
     ) { innerPadding ->
         when {
             !uiState.hasSearched -> {
@@ -144,12 +143,12 @@ fun SearchScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(innerPadding),
-                    contentAlignment = Alignment.Center,
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "쩝쩝박사님들의 레시피를 검색해보세요",
                         style = HackathonTheme.typography.Body_medium,
-                        color = HackathonTheme.colors.gray700,
+                        color = HackathonTheme.colors.gray700
                     )
                 }
             }
@@ -161,7 +160,7 @@ fun SearchScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(innerPadding),
-                    contentAlignment = Alignment.Center,
+                    contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
@@ -174,13 +173,13 @@ fun SearchScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(innerPadding),
-                    contentAlignment = Alignment.Center,
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = uiState.error ?: "검색 중 오류가 발생했습니다",
                         style = HackathonTheme.typography.Body_medium,
                         color = Gray700,
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
@@ -193,7 +192,7 @@ fun SearchScreen(
                             .fillMaxSize()
                             .padding(innerPadding),
                     results = uiState.results,
-                    onCombinationClick = onCombinationClick,
+                    onCombinationClick = onCombinationClick
                 )
             }
         }

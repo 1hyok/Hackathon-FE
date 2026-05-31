@@ -11,9 +11,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
  * Android Application/Library 모듈 공통 SDK·Java·Kotlin 설정.
  * compileSdk 36 / minSdk 36 / JVM 17 을 단일 지점에서 강제한다.
  */
-internal fun Project.configureKotlinAndroid(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
-) {
+internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, *, *, *, *, *>) {
     commonExtension.apply {
         compileSdk = 36
 
