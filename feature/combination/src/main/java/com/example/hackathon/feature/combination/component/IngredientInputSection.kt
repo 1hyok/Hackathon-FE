@@ -19,10 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.Primary
 
-data class IngredientItem(
-    val name: String,
-    val quantity: String,
-)
+data class IngredientItem(val name: String, val quantity: String)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,24 +28,24 @@ fun IngredientInputSection(
     onIngredientNameChange: (Int, String) -> Unit,
     onIngredientQuantityChange: (Int, String) -> Unit,
     onAddIngredient: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // 재료 레이블
         Text(
             text = "재료",
             style = MaterialTheme.typography.titleMedium,
-            color = Color.Black,
+            color = Color.Black
         )
 
         // 재료 입력 필드들
         ingredients.forEachIndexed { index, ingredient ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 // 재료명 입력
                 OutlinedTextField(
@@ -58,7 +55,7 @@ fun IngredientInputSection(
                         Text(
                             text = if (index == 0) "재료명 (예: 땅콩소스)" else "재료명",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Gray700,
+                            color = Gray700
                         )
                     },
                     modifier = Modifier.weight(1f),
@@ -67,8 +64,8 @@ fun IngredientInputSection(
                     colors =
                         androidx.compose.material3.OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Primary,
-                            unfocusedBorderColor = Primary.copy(alpha = 0.5f),
-                        ),
+                            unfocusedBorderColor = Primary.copy(alpha = 0.5f)
+                        )
                 )
 
                 // 용량 입력
@@ -79,7 +76,7 @@ fun IngredientInputSection(
                         Text(
                             text = if (index == 0) "용량 (예: 2스푼)" else "용량",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Gray700,
+                            color = Gray700
                         )
                     },
                     modifier = Modifier.weight(1f),
@@ -88,8 +85,8 @@ fun IngredientInputSection(
                     colors =
                         androidx.compose.material3.OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Primary,
-                            unfocusedBorderColor = Primary.copy(alpha = 0.5f),
-                        ),
+                            unfocusedBorderColor = Primary.copy(alpha = 0.5f)
+                        )
                 )
             }
         }
@@ -102,7 +99,7 @@ fun IngredientInputSection(
             modifier =
                 Modifier
                     .padding(start = 4.dp)
-                    .clickable { onAddIngredient() },
+                    .clickable { onAddIngredient() }
         )
     }
 }
@@ -115,10 +112,10 @@ private fun IngredientInputSectionPreview() {
             listOf(
                 IngredientItem("땅콩소스", "2스푼"),
                 IngredientItem("굴소스", "1스푼"),
-                IngredientItem("", ""),
+                IngredientItem("", "")
             ),
         onIngredientNameChange = { _, _ -> },
         onIngredientQuantityChange = { _, _ -> },
-        onAddIngredient = {},
+        onAddIngredient = {}
     )
 }

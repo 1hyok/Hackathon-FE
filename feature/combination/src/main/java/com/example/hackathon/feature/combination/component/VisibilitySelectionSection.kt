@@ -22,15 +22,15 @@ import com.example.hackathon.core.designsystem.theme.Primary
 fun VisibilitySelectionSection(
     isPublic: Boolean,
     onPublicChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // 전체 공개 버튼
             if (isPublic) {
@@ -40,8 +40,8 @@ fun VisibilitySelectionSection(
                     colors =
                         ButtonDefaults.buttonColors(
                             containerColor = Primary,
-                            contentColor = Color.White,
-                        ),
+                            contentColor = Color.White
+                        )
                 ) {
                     Text("전체 공개")
                 }
@@ -51,9 +51,9 @@ fun VisibilitySelectionSection(
                     modifier = Modifier.weight(1f),
                     colors =
                         ButtonDefaults.outlinedButtonColors(
-                            contentColor = Primary,
+                            contentColor = Primary
                         ),
-                    border = BorderStroke(1.dp, Gray700),
+                    border = BorderStroke(1.dp, Gray700)
                 ) {
                     Text("전체 공개")
                 }
@@ -66,8 +66,8 @@ fun VisibilitySelectionSection(
                     colors =
                         ButtonDefaults.buttonColors(
                             containerColor = Primary,
-                            contentColor = Color.White,
-                        ),
+                            contentColor = Color.White
+                        )
                 ) {
                     Text("나만 보기")
                 }
@@ -77,9 +77,9 @@ fun VisibilitySelectionSection(
                     modifier = Modifier.weight(1f),
                     colors =
                         ButtonDefaults.outlinedButtonColors(
-                            contentColor = Primary,
+                            contentColor = Primary
                         ),
-                    border = BorderStroke(1.dp, Gray700),
+                    border = BorderStroke(1.dp, Gray700)
                 ) {
                     Text("나만 보기")
                 }
@@ -93,6 +93,6 @@ fun VisibilitySelectionSection(
 private fun VisibilitySelectionSectionPreview() {
     VisibilitySelectionSection(
         isPublic = true,
-        onPublicChange = {},
+        onPublicChange = {}
     )
 }

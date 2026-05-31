@@ -5,7 +5,11 @@ import com.example.hackathon.core.model.Combination
 import com.example.hackathon.core.model.RecipeDetail
 
 interface CombinationRepository {
-    suspend fun getCombinations(category: Category? = null, page: Int = 1, pageSize: Int = 10): Result<List<Combination>>
+    suspend fun getCombinations(
+        category: Category? = null,
+        page: Int = 1,
+        pageSize: Int = 10
+    ): Result<List<Combination>>
 
     suspend fun getCombinationById(id: String): Result<Combination>
 
@@ -16,7 +20,7 @@ interface CombinationRepository {
         ingredients: List<String>,
         tags: List<String> = emptyList(),
         imageUri: android.net.Uri? = null,
-        isPublic: Boolean = true,
+        isPublic: Boolean = true
     ): Result<Combination>
 
     suspend fun updateCombination(
@@ -27,7 +31,7 @@ interface CombinationRepository {
         ingredients: List<String>,
         tags: List<String> = emptyList(),
         imageUri: android.net.Uri? = null,
-        isPublic: Boolean = true,
+        isPublic: Boolean = true
     ): Result<Combination>
 
     suspend fun deleteCombination(id: String): Result<Unit>

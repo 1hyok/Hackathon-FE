@@ -21,23 +21,19 @@ import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.theme.Primary
 
 @Composable
-fun TagChip(
-    text: String,
-    onRemove: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun TagChip(text: String, onRemove: () -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier =
             modifier
                 .background(Primary, RoundedCornerShape(15.dp))
                 .padding(horizontal = 10.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
-            color = Color.White,
+            color = Color.White
         )
         FilledTonalIconButton(
             onClick = onRemove,
@@ -45,14 +41,16 @@ fun TagChip(
                 Modifier
                     .background(Color.White.copy(alpha = 0.2f), shape = CircleShape)
                     .height(24.dp),
-            colors = IconButtonDefaults.filledTonalIconButtonColors(containerColor = Color.Transparent),
+            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                containerColor = Color.Transparent
+            ),
             content = {
                 Text(
                     text = "X",
                     color = Color.White,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center
                 )
-            },
+            }
         )
     }
 }
@@ -62,6 +60,6 @@ fun TagChip(
 private fun TagChipPreview() {
     TagChip(
         text = "#서브웨이",
-        onRemove = {},
+        onRemove = {}
     )
 }

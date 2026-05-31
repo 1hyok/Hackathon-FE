@@ -7,5 +7,5 @@ data class UpdateCombinationRequest(
     val title: String,
     val description: String,
     val category: String,
-    val ingredients: List<String>,
+    val ingredients: List<String>
 )

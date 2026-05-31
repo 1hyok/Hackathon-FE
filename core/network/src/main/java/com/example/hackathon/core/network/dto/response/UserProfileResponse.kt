@@ -13,5 +13,5 @@ data class UserProfileResponse(
     // 서버 응답에 없을 수 있는 필드들 (optional)
     val id: String? = null,
     val email: String? = null,
-    val profileImageUrl: String? = null,
+    val profileImageUrl: String? = null
 )

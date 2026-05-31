@@ -12,47 +12,40 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.hackathon.feature.home.component.SearchComponent
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
+import com.example.hackathon.feature.home.component.SearchComponent
 
 @Composable
-fun HomeTopBar(
-    navController: NavController,
-    modifier: Modifier = Modifier,
-) {
+fun HomeTopBar(navController: NavController, modifier: Modifier = Modifier) {
     HomeTopBar(
         onSearchClick = {
             navController.navigate("search")
         },
-        modifier = modifier,
+        modifier = modifier
     )
 }
 
 @Composable
-fun HomeTopBar(
-    onSearchClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun HomeTopBar(onSearchClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         modifier =
             modifier
                 .fillMaxWidth()
                 .shadow(
                     elevation = 6.dp,
-                    clip = false,
-                )
-                .background(HackathonTheme.colors.white)
-                .padding(top = 30.dp, bottom = 20.dp),
+                    clip = false
+                ).background(HackathonTheme.colors.white)
+                .padding(top = 30.dp, bottom = 20.dp)
     ) {
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 10.dp, top = 25.dp),
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.Center
         ) {
             SearchComponent(
-                onSearchClick = onSearchClick,
+                onSearchClick = onSearchClick
             )
         }
     }
@@ -63,7 +56,7 @@ fun HomeTopBar(
 private fun HomeTopBarPreview() {
     HackathonTheme {
         HomeTopBar(
-            onSearchClick = {},
+            onSearchClick = {}
         )
     }
 }

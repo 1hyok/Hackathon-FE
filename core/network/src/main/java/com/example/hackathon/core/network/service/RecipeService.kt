@@ -24,7 +24,7 @@ interface RecipeService {
     @GET("recipes")
     suspend fun getRecipes(
         @Query("page") page: Int? = null,
-        @Query("category") category: String? = null,
+        @Query("category") category: String? = null
     ): BaseResponse<List<PostPreviewDto>>
 
     /**
@@ -32,9 +32,7 @@ interface RecipeService {
      * GET /recipes/{postId}
      */
     @GET("recipes/{postId}")
-    suspend fun getRecipeDetail(
-        @Path("postId") postId: Long,
-    ): BaseResponse<DetailResponse>
+    suspend fun getRecipeDetail(@Path("postId") postId: Long): BaseResponse<DetailResponse>
 
     /**
      * 레시피 검색
@@ -42,9 +40,7 @@ interface RecipeService {
      * @param keyword 검색 키워드
      */
     @GET("recipes/search")
-    suspend fun searchRecipes(
-        @Query("keyword") keyword: String,
-    ): BaseResponse<List<PostPreviewDto>>
+    suspend fun searchRecipes(@Query("keyword") keyword: String): BaseResponse<List<PostPreviewDto>>
 
     /**
      * 좋아요 추가
@@ -52,9 +48,7 @@ interface RecipeService {
      * 서버 응답: 200 OK with empty body (0 bytes)
      */
     @POST("recipes/{postId}/likes")
-    suspend fun likeRecipe(
-        @Path("postId") postId: Long,
-    ): Response<Unit>
+    suspend fun likeRecipe(@Path("postId") postId: Long): Response<Unit>
 
     /**
      * 좋아요 취소
@@ -62,7 +56,5 @@ interface RecipeService {
      * 서버 응답: 200 OK with empty body (0 bytes)
      */
     @DELETE("recipes/{postId}/likes")
-    suspend fun unlikeRecipe(
-        @Path("postId") postId: Long,
-    ): Response<Unit>
+    suspend fun unlikeRecipe(@Path("postId") postId: Long): Response<Unit>
 }

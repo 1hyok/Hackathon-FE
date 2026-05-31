@@ -14,5 +14,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ReissueResponse(
     val accessToken: String,
-    val refreshToken: String? = null, // 선택사항 (RTR - Refresh Token Rotation)
+    // 선택사항 (RTR - Refresh Token Rotation)
+    val refreshToken: String? = null
 )

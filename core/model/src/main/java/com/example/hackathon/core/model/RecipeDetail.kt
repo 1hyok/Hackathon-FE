@@ -12,19 +12,11 @@ data class RecipeDetail(
     val userInteraction: UserInteraction,
     val tags: List<String>,
     val createdAt: String,
-    val updatedAt: String,
+    val updatedAt: String
 )
 
-data class Ingredient(
-    val name: String,
-    val amount: String,
-)
+data class Ingredient(val name: String, val amount: String)
 
-data class Stats(
-    val likesCount: Int,
-)
+data class Stats(val likesCount: Int)
 
-data class UserInteraction(
-    val isLiked: Boolean,
-    val isMine: Boolean,
-)
+data class UserInteraction(val isLiked: Boolean, val isMine: Boolean)

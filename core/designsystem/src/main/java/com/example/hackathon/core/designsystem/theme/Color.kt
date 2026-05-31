@@ -47,7 +47,7 @@ data class HackathonColors(
     val background: Color,
     val surface: Color,
     val success: Color,
-    val error: Color,
+    val error: Color
 )
 
 val defaultHackathonColors =
@@ -61,7 +61,7 @@ val defaultHackathonColors =
         background = Background,
         surface = Surface,
         success = Success,
-        error = Error,
+        error = Error
     )
 
 val LocalHackathonColors = staticCompositionLocalOf { defaultHackathonColors }

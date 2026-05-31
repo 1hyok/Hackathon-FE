@@ -15,15 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.component.CombinationCard
-import com.example.hackathon.core.model.Combination
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
+import com.example.hackathon.core.model.Combination
 
 @Composable
 fun CombinationList(
     modifier: Modifier = Modifier,
     results: List<Combination>,
-    onCombinationClick: (String) -> Unit = {},
+    onCombinationClick: (String) -> Unit = {}
 ) {
     if (results.isEmpty()) {
         Box(
@@ -31,26 +31,26 @@ fun CombinationList(
                 modifier
                     .fillMaxSize()
                     .padding(top = 40.dp),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "검색 결과가 없어요 ㅠㅠ",
                 style = HackathonTheme.typography.Body_medium,
                 color = Gray700,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
         }
     } else {
         LazyColumn(
             modifier = modifier.fillMaxSize(),
             contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(results) { combination ->
                 CombinationCard(
                     combination = combination,
                     onClick = { onCombinationClick(combination.id) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }

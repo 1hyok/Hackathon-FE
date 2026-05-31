@@ -14,7 +14,7 @@ fun CategoryChip(
     category: Category,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     FilterChip(
         selected = isSelected,
@@ -25,8 +25,8 @@ fun CategoryChip(
         colors =
             FilterChipDefaults.filterChipColors(
                 selectedContainerColor = MaterialTheme.colorScheme.primary,
-                selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
-            ),
+                selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+            )
     )
 }
 
@@ -35,17 +35,17 @@ fun CategoryChipRow(
     categories: List<Category>,
     selectedCategory: Category,
     onCategorySelected: (Category) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         categories.forEach { category ->
             CategoryChip(
                 category = category,
                 isSelected = category == selectedCategory,
-                onClick = { onCategorySelected(category) },
+                onClick = { onCategorySelected(category) }
             )
         }
     }
@@ -57,7 +57,7 @@ private fun CategoryChipPreview() {
     CategoryChip(
         category = Category.SUBWAY,
         isSelected = true,
-        onClick = {},
+        onClick = {}
     )
 }
 
@@ -67,6 +67,6 @@ private fun CategoryChipRowPreview() {
     CategoryChipRow(
         categories = listOf(Category.ALL, Category.SUBWAY, Category.HAIDILAO, Category.CONVENIENCE),
         selectedCategory = Category.SUBWAY,
-        onCategorySelected = {},
+        onCategorySelected = {}
     )
 }

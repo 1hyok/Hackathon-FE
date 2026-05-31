@@ -2,95 +2,98 @@ package com.example.hackathon.feature.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.hackathon.core.domain.repository.AuthRepository
 import com.example.hackathon.core.model.DummyData
 import com.example.hackathon.core.model.User
-import com.example.hackathon.core.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel
-    @Inject
-    constructor(
-        private val authRepository: AuthRepository,
-    ) : ViewModel() {
-        private val _uiState = MutableStateFlow(LoginUiState())
-        val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+@Inject
+constructor(private val authRepository: AuthRepository) :
+    ViewModel() {
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-        fun updateId(id: String) {
-            _uiState.value = _uiState.value.copy(id = id)
-        }
+    fun updateId(id: String) {
+        _uiState.value = _uiState.value.copy(id = id)
+    }
 
-        fun updatePassword(password: String) {
-            _uiState.value = _uiState.value.copy(password = password)
-        }
+    fun updatePassword(password: String) {
+        _uiState.value = _uiState.value.copy(password = password)
+    }
 
-        fun togglePasswordVisibility() {
-            _uiState.value = _uiState.value.copy(isPasswordVisible = !_uiState.value.isPasswordVisible)
-        }
+    fun togglePasswordVisibility() {
+        _uiState.value =
+            _uiState.value.copy(isPasswordVisible = !_uiState.value.isPasswordVisible)
+    }
 
-        fun toggleAutoLogin() {
-            _uiState.value = _uiState.value.copy(isAutoLogin = !_uiState.value.isAutoLogin)
-        }
+    fun toggleAutoLogin() {
+        _uiState.value = _uiState.value.copy(isAutoLogin = !_uiState.value.isAutoLogin)
+    }
 
-        fun login() {
-            viewModelScope.launch {
-                _uiState.value = _uiState.value.copy(isLoading = true, error = null, isSuccess = false)
+    fun login() {
+        viewModelScope.launch {
+            _uiState.value =
+                _uiState.value.copy(isLoading = true, error = null, isSuccess = false)
 
-                // 입력 검증
-                if (_uiState.value.id.isBlank() || _uiState.value.password.isBlank()) {
-                    _uiState.value =
-                        _uiState.value.copy(
-                            isLoading = false,
-                            error = "닉네임과 비밀번호를 입력해주세요",
-                        )
-                    return@launch
-                }
-
-                // API 호출 (닉네임으로 로그인)
-                authRepository.login(_uiState.value.id, _uiState.value.password).fold(
-                    onSuccess = { loginResult ->
-                        // 사용자 정보 저장
-                        DummyData.currentUser = loginResult.user
-                        _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
-                    },
-                    onFailure = { throwable ->
-                        _uiState.value =
-                            _uiState.value.copy(
-                                isLoading = false,
-                                error = throwable.message ?: "로그인에 실패했습니다",
-                            )
-                    },
-                )
+            // 입력 검증
+            if (_uiState.value.id.isBlank() || _uiState.value.password.isBlank()) {
+                _uiState.value =
+                    _uiState.value.copy(
+                        isLoading = false,
+                        error = "닉네임과 비밀번호를 입력해주세요"
+                    )
+                return@launch
             }
-        }
 
-        /**
-         * 계정 생성 후 자동 로그인
-         * 닉네임과 비밀번호만으로 계정을 생성하고 바로 로그인합니다.
-         */
-        fun signupAndLogin() {
-            viewModelScope.launch {
-                _uiState.value = _uiState.value.copy(isLoading = true, error = null, isSuccess = false)
-
-                // 입력 검증
-                if (_uiState.value.id.isBlank() || _uiState.value.password.isBlank()) {
+            // API 호출 (닉네임으로 로그인)
+            authRepository.login(_uiState.value.id, _uiState.value.password).fold(
+                onSuccess = { loginResult ->
+                    // 사용자 정보 저장
+                    DummyData.currentUser = loginResult.user
+                    _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
+                },
+                onFailure = { throwable ->
                     _uiState.value =
                         _uiState.value.copy(
                             isLoading = false,
-                            error = "닉네임과 비밀번호를 입력해주세요",
+                            error = throwable.message ?: "로그인에 실패했습니다"
                         )
-                    return@launch
                 }
+            )
+        }
+    }
 
-                // 1. 계정 생성 (Swagger 스펙: nickname, password만 필요)
-                authRepository.signup(
+    /**
+     * 계정 생성 후 자동 로그인
+     * 닉네임과 비밀번호만으로 계정을 생성하고 바로 로그인합니다.
+     */
+    fun signupAndLogin() {
+        viewModelScope.launch {
+            _uiState.value =
+                _uiState.value.copy(isLoading = true, error = null, isSuccess = false)
+
+            // 입력 검증
+            if (_uiState.value.id.isBlank() || _uiState.value.password.isBlank()) {
+                _uiState.value =
+                    _uiState.value.copy(
+                        isLoading = false,
+                        error = "닉네임과 비밀번호를 입력해주세요"
+                    )
+                return@launch
+            }
+
+            // 1. 계정 생성 (Swagger 스펙: nickname, password만 필요)
+            authRepository
+                .signup(
                     password = _uiState.value.password,
-                    nickname = _uiState.value.id,
+                    nickname = _uiState.value.id
                 ).fold(
                     onSuccess = {
                         // 2. 계정 생성 성공 시 바로 로그인 (nickname으로 로그인)
@@ -98,40 +101,41 @@ class LoginViewModel
                             onSuccess = { loginResult ->
                                 // 사용자 정보 저장
                                 DummyData.currentUser = loginResult.user
-                                _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true)
+                                _uiState.value =
+                                    _uiState.value.copy(isLoading = false, isSuccess = true)
                             },
                             onFailure = { throwable ->
                                 _uiState.value =
                                     _uiState.value.copy(
                                         isLoading = false,
-                                        error = throwable.message ?: "로그인에 실패했습니다",
+                                        error = throwable.message ?: "로그인에 실패했습니다"
                                     )
-                            },
+                            }
                         )
                     },
                     onFailure = { throwable ->
                         _uiState.value =
                             _uiState.value.copy(
                                 isLoading = false,
-                                error = throwable.message ?: "계정 생성에 실패했습니다",
+                                error = throwable.message ?: "계정 생성에 실패했습니다"
                             )
-                    },
+                    }
                 )
-            }
-        }
-
-        fun socialLogin(provider: SocialLoginProvider) {
-            viewModelScope.launch {
-                _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-                // TODO: 소셜 로그인 API 연동
-                _uiState.value = _uiState.value.copy(isLoading = false)
-            }
-        }
-
-        fun clearError() {
-            _uiState.value = _uiState.value.copy(error = null)
         }
     }
+
+    fun socialLogin(provider: SocialLoginProvider) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+            // TODO: 소셜 로그인 API 연동
+            _uiState.value = _uiState.value.copy(isLoading = false)
+        }
+    }
+
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(error = null)
+    }
+}
 
 data class LoginUiState(
     val id: String = "",
@@ -140,11 +144,11 @@ data class LoginUiState(
     val isAutoLogin: Boolean = false,
     val isLoading: Boolean = false,
     val isSuccess: Boolean = false,
-    val error: String? = null,
+    val error: String? = null
 )
 
 enum class SocialLoginProvider {
     KAKAO,
     NAVER,
-    GOOGLE,
+    GOOGLE
 }

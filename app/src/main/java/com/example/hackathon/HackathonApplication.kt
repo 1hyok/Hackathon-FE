@@ -9,7 +9,7 @@ import dagger.hilt.android.HiltAndroidApp
 class HackathonApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        
+
         // 앱 시작 시 currentUser 초기화: Mock 모드가 아닐 때만 null(비로그인)로 시작.
         //
         // USE_MOCK_API 는 app/build.gradle.kts 의 buildConfigField 로 주입되는 컴파일 상수다.

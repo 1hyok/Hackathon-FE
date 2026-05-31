@@ -1,12 +1,13 @@
 package com.example.hackathon.core.network.di
 
-import com.example.hackathon.core.network.BuildConfig
 import com.example.hackathon.core.network.AuthInterceptor
+import com.example.hackathon.core.network.BuildConfig
 import com.example.hackathon.core.network.service.RecipeService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -14,22 +15,20 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     @Provides
     @Singleton
-    fun providesOkHttpClient(
-        authInterceptor: AuthInterceptor,
-    ): OkHttpClient {
+    fun providesOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
         val loggingInterceptor =
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             }
 
-        return OkHttpClient.Builder()
+        return OkHttpClient
+            .Builder()
             .addInterceptor(authInterceptor)
             .addInterceptor(loggingInterceptor)
             .build()
@@ -50,11 +49,9 @@ object NetworkModule {
     @MainRetrofit
     @Provides
     @Singleton
-    fun providesRetrofit(
-        client: OkHttpClient,
-        converterFactory: Converter.Factory,
-    ): Retrofit =
-        Retrofit.Builder()
+    fun providesRetrofit(client: OkHttpClient, converterFactory: Converter.Factory): Retrofit =
+        Retrofit
+            .Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(client)
             .addConverterFactory(converterFactory)
@@ -64,20 +61,20 @@ object NetworkModule {
     @AuthRetrofit
     @Provides
     @Singleton
-    fun providesAuthRetrofit(
-        converterFactory: Converter.Factory,
-    ): Retrofit {
+    fun providesAuthRetrofit(converterFactory: Converter.Factory): Retrofit {
         val loggingInterceptor =
             HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             }
 
         val authClient =
-            OkHttpClient.Builder()
+            OkHttpClient
+                .Builder()
                 .addInterceptor(loggingInterceptor)
                 .build()
 
-        return Retrofit.Builder()
+        return Retrofit
+            .Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(authClient)
             .addConverterFactory(converterFactory)
@@ -85,5 +82,6 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideRecipeService(@MainRetrofit retrofit: Retrofit): RecipeService = retrofit.create(RecipeService::class.java)
+    fun provideRecipeService(@MainRetrofit retrofit: Retrofit): RecipeService =
+        retrofit.create(RecipeService::class.java)
 }

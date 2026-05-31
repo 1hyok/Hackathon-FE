@@ -15,7 +15,7 @@ fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = "검색어를 입력하세요",
+    placeholder: String = "검색어를 입력하세요"
 ) {
     OutlinedTextField(
         value = query,
@@ -26,15 +26,15 @@ fun SearchBar(
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "검색",
+                contentDescription = "검색"
             )
         },
         singleLine = true,
         colors =
             OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.surface,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-            ),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface
+            )
     )
 }
 
@@ -43,6 +43,6 @@ fun SearchBar(
 private fun SearchBarPreview() {
     SearchBar(
         query = "",
-        onQueryChange = {},
+        onQueryChange = {}
     )
 }

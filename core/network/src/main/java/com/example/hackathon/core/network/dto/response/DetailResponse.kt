@@ -21,5 +21,5 @@ data class DetailResponse(
     val isLiked: Boolean = false,
     val isMine: Boolean = false,
     val createdAt: String,
-    val updatedAt: String? = null,
+    val updatedAt: String? = null
 )

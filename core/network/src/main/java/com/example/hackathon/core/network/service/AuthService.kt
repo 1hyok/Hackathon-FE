@@ -17,16 +17,12 @@ interface AuthService {
     // 서버 응답: text/plain "가입이 완료되었습니다" (200 OK)
     // 성공 여부는 HTTP 상태 코드로 판단
     @POST("auth/signup")
-    suspend fun signup(
-        @Body request: SignupRequest,
-    ): retrofit2.Response<okhttp3.ResponseBody>
+    suspend fun signup(@Body request: SignupRequest): retrofit2.Response<okhttp3.ResponseBody>
 
     // 2. 로그인
     // 서버 응답: {"accessToken":"...","refreshToken":"..."} (BaseResponse 래퍼 없음)
     @POST("auth/login")
-    suspend fun login(
-        @Body request: LoginRequest,
-    ): LoginResponse
+    suspend fun login(@Body request: LoginRequest): LoginResponse
 
     /**
      * 토큰 재발급
@@ -37,13 +33,9 @@ interface AuthService {
      * response: {"accessToken":"...","refreshToken":"..."} (BaseResponse 래퍼 없음)
      */
     @POST("auth/reissue")
-    suspend fun reissue(
-        @Body request: ReissueRequest,
-    ): ReissueResponse
+    suspend fun reissue(@Body request: ReissueRequest): ReissueResponse
 
     // 4. 로그아웃
     @POST("auth/logout")
-    suspend fun logout(
-        @Body request: LogoutRequest,
-    ): BaseResponse<Unit>
+    suspend fun logout(@Body request: LogoutRequest): BaseResponse<Unit>
 }

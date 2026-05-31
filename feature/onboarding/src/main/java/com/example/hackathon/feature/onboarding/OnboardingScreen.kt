@@ -30,10 +30,7 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OnboardingScreen(
-    modifier: Modifier = Modifier,
-    onNavigateToLogin: () -> Unit = {},
-) {
+fun OnboardingScreen(modifier: Modifier = Modifier, onNavigateToLogin: () -> Unit = {}) {
     // 3초 후 자동으로 로그인 화면으로 이동
     LaunchedEffect(Unit) {
         delay(3000)
@@ -41,7 +38,7 @@ fun OnboardingScreen(
     }
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier
     ) { paddingValues ->
         Box(
             modifier =
@@ -49,19 +46,19 @@ fun OnboardingScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .background(Color.White),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center
             ) {
                 // 로고 영역 (앱 아이콘)
                 Image(
                     painter = painterResource(R.drawable.ic_logo_rec),
                     contentDescription = "쩝쩝박사 로고",
                     modifier = Modifier.size(120.dp),
-                    contentScale = ContentScale.Fit,
+                    contentScale = ContentScale.Fit
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
@@ -69,19 +66,19 @@ fun OnboardingScreen(
                 // 슬로건 텍스트 (2줄, 중앙 정렬)
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
                         text = "어디선가 들어본 바로 그 조합",
                         style = HackathonTheme.typography.Head2_bold,
                         color = Color.Black,
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                     Text(
                         text = "모두 쩝쩝박사에서",
                         style = HackathonTheme.typography.Head2_bold,
                         color = Color.Black,
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                 }
             }

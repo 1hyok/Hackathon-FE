@@ -50,28 +50,28 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.core.designsystem.R
 import com.example.hackathon.core.designsystem.component.TopAppLogoBar
+import com.example.hackathon.core.designsystem.theme.Gray700
+import com.example.hackathon.core.designsystem.theme.HackathonTheme
+import com.example.hackathon.core.designsystem.theme.Primary
+import com.example.hackathon.feature.combination.CreateCombinationViewModel
 import com.example.hackathon.feature.combination.component.HashTagInputSection
 import com.example.hackathon.feature.combination.component.ImageUploadSection
 import com.example.hackathon.feature.combination.component.IngredientInputSection
 import com.example.hackathon.feature.combination.component.VisibilitySelectionSection
-import com.example.hackathon.feature.combination.CreateCombinationViewModel
-import com.example.hackathon.core.designsystem.theme.Gray700
-import com.example.hackathon.core.designsystem.theme.HackathonTheme
-import com.example.hackathon.core.designsystem.theme.Primary
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun CreateCombinationScreen(
     modifier: Modifier = Modifier,
     viewModel: CreateCombinationViewModel = hiltViewModel(),
-    onNavigateBack: () -> Unit = {},
+    onNavigateBack: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     // 이미지 선택을 위한 ActivityResultLauncher
     val imagePickerLauncher =
         rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.GetContent(),
+            contract = ActivityResultContracts.GetContent()
         ) { uri: Uri? ->
             uri?.let { viewModel.updateImageUri(it) }
         }
@@ -79,11 +79,10 @@ fun CreateCombinationScreen(
     // 해시태그 입력 UI 상태 (로컬)
     val tagInput = rememberSaveable { mutableStateOf("") }
 
-
     Scaffold(
         modifier = modifier,
-        contentWindowInsets = WindowInsets(0),
-        ) { innerPadding ->
+        contentWindowInsets = WindowInsets(0)
+    ) { innerPadding ->
         Column(
             modifier =
                 Modifier
@@ -101,22 +100,22 @@ fun CreateCombinationScreen(
                 ) {
                     IconButton(
                         onClick = onNavigateBack,
-                        modifier = Modifier.size(48.dp),
+                        modifier = Modifier.size(48.dp)
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "뒤로가기",
+                            contentDescription = "뒤로가기"
                         )
                     }
 
                     Box(
                         modifier = Modifier.weight(1f),
-                        contentAlignment = Alignment.Center,
+                        contentAlignment = Alignment.Center
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_logo),
                             contentDescription = "logo",
-                            modifier = Modifier.width(90.dp),
+                            modifier = Modifier.width(90.dp)
                         )
                     }
 
@@ -132,12 +131,13 @@ fun CreateCombinationScreen(
                             .background(
                                 brush =
                                     Brush.verticalGradient(
-                                        colors = listOf(
-                                            Color.Black.copy(alpha = 0.15f),
-                                            Color.Transparent,
-                                        ),
-                                    ),
-                            ),
+                                        colors =
+                                            listOf(
+                                                Color.Black.copy(alpha = 0.15f),
+                                                Color.Transparent
+                                            )
+                                    )
+                            )
                 )
             }
 
@@ -147,30 +147,30 @@ fun CreateCombinationScreen(
                         .weight(1f)
                         .verticalScroll(rememberScrollState())
                         .padding(horizontal = 16.dp, vertical = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-            ){
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
                 // 화면 제목
                 Text(
                     text = "꿀조합 레시피 등록",
                     style = HackathonTheme.typography.Head2_semibold,
-                    color = Color.Black,
+                    color = Color.Black
                 )
 
                 // 이미지 업로드 영역
                 ImageUploadSection(
                     imageUris = uiState.imageUris,
                     onImageClick = { imagePickerLauncher.launch("image/*") },
-                    onRemoveImage = { uri -> viewModel.removeImageUri(uri) },
+                    onRemoveImage = { uri -> viewModel.removeImageUri(uri) }
                 )
 
                 // 제목 입력
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
                         text = "제목",
                         style = HackathonTheme.typography.Sub2_semibold,
-                        color = Color.Black,
+                        color = Color.Black
                     )
                     OutlinedTextField(
                         value = uiState.title,
@@ -179,7 +179,7 @@ fun CreateCombinationScreen(
                             Text(
                                 text = "조합 이름을 적어주세요 (최대 15자)",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Gray700,
+                                color = Gray700
                             )
                         },
                         modifier = Modifier.fillMaxWidth(),
@@ -188,19 +188,19 @@ fun CreateCombinationScreen(
                         colors =
                             OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = Primary,
-                                unfocusedBorderColor = Primary.copy(alpha = 0.5f),
-                            ),
+                                unfocusedBorderColor = Primary.copy(alpha = 0.5f)
+                            )
                     )
                 }
 
                 // 카테고리 입력
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
                         text = "카테고리",
                         style = HackathonTheme.typography.Sub2_semibold,
-                        color = Color.Black,
+                        color = Color.Black
                     )
                     HashTagInputSection(
                         tagInput = tagInput.value,
@@ -212,41 +212,45 @@ fun CreateCombinationScreen(
                                 tagInput.value = ""
                             }
                         },
-                        onRemoveTag = { viewModel.removeTag(it) },
+                        onRemoveTag = { viewModel.removeTag(it) }
                     )
                 }
 
                 // 재료 입력
                 IngredientInputSection(
                     ingredients = uiState.ingredientsList,
-                    onIngredientNameChange = { index, name -> viewModel.updateIngredientName(index, name) },
-                    onIngredientQuantityChange = { index, quantity -> viewModel.updateIngredientQuantity(index, quantity) },
-                    onAddIngredient = { viewModel.addIngredient() },
+                    onIngredientNameChange = { index, name ->
+                        viewModel.updateIngredientName(index, name)
+                    },
+                    onIngredientQuantityChange = { index, quantity ->
+                        viewModel.updateIngredientQuantity(index, quantity)
+                    },
+                    onAddIngredient = { viewModel.addIngredient() }
                 )
 
                 // 공개 여부 선택
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
                         text = "공개 여부",
                         style = HackathonTheme.typography.Sub2_semibold,
-                        color = Color.Black,
+                        color = Color.Black
                     )
                     VisibilitySelectionSection(
                         isPublic = uiState.isPublic,
-                        onPublicChange = { viewModel.updateIsPublic(it) },
+                        onPublicChange = { viewModel.updateIsPublic(it) }
                     )
                 }
 
                 // 설명 입력
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
                         text = "설명",
                         style = HackathonTheme.typography.Sub2_semibold,
-                        color = Color.Black,
+                        color = Color.Black
                     )
                     OutlinedTextField(
                         value = uiState.description,
@@ -255,7 +259,7 @@ fun CreateCombinationScreen(
                             Text(
                                 text = "레시피에 대한 설명을 적어주세요 (최대 300자)",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Gray700,
+                                color = Gray700
                             )
                         },
                         modifier = Modifier.fillMaxWidth(),
@@ -264,8 +268,8 @@ fun CreateCombinationScreen(
                         colors =
                             OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = Primary,
-                                unfocusedBorderColor = Primary.copy(alpha = 0.5f),
-                            ),
+                                unfocusedBorderColor = Primary.copy(alpha = 0.5f)
+                            )
                     )
                 }
 
@@ -274,7 +278,7 @@ fun CreateCombinationScreen(
                     Text(
                         text = error,
                         color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
 
@@ -288,24 +292,26 @@ fun CreateCombinationScreen(
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = !uiState.isLoading && uiState.title.isNotBlank() && uiState.description.isNotBlank(),
+                    enabled =
+                        !uiState.isLoading && uiState.title.isNotBlank() &&
+                            uiState.description.isNotBlank(),
                     shape = RoundedCornerShape(15.dp),
                     colors =
                         ButtonDefaults.buttonColors(
                             containerColor = Primary,
-                            contentColor = Color.White,
-                        ),
+                            contentColor = Color.White
+                        )
                 ) {
                     if (uiState.isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.height(16.dp),
                             color = Color.White,
-                            strokeWidth = 2.dp,
+                            strokeWidth = 2.dp
                         )
                     } else {
                         Text(
                             text = "꿀조합 등록하기",
-                            style = MaterialTheme.typography.titleMedium,
+                            style = MaterialTheme.typography.titleMedium
                         )
                     }
                 }

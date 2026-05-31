@@ -11,6 +11,4 @@ import kotlinx.serialization.Serializable
  * 실제 서버와 다를 경우 필드명 수정 필요
  */
 @Serializable
-data class ReissueRequest(
-    val refreshToken: String,
-)
+data class ReissueRequest(val refreshToken: String)

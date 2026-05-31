@@ -12,21 +12,18 @@ import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 
 @Composable
-fun IngredientRow(
-    name: String,
-    amount: String,
-) {
+fun IngredientRow(name: String, amount: String) {
     Row(
         modifier =
             Modifier
                 .fillMaxWidth()
                 .padding(vertical = 6.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = name,
             style = HackathonTheme.typography.Body_medium,
-            color = HackathonTheme.colors.black,
+            color = HackathonTheme.colors.black
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -34,7 +31,7 @@ fun IngredientRow(
         Text(
             text = amount,
             style = HackathonTheme.typography.Body_medium,
-            color = HackathonTheme.colors.gray700,
+            color = HackathonTheme.colors.gray700
         )
     }
 }

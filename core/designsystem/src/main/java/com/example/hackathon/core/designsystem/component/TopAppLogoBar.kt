@@ -31,10 +31,11 @@ fun TopAppLogoBar(modifier: Modifier = Modifier) {
         Image(
             painter = painterResource(R.drawable.ic_logo_rec),
             contentDescription = "logo",
-            modifier = modifier
-                .width(237.71429.dp)
-                .height(65.dp),
-            contentScale = ContentScale.Fit,
+            modifier =
+                modifier
+                    .width(237.71429.dp)
+                    .height(65.dp),
+            contentScale = ContentScale.Fit
         )
     }
 }

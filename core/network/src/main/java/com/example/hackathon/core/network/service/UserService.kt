@@ -16,9 +16,7 @@ interface UserService {
 
     // 내 프로필 수정
     @PATCH("users/mypage")
-    suspend fun updateMyPage(
-        @Body request: UpdateProfileRequest,
-    ): BaseResponse<UserProfileResponse>
+    suspend fun updateMyPage(@Body request: UpdateProfileRequest): BaseResponse<UserProfileResponse>
 
     // 내가 작성한 레시피 목록
     @GET("users/mypage/recipes")

@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:function-naming") // LazyListScope DSL 확장은 PascalCase 관용
+
 package com.example.hackathon.feature.home
 
 import androidx.compose.foundation.layout.Box
@@ -22,7 +24,7 @@ fun LazyListScope.HomeLoadingState() {
                 Modifier
                     .fillMaxWidth()
                     .padding(top = 40.dp, bottom = 200.dp),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
         }
@@ -36,13 +38,13 @@ fun LazyListScope.HomeErrorState(error: String) {
                 Modifier
                     .fillMaxWidth()
                     .padding(top = 40.dp, bottom = 200.dp),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             Text(
                 text = error,
                 style = HackathonTheme.typography.Body_medium,
                 color = Gray700,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -55,13 +57,13 @@ fun LazyListScope.HomeEmptyState() {
                 Modifier
                     .fillMaxWidth()
                     .padding(top = 40.dp, bottom = 200.dp),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             Text(
                 text = "아직 등록된 조합이 없어요 ㅠㅠ",
                 style = HackathonTheme.typography.Body_medium,
                 color = Gray700,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
         }
     }

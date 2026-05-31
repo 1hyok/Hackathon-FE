@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RecipeRankingResponse(
     val currentCategory: String,
-    val list: List<RecipeRankingItemResponse>,
+    val list: List<RecipeRankingItemResponse>
 )
 
 @Serializable
@@ -15,5 +15,5 @@ data class RecipeRankingItemResponse(
     val viewCount: Int,
     val likes: Int,
     val username: String,
-    val thumbnailUrl: String? = null,
+    val thumbnailUrl: String? = null
 )

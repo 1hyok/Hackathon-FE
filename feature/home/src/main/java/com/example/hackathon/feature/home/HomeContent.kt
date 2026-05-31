@@ -4,21 +4,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.model.Category
 import com.example.hackathon.core.model.Combination
 import com.example.hackathon.core.model.User
-import com.example.hackathon.feature.home.component.FilterBar
 import com.example.hackathon.feature.home.HomeUiState
-import com.example.hackathon.core.designsystem.theme.HackathonTheme
+import com.example.hackathon.feature.home.component.FilterBar
 
 @Composable
 fun HomeContent(
@@ -27,7 +27,7 @@ fun HomeContent(
     onCategorySelected: (Category) -> Unit,
     onCombinationClick: (String) -> Unit,
     onLoadMore: () -> Unit = {},
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
 
@@ -51,13 +51,13 @@ fun HomeContent(
 
     LazyColumn(
         state = listState,
-        modifier = modifier.fillMaxWidth().padding(top = 5.dp),
+        modifier = modifier.fillMaxWidth().padding(top = 5.dp)
     ) {
         item {
             FilterBar(
                 categories = Category.entries.toList(),
                 selectedCategory = selectedCategory,
-                onCategorySelected = onCategorySelected,
+                onCategorySelected = onCategorySelected
             )
         }
 
@@ -78,16 +78,17 @@ fun HomeContent(
                 // 조합 목록
                 HomeCombinationList(
                     combinations = uiState.combinations,
-                    onCombinationClick = onCombinationClick,
+                    onCombinationClick = onCombinationClick
                 )
 
                 // 더 불러오기 로딩 인디케이터
                 if (uiState.isLoadingMore) {
                     item {
                         CircularProgressIndicator(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
                         )
                     }
                 }
@@ -105,7 +106,7 @@ private fun HomeContentLoadingPreview() {
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLoadMore = {},
+            onLoadMore = {}
         )
     }
 }
@@ -119,7 +120,7 @@ private fun HomeContentErrorPreview() {
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLoadMore = {},
+            onLoadMore = {}
         )
     }
 }
@@ -133,7 +134,7 @@ private fun HomeContentEmptyPreview() {
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLoadMore = {},
+            onLoadMore = {}
         )
     }
 }
@@ -142,11 +143,12 @@ private fun HomeContentEmptyPreview() {
 @Composable
 private fun HomeContentWithCombinationsPreview() {
     HackathonTheme {
-        val mockUser = User(
-            id = "user1",
-            nickname = "테스트유저",
-            profileImageUrl = null,
-        )
+        val mockUser =
+            User(
+                id = "user1",
+                nickname = "테스트유저",
+                profileImageUrl = null
+            )
         val mockCombinations =
             listOf(
                 Combination(
@@ -160,7 +162,7 @@ private fun HomeContentWithCombinationsPreview() {
                     author = mockUser,
                     likeCount = 10,
                     isLiked = false,
-                    createdAt = "2024-01-01",
+                    createdAt = "2024-01-01"
                 ),
                 Combination(
                     id = "2",
@@ -173,15 +175,15 @@ private fun HomeContentWithCombinationsPreview() {
                     author = mockUser,
                     likeCount = 5,
                     isLiked = true,
-                    createdAt = "2024-01-02",
-                ),
+                    createdAt = "2024-01-02"
+                )
             )
         HomeContent(
             uiState = HomeUiState(combinations = mockCombinations),
             selectedCategory = Category.ALL,
             onCategorySelected = {},
             onCombinationClick = {},
-            onLoadMore = {},
+            onLoadMore = {}
         )
     }
 }

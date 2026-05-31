@@ -13,7 +13,7 @@ object DummyData {
         User(
             id = "user1",
             nickname = "쩝쩝박사",
-            profileImageUrl = null,
+            profileImageUrl = null
         )
 
     // 현재 로그인한 사용자 정보 (임시 저장)
@@ -33,13 +33,13 @@ object DummyData {
                         "에그마요 15cm",
                         "아보카도 추가",
                         "올리브 오일",
-                        "후추",
+                        "후추"
                     ),
                 tags = listOf("#태그원", "#태그투", "#태그쓰리"),
                 author = dummyUser,
                 likeCount = 42,
                 isLiked = false,
-                createdAt = "2024-01-05",
+                createdAt = "2024-01-05"
             ),
             Combination(
                 id = "2",
@@ -52,13 +52,13 @@ object DummyData {
                         "마늘 다진 것",
                         "고추기름",
                         "참기름",
-                        "간장",
+                        "간장"
                     ),
                 tags = listOf("#태그포", "#태그파이브", "#태그식스"),
                 author = dummyUser,
                 likeCount = 38,
                 isLiked = false,
-                createdAt = "2024-01-04",
+                createdAt = "2024-01-04"
             ),
             Combination(
                 id = "3",
@@ -70,13 +70,13 @@ object DummyData {
                     listOf(
                         "불닭볶음면",
                         "슬라이스 치즈 2장",
-                        "계란",
+                        "계란"
                     ),
                 tags = listOf("#태그세븐", "#태그에이트", "#태그나인"),
                 author = dummyUser,
                 likeCount = 56,
                 isLiked = false,
-                createdAt = "2024-01-03",
+                createdAt = "2024-01-03"
             ),
             Combination(
                 id = "4",
@@ -89,7 +89,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 28,
                 isLiked = false,
-                createdAt = "2024-01-02",
+                createdAt = "2024-01-02"
             ),
             Combination(
                 id = "5",
@@ -102,7 +102,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 45,
                 isLiked = false,
-                createdAt = "2024-01-01",
+                createdAt = "2024-01-01"
             ),
             Combination(
                 id = "6",
@@ -115,7 +115,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 33,
                 isLiked = false,
-                createdAt = "2023-12-30",
+                createdAt = "2023-12-30"
             ),
             Combination(
                 id = "7",
@@ -128,7 +128,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 51,
                 isLiked = false,
-                createdAt = "2023-12-29",
+                createdAt = "2023-12-29"
             ),
             Combination(
                 id = "8",
@@ -141,7 +141,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 67,
                 isLiked = false,
-                createdAt = "2023-12-28",
+                createdAt = "2023-12-28"
             ),
             Combination(
                 id = "9",
@@ -154,7 +154,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 89,
                 isLiked = false,
-                createdAt = "2023-12-27",
+                createdAt = "2023-12-27"
             ),
             Combination(
                 id = "10",
@@ -167,7 +167,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 34,
                 isLiked = false,
-                createdAt = "2023-12-26",
+                createdAt = "2023-12-26"
             ),
             Combination(
                 id = "11",
@@ -180,7 +180,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 72,
                 isLiked = false,
-                createdAt = "2023-12-25",
+                createdAt = "2023-12-25"
             ),
             Combination(
                 id = "12",
@@ -193,7 +193,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 64,
                 isLiked = false,
-                createdAt = "2023-12-24",
+                createdAt = "2023-12-24"
             ),
             Combination(
                 id = "13",
@@ -206,7 +206,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 58,
                 isLiked = false,
-                createdAt = "2023-12-23",
+                createdAt = "2023-12-23"
             ),
             Combination(
                 id = "14",
@@ -219,7 +219,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 41,
                 isLiked = false,
-                createdAt = "2023-12-22",
+                createdAt = "2023-12-22"
             ),
             Combination(
                 id = "15",
@@ -232,7 +232,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 47,
                 isLiked = false,
-                createdAt = "2023-12-21",
+                createdAt = "2023-12-21"
             ),
             Combination(
                 id = "16",
@@ -245,7 +245,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 63,
                 isLiked = false,
-                createdAt = "2023-12-20",
+                createdAt = "2023-12-20"
             ),
             Combination(
                 id = "17",
@@ -258,7 +258,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 55,
                 isLiked = false,
-                createdAt = "2023-12-19",
+                createdAt = "2023-12-19"
             ),
             Combination(
                 id = "18",
@@ -271,7 +271,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 76,
                 isLiked = false,
-                createdAt = "2023-12-18",
+                createdAt = "2023-12-18"
             ),
             Combination(
                 id = "19",
@@ -284,7 +284,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 49,
                 isLiked = false,
-                createdAt = "2023-12-17",
+                createdAt = "2023-12-17"
             ),
             Combination(
                 id = "20",
@@ -297,7 +297,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 82,
                 isLiked = false,
-                createdAt = "2023-12-16",
+                createdAt = "2023-12-16"
             ),
             Combination(
                 id = "21",
@@ -310,7 +310,7 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 39,
                 isLiked = false,
-                createdAt = "2023-12-15",
+                createdAt = "2023-12-15"
             ),
             Combination(
                 id = "22",
@@ -323,8 +323,8 @@ object DummyData {
                 author = dummyUser,
                 likeCount = 54,
                 isLiked = false,
-                createdAt = "2023-12-14",
-            ),
+                createdAt = "2023-12-14"
+            )
         )
 
     fun getRecipeDetailById(id: Long): RecipeDetail? {
@@ -343,18 +343,18 @@ object DummyData {
                 combination.ingredients.map {
                     Ingredient(
                         name = it,
-                        amount = "",
+                        amount = ""
                     )
                 },
             stats = Stats(likesCount = combination.likeCount),
             userInteraction =
                 UserInteraction(
                     isLiked = combination.isLiked,
-                    isMine = combination.author.id == currentUser?.id,
+                    isMine = combination.author.id == currentUser?.id
                 ),
             tags = combination.tags,
             createdAt = combination.createdAt,
-            updatedAt = combination.createdAt,
+            updatedAt = combination.createdAt
         )
     }
 }

@@ -23,27 +23,22 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier =
-    composed {
-        clickable(
-            indication = null,
-            interactionSource = remember { MutableInteractionSource() },
-        ) {
-            onClick()
-        }
+inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
+    clickable(
+        indication = null,
+        interactionSource = remember { MutableInteractionSource() }
+    ) {
+        onClick()
     }
+}
 
-fun Modifier.addFocusCleaner(
-    focusManager: FocusManager,
-    doOnClear: () -> Unit = {},
-): Modifier {
-    return this.pointerInput(Unit) {
+fun Modifier.addFocusCleaner(focusManager: FocusManager, doOnClear: () -> Unit = {}): Modifier =
+    this.pointerInput(Unit) {
         detectTapGestures(onTap = {
             doOnClear()
             focusManager.clearFocus()
         })
     }
-}
 
 @Composable
 fun Modifier.dropShadow(
@@ -56,16 +51,17 @@ fun Modifier.dropShadow(
 ) = composed {
     val density = LocalDensity.current
 
-    val paint = remember(color, blur) {
-        Paint().apply {
-            this.color = color
-            val blurPx = with(density) { blur.toPx() }
-            if (blurPx > 0f) {
-                this.asFrameworkPaint().maskFilter =
-                    BlurMaskFilter(blurPx, BlurMaskFilter.Blur.NORMAL)
+    val paint =
+        remember(color, blur) {
+            Paint().apply {
+                this.color = color
+                val blurPx = with(density) { blur.toPx() }
+                if (blurPx > 0f) {
+                    this.asFrameworkPaint().maskFilter =
+                        BlurMaskFilter(blurPx, BlurMaskFilter.Blur.NORMAL)
+                }
             }
         }
-    }
 
     drawBehind {
         val spreadPx = spread.toPx()

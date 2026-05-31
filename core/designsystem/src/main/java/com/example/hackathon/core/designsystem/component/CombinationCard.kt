@@ -30,13 +30,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.example.hackathon.core.model.Category
-import com.example.hackathon.core.model.Combination
-import com.example.hackathon.core.model.User
 import com.example.hackathon.core.designsystem.theme.Gray50
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.designsystem.theme.Primary
+import com.example.hackathon.core.model.Category
+import com.example.hackathon.core.model.Combination
+import com.example.hackathon.core.model.User
 
 private const val SHADOW_SIZE = 8
 
@@ -45,7 +45,7 @@ fun CombinationCard(
     combination: Combination,
     onClick: () -> Unit,
     onLikeClick: (() -> Unit)? = null,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     // 🔹 shadow 파라미터
     val corner = 15.dp
@@ -61,27 +61,27 @@ fun CombinationCard(
                 .fillMaxWidth()
                 .padding(
                     end = shadowBlur + shadowOffsetX,
-                    bottom = shadowBlur + shadowOffsetY,
-                )
-                .drawBehind {
+                    bottom = shadowBlur + shadowOffsetY
+                ).drawBehind {
                     val left = shadowPad.toPx()
                     val top = shadowPad.toPx()
                     val right = size.width - shadowPad.toPx()
                     val bottom = size.height - shadowPad.toPx()
 
-                    val paint = Paint().apply {
-                        asFrameworkPaint().apply {
-                            isAntiAlias = true
-                            color = android.graphics.Color.TRANSPARENT
+                    val paint =
+                        Paint().apply {
+                            asFrameworkPaint().apply {
+                                isAntiAlias = true
+                                color = android.graphics.Color.TRANSPARENT
 
-                            setShadowLayer(
-                                shadowBlur.toPx(),
-                                shadowOffsetX.toPx(),
-                                shadowOffsetY.toPx(),
-                                Color.Black.copy(alpha = shadowAlpha).toArgb(),
-                            )
+                                setShadowLayer(
+                                    shadowBlur.toPx(),
+                                    shadowOffsetX.toPx(),
+                                    shadowOffsetY.toPx(),
+                                    Color.Black.copy(alpha = shadowAlpha).toArgb()
+                                )
+                            }
                         }
-                    }
 
                     drawIntoCanvas { canvas ->
                         canvas.drawRoundRect(
@@ -91,20 +91,20 @@ fun CombinationCard(
                             bottom,
                             corner.toPx(),
                             corner.toPx(),
-                            paint,
+                            paint
                         )
                     }
-                },
+                }
     ) {
         Card(
             onClick = onClick,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(corner),
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 // 이미지
                 Box(
@@ -115,16 +115,16 @@ fun CombinationCard(
                             .clip(
                                 RoundedCornerShape(
                                     topStart = corner,
-                                    topEnd = corner,
-                                ),
-                            ),
+                                    topEnd = corner
+                                )
+                            )
                 ) {
                     if (combination.imageUrl != null) {
                         AsyncImage(
                             model = combination.imageUrl,
                             contentDescription = combination.title,
                             modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop,
+                            contentScale = ContentScale.Crop
                         )
                     } else {
                         Box(
@@ -132,12 +132,12 @@ fun CombinationCard(
                                 Modifier
                                     .fillMaxSize()
                                     .background(Gray50),
-                            contentAlignment = Alignment.Center,
+                            contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = "이미지 없음",
                                 style = HackathonTheme.typography.Body_medium,
-                                color = Gray700.copy(alpha = 0.5f),
+                                color = Gray700.copy(alpha = 0.5f)
                             )
                         }
                     }
@@ -148,7 +148,7 @@ fun CombinationCard(
                     modifier =
                         Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(16.dp)
                 ) {
                     Spacer(modifier = Modifier.height(12.dp))
 
@@ -156,7 +156,7 @@ fun CombinationCard(
                         FlowRow(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(6.dp),
-                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                            verticalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             combination.tags.forEachIndexed { index, tag ->
                                 val isFirstTag = index == 0
@@ -167,27 +167,25 @@ fun CombinationCard(
                                                 if (isFirstTag) {
                                                     Modifier.background(
                                                         Primary,
-                                                        RoundedCornerShape(15.dp),
+                                                        RoundedCornerShape(15.dp)
                                                     )
                                                 } else {
                                                     Modifier
                                                         .background(
                                                             Color.White,
-                                                            RoundedCornerShape(15.dp),
-                                                        )
-                                                        .border(
+                                                            RoundedCornerShape(15.dp)
+                                                        ).border(
                                                             width = 1.dp,
                                                             color = Primary,
-                                                            shape = RoundedCornerShape(15.dp),
+                                                            shape = RoundedCornerShape(15.dp)
                                                         )
-                                                },
-                                            )
-                                            .padding(horizontal = 10.dp, vertical = 4.dp),
+                                                }
+                                            ).padding(horizontal = 10.dp, vertical = 4.dp)
                                 ) {
                                     Text(
                                         text = tag,
                                         style = HackathonTheme.typography.Caption_medium,
-                                        color = if (isFirstTag) Color.White else Primary,
+                                        color = if (isFirstTag) Color.White else Primary
                                     )
                                 }
                             }
@@ -200,7 +198,7 @@ fun CombinationCard(
                         style = HackathonTheme.typography.Head2_bold,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
-                        color = Color.Black,
+                        color = Color.Black
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -210,13 +208,13 @@ fun CombinationCard(
                         style = HackathonTheme.typography.Body_medium,
                         color = Color(0xFFC0C0C0),
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.height(12.dp))
 
                     HorizontalDivider(
                         thickness = 0.5.dp,
-                        color = Color(0xFFC0C0C0),
+                        color = Color(0xFFC0C0C0)
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -224,7 +222,7 @@ fun CombinationCard(
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(
                             modifier =
@@ -234,7 +232,7 @@ fun CombinationCard(
                                     Modifier
                                 },
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             Icon(
                                 imageVector =
@@ -245,19 +243,19 @@ fun CombinationCard(
                                     },
                                 contentDescription = "좋아요",
                                 tint = Primary,
-                                modifier = Modifier.size(18.dp),
+                                modifier = Modifier.size(18.dp)
                             )
                             Text(
                                 text = String.format("%,d", combination.likeCount),
                                 style = HackathonTheme.typography.Body_medium,
-                                color = Color.Black,
+                                color = Color.Black
                             )
                         }
 
                         Text(
                             text = combination.author.nickname,
                             style = HackathonTheme.typography.Body_medium,
-                            color = Color.Black,
+                            color = Color.Black
                         )
                     }
                 }
@@ -265,8 +263,6 @@ fun CombinationCard(
         }
     }
 }
-
-
 
 @Preview(showBackground = true, name = "Liked State")
 @Composable
@@ -285,9 +281,9 @@ private fun CombinationCardLikedPreview() {
                     author = User(id = "1", nickname = "윤상00", profileImageUrl = null),
                     likeCount = 1120,
                     isLiked = true,
-                    createdAt = System.currentTimeMillis().toString(),
+                    createdAt = System.currentTimeMillis().toString()
                 ),
-            onClick = {},
+            onClick = {}
         )
     }
 }
@@ -309,9 +305,9 @@ private fun CombinationCardNotLikedPreview() {
                     author = User(id = "1", nickname = "윤상00", profileImageUrl = null),
                     likeCount = 1120,
                     isLiked = false,
-                    createdAt = System.currentTimeMillis().toString(),
+                    createdAt = System.currentTimeMillis().toString()
                 ),
-            onClick = {},
+            onClick = {}
         )
     }
 }
