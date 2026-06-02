@@ -22,10 +22,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
+import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -88,7 +85,7 @@ fun DetailScreen(
                 modifier = Modifier.size(48.dp)
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    imageVector = HackathonIcons.ArrowBack,
                     contentDescription = "뒤로가기"
                 )
             }
@@ -229,9 +226,9 @@ fun DetailScreen(
                             Icon(
                                 imageVector =
                                     if (recipe.userInteraction.isLiked) {
-                                        Icons.Filled.Favorite
+                                        HackathonIcons.Favorite
                                     } else {
-                                        Icons.Outlined.FavoriteBorder
+                                        HackathonIcons.FavoriteBorder
                                     },
                                 contentDescription = "좋아요",
                                 tint =

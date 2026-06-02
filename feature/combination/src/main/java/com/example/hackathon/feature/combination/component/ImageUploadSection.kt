@@ -15,9 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
+import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -137,7 +135,7 @@ fun ImageUploadSection(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Close,
+                            imageVector = HackathonIcons.Close,
                             contentDescription = "이미지 제거",
                             tint = Color.White,
                             modifier = Modifier.size(20.dp)
@@ -174,7 +172,7 @@ fun ImageUploadSection(
                                         .size(20.dp)
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.Close,
+                                    imageVector = HackathonIcons.Close,
                                     contentDescription = "이미지 제거",
                                     tint = Color.White,
                                     modifier =
@@ -205,7 +203,7 @@ fun ImageUploadSection(
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Add,
+                                imageVector = HackathonIcons.Add,
                                 contentDescription = "이미지 추가",
                                 tint = Gray700,
                                 modifier = Modifier.size(24.dp)
@@ -235,7 +233,7 @@ fun ImageUploadSection(
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Add,
+                                imageVector = HackathonIcons.Add,
                                 contentDescription = "이미지 추가",
                                 tint = Gray700,
                                 modifier = Modifier.size(24.dp)

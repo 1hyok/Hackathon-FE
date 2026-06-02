@@ -6,9 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
+import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -237,9 +235,9 @@ fun CombinationCard(
                             Icon(
                                 imageVector =
                                     if (combination.isLiked) {
-                                        Icons.Filled.Favorite
+                                        HackathonIcons.Favorite
                                     } else {
-                                        Icons.Outlined.FavoriteBorder
+                                        HackathonIcons.FavoriteBorder
                                     },
                                 contentDescription = "좋아요",
                                 tint = Primary,
