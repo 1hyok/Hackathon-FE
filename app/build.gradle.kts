@@ -51,12 +51,15 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.compose.foundation.layout)
 
     // Navigation
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.navigation.compose)
+
+    // 이미지 로딩 — Coil 네트워크 페처(OkHttp)는 런타임 ServiceLoader 로 자동 등록된다.
+    // UI 레이어(designsystem/feature)가 아닌 app 진입점에서만 클래스패스에 둬 의존 전파를 차단.
+    implementation(libs.coil.network.okhttp)
 
     // Kotlin Metadata (메타데이터 버전 호환성 해결)
     implementation(libs.kotlin.metadata.jvm)
