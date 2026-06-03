@@ -17,7 +17,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -42,13 +41,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.core.designsystem.component.TopAppLogoBar
+import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.designsystem.theme.Primary
-import com.example.hackathon.feature.auth.RegistrationViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

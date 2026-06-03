@@ -55,7 +55,7 @@ dependencies {
 
     // Navigation
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.lifecycle.viewmodel.compose)
 
     // 이미지 로딩 — Coil 네트워크 페처(OkHttp)는 런타임 ServiceLoader 로 자동 등록된다.
     // UI 레이어(designsystem/feature)가 아닌 app 진입점에서만 클래스패스에 둬 의존 전파를 차단.
