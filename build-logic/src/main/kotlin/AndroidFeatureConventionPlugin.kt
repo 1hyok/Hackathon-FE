@@ -27,7 +27,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("androidx-lifecycle-runtime-ktx").get())
                 add("implementation", libs.findLibrary("androidx-activity-compose").get())
                 add("implementation", libs.findLibrary("androidx-navigation-compose").get())
-                add("implementation", libs.findLibrary("hilt-navigation-compose").get())
+                add("implementation", libs.findLibrary("hilt-lifecycle-viewmodel-compose").get())
                 add("implementation", libs.findLibrary("coil-compose").get())
 
                 add("testImplementation", libs.findLibrary("junit").get())
