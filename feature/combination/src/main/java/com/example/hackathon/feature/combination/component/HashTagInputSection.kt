@@ -6,8 +6,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -95,7 +94,7 @@ fun HashTagInputSection(
                         }
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Add,
+                            imageVector = HackathonIcons.Add,
                             contentDescription = "태그 추가"
                         )
                     }

@@ -9,15 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -29,11 +21,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.presentation.navigation.AppNavGraph
 import com.example.hackathon.presentation.navigation.BottomNavBar
-import com.example.hackathon.presentation.navigation.BottomNavItem
 import com.example.hackathon.presentation.navigation.NavTab
 import com.example.hackathon.presentation.route.Route
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
