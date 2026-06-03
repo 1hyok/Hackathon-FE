@@ -1,14 +1,16 @@
 name: Auto-merge
 
-# main 브랜치 보호의 필수 체크(Ktlint·Android Lint·Unit Test)가 전부 green 이면 PR 을 자동 머지한다.
-# 사람/외부 개입 0 — PR 이 열리거나 ready 상태가 되면 GitHub 네이티브 auto-merge 를 켜고,
-# 실제 머지는 필수 체크가 모두 통과하는 순간 GitHub 가 수행한다(머지 후 브랜치 자동 삭제는 repo 설정).
-# 자동 머지를 원치 않는 PR 은 Draft 로 열면 된다 — ready_for_review 가 되기 전까지 제외된다.
+# 브랜치 보호 없이 동작하는 자동 머지 (솔로 프로젝트용).
+# CI 워크플로가 끝날 때마다 트리거되어, 그 PR 의 모든 체크가 green 이면 머지한다.
+#  - 보호 규칙이 없으므로 'CI 통과' 게이트는 이 워크플로의 `gh pr checks` 가 담당한다.
+#    → main 직접 push 는 자유(보호 없음), PR 은 자동 머지.
+#  - Draft PR 은 제외 — 자동 머지를 멈추려면 PR 을 Draft 로 두면 된다.
+#  - 모든 체크가 green 이 되는 '마지막' CI 완료 시점에 머지가 일어난다(그 전엔 pending 이라 skip).
 
 on:
-  pull_request:
-    branches: [main]
-    types: [opened, reopened, ready_for_review, synchronize]
+  workflow_run:
+    workflows: ["Static Analysis (Reviewdog)", "Unit Test"]
+    types: [completed]
 
 permissions:
   contents: write
@@ -16,14 +18,26 @@ permissions:
 
 jobs:
   auto-merge:
-    name: Enable auto-merge
-    if: github.event.pull_request.draft == false
+    # PR 로 촉발된 CI 에 대해서만 (main 직접 push 로 돈 CI 는 제외)
+    if: github.event.workflow_run.event == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - name: Enable native auto-merge for this PR
+      - name: Merge PR when all checks pass
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: |
-          gh pr merge "${{ github.event.pull_request.number }}" \
-            --repo "${{ github.repository }}" \
-            --auto --merge
+          num=$(gh pr list --repo "$REPO" --head "$HEAD_BRANCH" --base main --state open \
+                  --json number,isDraft --jq '.[0] | select(.isDraft == false) | .number')
+          if [ -z "$num" ]; then
+            echo "대상 PR 없음(또는 Draft) — 종료"; exit 0
+          fi
+          # gh pr checks 는 전부 통과(0) / 진행중(8) / 실패(1) 로 종료코드를 준다.
+          # 모두 green 일 때만 머지.
+          if gh pr checks "$num" --repo "$REPO"; then
+            echo "PR #$num 모든 체크 통과 → 머지"
+            gh pr merge "$num" --repo "$REPO" --merge --delete-branch || echo "이미 머지됨/머지 실패"
+          else
+            echo "PR #$num 체크 아직 미통과 — 다음 CI 완료 시 재시도"
+          fi
