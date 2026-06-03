@@ -40,7 +40,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackathon.core.designsystem.R
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
-import com.example.hackathon.feature.home.SearchViewModel
 import com.example.hackathon.feature.home.component.CombinationList
 
 @Composable
@@ -100,7 +99,7 @@ fun SearchScreen(
                             Icon(
                                 painter = painterResource(R.drawable.ic_search),
                                 contentDescription = "search",
-                                tint = Color(0xFF8B91A1),
+                                tint = HackathonTheme.colors.iconUnselected,
                                 modifier =
                                     Modifier.clickable {
                                         viewModel.onSearch(uiState.query)
