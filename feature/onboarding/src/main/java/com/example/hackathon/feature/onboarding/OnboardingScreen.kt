@@ -21,10 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.hackathon.core.designsystem.R
+import com.example.hackathon.core.designsystem.R as DesignSystemR
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import kotlinx.coroutines.delay
 
@@ -55,8 +56,8 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onNavigateToLogin: () -> Uni
             ) {
                 // 로고 영역 (앱 아이콘)
                 Image(
-                    painter = painterResource(R.drawable.ic_logo_rec),
-                    contentDescription = "쩝쩝박사 로고",
+                    painter = painterResource(DesignSystemR.drawable.ic_logo_rec),
+                    contentDescription = stringResource(R.string.onboarding_logo_description),
                     modifier = Modifier.size(120.dp),
                     contentScale = ContentScale.Fit
                 )
@@ -69,13 +70,13 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onNavigateToLogin: () -> Uni
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = "어디선가 들어본 바로 그 조합",
+                        text = stringResource(R.string.onboarding_tagline_line1),
                         style = HackathonTheme.typography.Head2_bold,
                         color = Color.Black,
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "모두 쩝쩝박사에서",
+                        text = stringResource(R.string.onboarding_tagline_line2),
                         style = HackathonTheme.typography.Head2_bold,
                         color = Color.Black,
                         textAlign = TextAlign.Center

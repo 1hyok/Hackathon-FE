@@ -12,12 +12,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.component.CombinationCard
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.model.Combination
+import com.example.hackathon.feature.home.R
 
 @Composable
 fun CombinationList(
@@ -34,7 +36,7 @@ fun CombinationList(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "검색 결과가 없어요 ㅠㅠ",
+                text = stringResource(R.string.home_search_empty),
                 style = HackathonTheme.typography.Body_medium,
                 color = Gray700,
                 textAlign = TextAlign.Center

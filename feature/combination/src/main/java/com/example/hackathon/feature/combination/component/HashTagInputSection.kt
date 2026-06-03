@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,9 +14,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.component.TagChip
+import com.example.hackathon.core.designsystem.icon.HackathonIcons
+import com.example.hackathon.feature.combination.R
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -57,7 +59,7 @@ fun HashTagInputSection(
             },
             placeholder = {
                 Text(
-                    text = "띄어쓰기로 입력 (1개~5개)",
+                    text = stringResource(R.string.combination_hashtag_hint),
                     style = MaterialTheme.typography.bodyMedium,
                     color = com.example.hackathon.core.designsystem.theme.Gray700
                 )
@@ -95,7 +97,7 @@ fun HashTagInputSection(
                     ) {
                         Icon(
                             imageVector = HackathonIcons.Add,
-                            contentDescription = "태그 추가"
+                            contentDescription = stringResource(R.string.combination_hashtag_add)
                         )
                     }
                 }

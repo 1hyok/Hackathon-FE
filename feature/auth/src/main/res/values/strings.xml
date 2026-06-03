@@ -1,0 +1,34 @@
+<resources>
+    <!-- 공통 라벨/플레이스홀더/버튼 -->
+    <string name="auth_nickname">닉네임</string>
+    <string name="auth_nickname_hint">닉네임을 입력하세요</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_password_hint">비밀번호를 입력하세요</string>
+    <string name="auth_password_show">비밀번호 보기</string>
+    <string name="auth_password_hide">비밀번호 숨기기</string>
+    <string name="auth_create_account">계정생성</string>
+    <string name="auth_login">로그인</string>
+    <string name="auth_confirm">확인</string>
+
+    <!-- 태그라인 -->
+    <string name="auth_tagline_full">어디선가 들어본 바로 그 조합\n모두 쩝쩝박사에서</string>
+    <string name="auth_tagline_line1">어디선가 들어본 바로 그 조합</string>
+    <string name="auth_tagline_line2">모두 쩝쩝박사에서</string>
+
+    <!-- 로그인 화면 -->
+    <string name="auth_login_error_message">닉네임 / 비밀번호를 다시 입력해 주십시오</string>
+
+    <!-- 회원가입 화면 -->
+    <string name="auth_email">이메일</string>
+    <string name="auth_email_hint">이메일을 입력하세요</string>
+    <string name="auth_password_confirm">Password 확인</string>
+    <string name="auth_password_confirm_hint">비밀번호를 다시 입력하세요</string>
+    <string name="auth_inquiry_guide">닉네임/비밀번호를 잊어버렸다면? jjupjjup@naver.com으로 문의</string>
+    <string name="auth_success_nickname">닉네임 : %1$s</string>
+    <string name="auth_registration_completed">가입이 완료되었습니다</string>
+
+    <!-- 회원가입 성공 화면 -->
+    <string name="auth_registration_success_title">가입 완료</string>
+    <string name="auth_registration_success_description">회원가입이 완료되었습니다.\n로그인 후 이용해주세요.</string>
+    <string name="auth_go_to_login">로그인하기</string>
+</resources>

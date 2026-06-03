@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -89,13 +90,13 @@ fun RegistrationScreen(
                 modifier = Modifier.padding(horizontal = 16.dp)
             ) {
                 Text(
-                    text = "어디선가 들어본 바로 그 조합",
+                    text = stringResource(R.string.auth_tagline_line1),
                     style = HackathonTheme.typography.Body_semibold,
                     color = Gray700,
                     textAlign = TextAlign.Center
                 )
                 Text(
-                    text = "모두 쩝쩝박사에서",
+                    text = stringResource(R.string.auth_tagline_line2),
                     style = HackathonTheme.typography.Body_semibold,
                     color = Gray700,
                     textAlign = TextAlign.Center
@@ -111,7 +112,7 @@ fun RegistrationScreen(
             ) {
                 // 닉네임 입력 필드
                 Text(
-                    text = "닉네임",
+                    text = stringResource(R.string.auth_nickname),
                     style = HackathonTheme.typography.Body_medium,
                     color = Color.Black,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -121,7 +122,7 @@ fun RegistrationScreen(
                     onValueChange = viewModel::updateName,
                     placeholder = {
                         Text(
-                            text = "닉네임을 입력하세요",
+                            text = stringResource(R.string.auth_nickname_hint),
                             style = HackathonTheme.typography.Body_medium,
                             color = Gray700
                         )
@@ -154,7 +155,7 @@ fun RegistrationScreen(
 
                 // 이메일 입력 필드
                 Text(
-                    text = "이메일",
+                    text = stringResource(R.string.auth_email),
                     style = HackathonTheme.typography.Body_medium,
                     color = Color.Black,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -164,7 +165,7 @@ fun RegistrationScreen(
                     onValueChange = viewModel::updateEmail,
                     placeholder = {
                         Text(
-                            text = "이메일을 입력하세요",
+                            text = stringResource(R.string.auth_email_hint),
                             style = HackathonTheme.typography.Body_medium,
                             color = Gray700
                         )
@@ -187,7 +188,7 @@ fun RegistrationScreen(
 
                 // Password 입력 필드
                 Text(
-                    text = "Password",
+                    text = stringResource(R.string.auth_password),
                     style = HackathonTheme.typography.Body_medium,
                     color = Color.Black,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -197,7 +198,7 @@ fun RegistrationScreen(
                     onValueChange = viewModel::updatePassword,
                     placeholder = {
                         Text(
-                            text = "비밀번호를 입력하세요",
+                            text = stringResource(R.string.auth_password_hint),
                             style = HackathonTheme.typography.Body_medium,
                             color = Gray700
                         )
@@ -233,9 +234,9 @@ fun RegistrationScreen(
                                     },
                                 contentDescription =
                                     if (uiState.isPasswordVisible) {
-                                        "비밀번호 숨기기"
+                                        stringResource(R.string.auth_password_hide)
                                     } else {
-                                        "비밀번호 보기"
+                                        stringResource(R.string.auth_password_show)
                                     },
                                 tint = Gray700
                             )
@@ -256,7 +257,7 @@ fun RegistrationScreen(
 
                 // 비밀번호 확인 입력 필드
                 Text(
-                    text = "Password 확인",
+                    text = stringResource(R.string.auth_password_confirm),
                     style = HackathonTheme.typography.Body_medium,
                     color = Color.Black,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -266,7 +267,7 @@ fun RegistrationScreen(
                     onValueChange = viewModel::updatePasswordConfirm,
                     placeholder = {
                         Text(
-                            text = "비밀번호를 다시 입력하세요",
+                            text = stringResource(R.string.auth_password_confirm_hint),
                             style = HackathonTheme.typography.Body_medium,
                             color = Gray700
                         )
@@ -291,9 +292,9 @@ fun RegistrationScreen(
                                     },
                                 contentDescription =
                                     if (uiState.isPasswordConfirmVisible) {
-                                        "비밀번호 숨기기"
+                                        stringResource(R.string.auth_password_hide)
                                     } else {
-                                        "비밀번호 보기"
+                                        stringResource(R.string.auth_password_show)
                                     },
                                 tint = Gray700
                             )
@@ -356,7 +357,7 @@ fun RegistrationScreen(
                             )
                         } else {
                             Text(
-                                text = "계정생성",
+                                text = stringResource(R.string.auth_create_account),
                                 style = HackathonTheme.typography.Sub1_semibold
                             )
                         }
@@ -377,7 +378,7 @@ fun RegistrationScreen(
                             )
                     ) {
                         Text(
-                            text = "로그인",
+                            text = stringResource(R.string.auth_login),
                             style = HackathonTheme.typography.Sub1_semibold
                         )
                     }
@@ -387,7 +388,7 @@ fun RegistrationScreen(
 
                 // 하단 문의 안내
                 Text(
-                    text = "닉네임/비밀번호를 잊어버렸다면? jjupjjup@naver.com으로 문의",
+                    text = stringResource(R.string.auth_inquiry_guide),
                     style = HackathonTheme.typography.Caption_medium,
                     color = Gray700,
                     textAlign = TextAlign.Center
@@ -411,12 +412,12 @@ fun RegistrationScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "닉네임 : ${uiState.name}",
+                        text = stringResource(R.string.auth_success_nickname, uiState.name),
                         style = HackathonTheme.typography.Body_medium,
                         color = Color.Black
                     )
                     Text(
-                        text = "가입이 완료되었습니다",
+                        text = stringResource(R.string.auth_registration_completed),
                         style = HackathonTheme.typography.Body_medium,
                         color = Color.Black
                     )
@@ -437,7 +438,7 @@ fun RegistrationScreen(
                         )
                 ) {
                     Text(
-                        text = "확인",
+                        text = stringResource(R.string.auth_confirm),
                         style = HackathonTheme.typography.Sub1_semibold
                     )
                 }

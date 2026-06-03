@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -60,7 +61,7 @@ fun LazyListScope.HomeEmptyState() {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "아직 등록된 조합이 없어요 ㅠㅠ",
+                text = stringResource(R.string.home_empty),
                 style = HackathonTheme.typography.Body_medium,
                 color = Gray700,
                 textAlign = TextAlign.Center

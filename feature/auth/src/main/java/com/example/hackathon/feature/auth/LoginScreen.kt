@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -49,7 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.hackathon.core.designsystem.R
+import com.example.hackathon.core.designsystem.R as DesignSystemR
 import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
@@ -94,7 +95,7 @@ fun LoginScreen(
             // 로고 영역 (최상단)
             Spacer(modifier.size(44.dp))
             Image(
-                painter = painterResource(R.drawable.ic_logo),
+                painter = painterResource(DesignSystemR.drawable.ic_logo),
                 contentDescription = "logo",
                 modifier =
                     Modifier
@@ -115,7 +116,7 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "어디선가 들어본 바로 그 조합\n모두 쩝쩝박사에서",
+                    text = stringResource(R.string.auth_tagline_full),
                     modifier = Modifier.width(237.71429.dp),
                     fontSize = 14.sp,
                     lineHeight = 16.sp,
@@ -140,7 +141,7 @@ fun LoginScreen(
                 ) {
                     // 닉네임 입력 필드
                     Text(
-                        text = "닉네임",
+                        text = stringResource(R.string.auth_nickname),
                         style = HackathonTheme.typography.Body_semibold,
                         color = Color.Black,
                         modifier = Modifier.padding(bottom = 8.dp)
@@ -150,7 +151,7 @@ fun LoginScreen(
                         onValueChange = viewModel::updateId,
                         placeholder = {
                             Text(
-                                text = "닉네임을 입력하세요",
+                                text = stringResource(R.string.auth_nickname_hint),
                                 style = HackathonTheme.typography.Body_medium,
                                 color = Gray700
                             )
@@ -183,7 +184,7 @@ fun LoginScreen(
 
                     // Password 입력 필드
                     Text(
-                        text = "Password",
+                        text = stringResource(R.string.auth_password),
                         style = HackathonTheme.typography.Body_semibold,
                         color = Color.Black,
                         modifier = Modifier.padding(bottom = 8.dp)
@@ -193,7 +194,7 @@ fun LoginScreen(
                         onValueChange = viewModel::updatePassword,
                         placeholder = {
                             Text(
-                                text = "비밀번호를 입력하세요",
+                                text = stringResource(R.string.auth_password_hint),
                                 style = HackathonTheme.typography.Body_medium,
                                 color = Gray700
                             )
@@ -229,9 +230,9 @@ fun LoginScreen(
                                         },
                                     contentDescription =
                                         if (uiState.isPasswordVisible) {
-                                            "비밀번호 숨기기"
+                                            stringResource(R.string.auth_password_hide)
                                         } else {
-                                            "비밀번호 보기"
+                                            stringResource(R.string.auth_password_show)
                                         },
                                     tint = Gray700
                                 )
@@ -293,7 +294,7 @@ fun LoginScreen(
                             )
                         } else {
                             Text(
-                                text = "계정생성",
+                                text = stringResource(R.string.auth_create_account),
                                 style = HackathonTheme.typography.Sub1_semibold
                             )
                         }
@@ -324,7 +325,7 @@ fun LoginScreen(
                             )
                         } else {
                             Text(
-                                text = "로그인",
+                                text = stringResource(R.string.auth_login),
                                 style = HackathonTheme.typography.Sub1_semibold
                             )
                         }
@@ -342,7 +343,7 @@ fun LoginScreen(
             onDismissRequest = { viewModel.clearError() },
             title = {
                 Text(
-                    text = "닉네임 / 비밀번호를 다시 입력해 주십시오",
+                    text = stringResource(R.string.auth_login_error_message),
                     style = HackathonTheme.typography.Body_medium,
                     color = Color.Black
                 )
@@ -359,7 +360,7 @@ fun LoginScreen(
                         )
                 ) {
                     Text(
-                        text = "확인",
+                        text = stringResource(R.string.auth_confirm),
                         style = HackathonTheme.typography.Sub1_semibold
                     )
                 }
