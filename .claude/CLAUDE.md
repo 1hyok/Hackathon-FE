@@ -1,372 +1,102 @@
-# File Sync Rule (CRITICAL)
-- **This file (`.claude/CLAUDE.md`) and `.cursorrules` MUST stay in sync.**
-- When modifying either file, apply the same changes to both files.
-- **Flexible Sync**: Cursor와 Claude Code의 특성 차이로 인한 부분은 각 도구에 맞게 융통성 있게 적용:
-  - Cursor 전용: Custom Commands (`/doc`, `/test` 등), Rule Management 섹션
-  - Claude Code 전용: 이모지 미사용, 간결한 톤 유지
-  - 공통: 아키텍처, 코딩 표준, 테스트, Git 브랜치 전략 등 핵심 규칙
-- If you notice discrepancies in **core rules**, immediately synchronize them.
+# Android Project Conventions
 
-# Role
-You are a Senior Android Developer at a Hackathon.
-Prioritize build speed and crash prevention.
-If a solution is complex, suggest the simplest working alternative first.
-When stuck, provide a working workaround before investigating the perfect solution.
+## Project Context
+- 모듈 구조: **멀티모듈** — `:app` + `:core:*`(model·designsystem·datastore·network·domain·data) + `:feature:*`(auth·home·combination·onboarding·profile) + `build-logic` 컨벤션 플러그인. Clean Architecture + MVVM.
+- 패키지: `com.example.hackathon`.
+- minSdk / targetSdk / compileSdk: 모두 **36** (JVM 17). 정의 위치: `app/build.gradle.kts`.
+- 빌드 툴체인: AGP 9.2.1 + Kotlin 2.3.21 + KSP 2.3.9, Compose BOM 2026.05.01. Version Catalog(`gradle/libs.versions.toml`) 강제.
+- 정적 분석: **ktlint** — CI `.github/workflows/lint.yml` 의 ScaCap/action-ktlint 1.8.0, `.editorconfig` 의 `ktlint_code_style=android_studio` (call-site trailing comma 미사용). + Android Lint(`./gradlew lintDebug`). (`config/detekt*` 은 미사용 잔재 — `detekt` Gradle 태스크 없음.)
+- 핵심 도메인: **음식 조합·레시피 공유 앱** — 사용자가 카테고리(하이디라오·서브웨이·편의점)별로 재료·사진·해시태그를 담은 '조합'을 등록·탐색·검색하고 좋아요·랭킹으로 큐레이션. 인증·온보딩·프로필 포함. 서버 연동 전까지 `BuildConfig.USE_MOCK_API` 로 Mock/실 API 토글, `BuildConfig.BASE_URL` 로 엔드포인트 주입.
 
-# Project Context & Tech Stack
-- Project Type: Android Native App
-- Language: Kotlin (Latest Stable)
-- UI Framework: Jetpack Compose (Material 3)
-- Build System: Gradle (Kotlin DSL / .kts)
-- Dependency Management: Version Catalog (libs.versions.toml)
+## 작업 시작/마무리 규약 (위반 금지)
+- **이슈 우선 + 브랜치 링크**: 새 브랜치는 메타데이터 완비된 GitHub 이슈에 정식 링크된 상태여야 한다. 절차 자동화는 `android-issue-branch` skill 에 위임 — 사용자가 "브랜치 파"라고만 해도 skill 진입 후 이슈부터 작성. `git checkout -b` 직행은 `git-branch-guard.sh` 가 차단.
+- **자율 커밋 금지**: 변경사항을 임의로 `git commit` 하지 말 것. 빌드/lint/test 검증 결과만 보고하고 멈춤. 사용자가 Android Studio 커밋 탭에서 직접 검토·커밋한다.
+- **git state 변경은 명시 지시 시에만**: `git push --force`, `git reset --hard`, `git rebase`, `git clean -f`, `git checkout -- <file>`, `git restore <file>` 등 손실 위험 동작은 사용자의 명시 지시가 있을 때만 수행. (일반 `git push` 는 `/create-pr` 같은 명시 워크플로에서 허용.)
+- 위 규약은 hook으로 강제(`.claude/settings.local.json` + `.claude/hooks/`). 우회·예외 처리 시도 금지.
 
-# User Preferences
-- Language: Korean (모든 설명과 주석은 한국어로 작성)
-- Tone: Concise and Technical (간결하고 전문적으로)
+## 작업 원칙
+- 기억으로 답하지 말 것. 라이브러리 좌표·버전·API 시그니처는 매번 검증.
+- 검증 우선순위:
+    1. developer.android.com (Architecture Guide, Library 공식 문서)
+    2. AndroidX 릴리즈 노트 (`developer.android.com/jetpack/androidx/releases/*`)
+    3. mvnrepository.com / androidx.tech (최신 Stable Maven 좌표)
+    4. 필요 시 android.googlesource.com / AndroidX GitHub (시그니처·소스)
+- 핵심 문서는 `web_fetch`로 원문 확인. 답변·커밋 메시지에 출처 URL 명시.
+- 공식 문서와 다른 판단을 내릴 땐 근거와 트레이드오프를 명시한 뒤 진행.
 
-# Architecture Guidelines
-- Pattern: MVVM (Model-View-ViewModel)
-  - **Model**: Entity, Repository (Domain + Data layers)
-  - **View**: Compose Screen (Presentation layer)
-  - **ViewModel**: State management and business logic
-  - **Rule**: Logic goes to ViewModel, not UI. UI only observes StateFlow.
-- Architecture: Clean Architecture (Presentation -> Domain -> Data)
-  - **data**: Data sources (API, Local DB)
-  - **domain**: Business logic (Entities, Repository interfaces)
-  - **presentation**: UI layer (Screens, ViewModels)
-- State Management: Unidirectional Data Flow (UDF) using StateFlow/SharedFlow
-- DI: Hilt (Dagger)
-- Async: Coroutines & Flow
-  - Use `viewModelScope` in ViewModels.
-  - Use `suspend` functions for I/O operations.
+## Architecture (Google 'Guide to app architecture'만)
+- Layer: **UI → Domain(선택) → Data**
+- SSOT: 각 데이터 타입은 단일 소스에서만 흐름.
+- UDF: 상태는 위→아래, 이벤트는 아래→위.
+- Data Layer 진입점은 **Repository**로 한정. ViewModel/UseCase는 DataSource(네트워크/DB/센서)에 직접 의존 금지.
+- **금지 용어/패턴**: Hexagonal Architecture, Ports & Adapters, Port, Interactor 등 안드로이드 비표준 Clean Architecture 용어.
 
-# Key Libraries & Versions
-- Image Loading: Coil 3.x (Note: Use `coil3` package, NOT `coil` package)
-  - Import: `import coil3.compose.AsyncImage`
-  - Do NOT use: `import coil.compose.AsyncImage` (Coil 2, deprecated)
-- Networking: Retrofit2 + OkHttp + Kotlinx Serialization
-- Serialization: Kotlin Serialization (not Gson)
+### ViewModel ↔ Repository ↔ UseCase
+- ViewModel은 Repository를 직접 주입받아 호출.
+- Repository를 1:1로 감싸는 프록시 UseCase는 **만들지 말 것**.
+- UseCase는 다음 중 하나일 때만 도입:
+    1. 여러 Repository를 조합하는 비즈니스 로직
+    2. 여러 ViewModel에서 재사용되는 로직
+    3. ViewModel 복잡도가 임계치를 넘었을 때
+- UseCase 네이밍: `동사(현재형) + 명사 + UseCase`
+  예: `GetLatestNewsWithAuthorsUseCase`, `LogOutUserUseCase`, `FormatDateUseCase`
+- **Stateless** — UseCase 클래스 멤버 필드로 mutable 데이터(`var`, `MutableStateFlow`, mutable collection 등) 보유 금지. mutable 상태는 UI / Data 레이어가 보유. 공식 가이드: *"각 사용 사례에서는 기능 하나만 담당해야 하고, 변경 가능한 데이터를 포함해서는 안 됩니다"*.
+- **Main-safe** — UseCase 는 main thread 에서 호출돼도 안전해야 함. 차단 작업(파일 I/O, 무거운 계산 등)은 `withContext(defaultDispatcher) { ... }` 로 background 이동. Repository 호출이 이미 suspend 면 그대로 위임 가능.
+- **UseCase → UseCase 호출 허용** — 재사용 단위라 다른 UseCase 를 종속 항목으로 받아 호출 가능 (예: `GetLatestNewsWithAuthorsUseCase(... formatDateUseCase)`). 다층 도메인 정상.
+- **데이터 레이어 캐싱 우선** — 복잡한 계산이라도 도메인으로 무조건 빼지 말 것. *재사용·캐싱이 더 자연스러우면 Repository / DataSource 에 두는 게 우선*. 공식 가이드: *"복잡한 계산은 재사용이나 캐싱을 유도하기 위해 데이터 레이어에서 이루어집니다"*.
+- 출처: https://developer.android.com/topic/architecture/domain-layer?hl=ko
 
-## Do NOT Use (금지 라이브러리)
-- **Gson**: Use Kotlin Serialization instead
-- **Kotlin Synthetics**: Deprecated, use View Binding or Compose
-- **AsyncTask**: Deprecated, use Coroutines
-- **RxJava**: Use Coroutines & Flow instead (simpler for hackathon)
-- **Coil 2.x (`coil` package)**: Use Coil 3.x (`coil3` package)
-- **LiveData in new code**: Use StateFlow/SharedFlow (UDF pattern)
+## UI Layer
+- **한 화면당 단일 UI State 객체** (data class 또는 sealed class). loading/error/data 독립 스트림 분리 금지.
+- 상태 노출은 `StateFlow`. `MutableStateFlow`는 반드시 `private` 캡슐화.
+- 상태 수집은 `collectAsStateWithLifecycle()`. `collectAsState()` 신규 사용 금지.
+- 신규 화면은 `@Composable` destination. Fragment 신규 생성은 원칙적 지양(불가피한 경우만 사유 명시 후 허용).
+- 일회성 이벤트도 UI state 에 흡수 (Google 공식 권고 — "ViewModel events should always result in a UI state update"). `UiState` 의 nullable 필드(`userMessage`·`navigateTo` 등) + 화면이 소비 후 VM `onConsumed()` 콜백으로 null 처리. `Channel`/`SharedFlow` 신규 도입 금지.
 
-# Coding Standards
+## 필수 라이브러리
+- DI: **Hilt** (`@HiltViewModel`). 수동 `ViewModelProvider.Factory`·Service Locator 금지.
+- Navigation: **Compose Navigation** (Navigation 3 우선 검토), type-safe routes.
+- 비동기: **Coroutines + Flow**.
+- 직렬화: **kotlinx-serialization** (Gson 금지).
+- 네트워킹: **Retrofit + KotlinxSerializationConverterFactory + OkHttp**.
+- 이미지 로딩: **Coil 3.x** — `coil3` 패키지 사용 (`import coil3.compose.AsyncImage`). Coil 2.x(`coil` 패키지) 금지.
+- 로컬 저장소: **DataStore (Preferences)**. 관계형 DB 필요 시 Room.
+- 어노테이션 처리: **KSP only**.
 
-## Compose UI
-1. Always use `@Composable` annotation properly.
-2. Use `Modifier` as the first optional parameter in Composable functions.
-3. Separate UI state from UI implementation (State Hoisting).
-4. For Experimental Material3 APIs (TopAppBar, Scaffold topBar, etc.), always add:
-   ```kotlin
-   @OptIn(ExperimentalMaterial3Api::class)
-   @Composable
-   fun MyScreen(...) { ... }
-   ```
-5. **File Structure Rule (CRITICAL)**:
-   - **One Composable function per file**: Each Composable file MUST contain only ONE `@Composable` function (plus its preview).
-   - **Preview is mandatory**: Every Composable file MUST have exactly ONE `@Preview` function.
-   - **File splitting**: If a file exceeds ~300 lines or contains multiple logical sections, split it into separate component files.
-   - **Component extraction**: Extract reusable UI sections into separate component files in the `component/` directory.
-   - **File naming**: Component files should be named descriptively (e.g., `ImageUploadSection.kt`, `HashTagInputSection.kt`).
-   - **Example structure**:
-     ```kotlin
-     // MyScreen.kt - ONLY contains MyScreen function and its preview
-     @Composable
-     fun MyScreen(...) { ... }
+## 신규 도입 금지(구버전·비표준 차단)
+- LiveData → `StateFlow` / `SharedFlow`
+- kapt → KSP
+- findViewById / XML UI → Jetpack Compose
+- AsyncTask, RxJava → Coroutines + Flow
+- Deprecated Fragment 인자 전달 → `by navArgs()` 또는 `SavedStateHandle`
+- GsonConverterFactory → KotlinxSerializationConverterFactory
+- Coil 2.x(`coil` 패키지) → Coil 3.x(`coil3` 패키지)
+- `collectAsState()` → `collectAsStateWithLifecycle()`
+- Manual `ViewModelProvider.Factory` → `@HiltViewModel`
+- Bare annotation on constructor `val` (`@StringRes val x: Int`) → use-site target 명시 (`@param:StringRes val x: Int`). KT-73255 deprecation warning 회피, 본 repo 컨벤션은 param-only.
 
-     @Preview(showBackground = true)
-     @Composable
-     private fun MyScreenPreview() { ... }
-     ```
-6. **KtLint Compliance (CRITICAL - Prevents Build Failures)**:
-   - **Max Line Length**: Keep lines under 120 characters. If a line exceeds this, break it into multiple lines.
-   - **Import Order**: Group imports: 1) Kotlin stdlib, 2) Android/AndroidX, 3) Third-party, 4) Project. Separate groups with blank lines.
-   - **Indentation**: Use 4 spaces (not tabs).
-   - **Trailing Commas**: Use trailing commas in multi-line parameter lists, function calls, and data classes.
-   - **Spacing Rules**:
-     - No space before `:` in type declarations: `val name: String` (not `val name : String`)
-     - Space after `:` in when expressions: `when (x) { ... }`
-     - Space around operators: `a + b` (not `a+b`)
-   - **Function Formatting**: If parameters exceed line length, put each on a new line with proper indentation and trailing commas.
-   - **String Formatting**: Prefer string templates: `"Hello $name"` (not `"Hello " + name`)
-   - **Before Any Code Change**: Always ensure code follows KtLint rules. If unsure, break long lines and use proper spacing.
-7. **Performance Optimization**:
-   - Use `remember` and `derivedStateOf` to avoid unnecessary recompositions.
-   - Always use standard modifiers ordering: `Modifier.size().padding().background().clickable()`.
-   - Avoid hardcoding values; use `MaterialTheme.typography` and `MaterialTheme.colorScheme`.
-   - Prefer `LazyColumn` over `Column` for lists to ensure recycling.
-8. **State Collection**:
-   - Use `collectAsStateWithLifecycle()` instead of `collectAsState()` when observing StateFlow in Compose screens.
-   - Import: `import androidx.lifecycle.compose.collectAsStateWithLifecycle`
+## 의존성 작성 규칙
+- 모든 의존성은 `libs.versions.toml`에 등록 후 모듈 `build.gradle.kts`에서 alias로 참조.
+- 라이브러리 추가/업데이트 시 릴리즈 노트 URL을 PR 설명에 첨부.
+- BOM이 존재하는 라이브러리(Compose·Firebase 등)는 BOM 우선 사용.
 
-## Kotlin Conventions
-1. Prefer `val` over `var`.
-2. Use `when` expressions for exhaustiveness.
-3. Avoid `!!` (double-bang) operator; use safe calls (`?.`) or `let`.
-4. **KtLint Pre-Compliance (WRITE CODE CORRECTLY FROM THE START)**:
-   - **NEVER write code that violates KtLint rules. Check BEFORE writing, not after.**
-   - **Comments in parameter lists**: ALWAYS put comments on a SEPARATE LINE above the parameter, never inline.
-     ```kotlin
-     // Wrong - causes build failure
-     fun example(
-         param: String, // this is a comment
-     )
+## 출력 형식
+- Kotlin only. 불필요한 주석·서론·맺음말 배제.
+- 코드 외 설명은 핵심 의도와 트레이드오프만 간결히.
+- 라이브러리 버전 언급 시 Maven 좌표 + 출처 URL 동봉.
+- 정당한 예외(레거시 통합 등)는 완화 사유를 먼저 설명한 뒤 진행.
 
-     // Correct
-     fun example(
-         // this is a comment
-         param: String,
-     )
-     ```
-5. **KtLint Compliance (CRITICAL - Prevents Build Failures)**:
-   - **IMPORTANT**: KtLint violations cause build failures. Always follow these rules when writing code.
-   - **Max Line Length**: Keep lines under 120 characters. If a line exceeds this, break it into multiple lines:
-     ```kotlin
-     // Wrong (too long)
-     val result = repository.getData().fold(onSuccess = { data -> updateState(data) }, onFailure = { error -> showError(error) })
-
-     // Correct (broken into multiple lines)
-     val result = repository.getData().fold(
-         onSuccess = { data -> updateState(data) },
-         onFailure = { error -> showError(error) },
-     )
-     ```
-   - **Import Order**: Group imports: 1) Kotlin stdlib, 2) Android/AndroidX, 3) Third-party, 4) Project. Separate groups with blank lines.
-   - **Indentation**: Use 4 spaces (not tabs).
-   - **Trailing Commas**: Always use trailing commas in multi-line parameter lists, function calls, and data classes.
-   - **Spacing Rules**:
-     - No space before `:` in type declarations: `val name: String` (not `val name : String`)
-     - Space after `:` in when expressions: `when (x) { ... }`
-     - Space around operators: `a + b` (not `a+b`)
-   - **Function Formatting**: If parameters exceed line length, put each on a new line with proper indentation and trailing commas.
-   - **String Formatting**: Prefer string templates: `"Hello $name"` (not `"Hello " + name`)
-   - **Code Writing**: When writing code, proactively check line length and break long lines before they cause build failures.
-6. **Smart Cast for Delegated Properties**:
-   - Do NOT rely on smart casts for delegated properties (e.g., `by collectAsState()`, `by viewModels()`).
-   - Always assign to a local variable (snapshot) before checking nullability:
-   ```kotlin
-   // Wrong
-   if (uiState.error != null) {
-       Text(text = uiState.error) // Smart cast impossible
-   }
-
-   // Correct
-   val errorMessage = uiState.error ?: "오류가 발생했습니다"
-   if (errorMessage != null) {
-       Text(text = errorMessage)
-   }
-   // OR
-   uiState.error?.let { error ->
-       Text(text = error)
-   }
-   ```
-7. **Interface Override Rule (CRITICAL - Prevents Compilation Errors)**:
-   - **NEVER** specify default parameter values in override functions.
-   - Default values should ONLY be in the interface/abstract class, NOT in the implementation.
-   ```kotlin
-   // Wrong - causes compilation error
-   interface MyRepository {
-       suspend fun getData(page: Int = 1): Result<List<Data>>
-   }
-   class MyRepositoryImpl : MyRepository {
-       override suspend fun getData(page: Int = 1): Result<List<Data>> { // ERROR!
-           // ...
-       }
-   }
-
-   // Correct - default value only in interface
-   interface MyRepository {
-       suspend fun getData(page: Int = 1): Result<List<Data>>
-   }
-   class MyRepositoryImpl : MyRepository {
-       override suspend fun getData(page: Int): Result<List<Data>> { // No default value
-           // ...
-       }
-   }
-   ```
-   - **Always check**: When overriding interface functions, remove ALL default parameter values from the override function signature.
-8. Follow [Kotlin Official Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html).
-9. Use Android Studio auto-formatting: `Ctrl + Alt + L` (Windows) before committing.
-
-## Naming Conventions
-- **File/Class names**: PascalCase (e.g., `HomeScreen.kt`, `CombinationCard.kt`, `HomeViewModel`)
-- **Variable names**: camelCase (e.g., `selectedCategory`, `isLoading`)
-- **Function names**: camelCase (e.g., `loadCombinations()`, `updateSearchQuery()`)
-- **Constants**: UPPER_SNAKE_CASE (e.g., `BASE_URL`, `MAX_RETRY_COUNT`)
-
-## Dependency Management
-1. Do NOT hardcode versions in `build.gradle.kts`.
-2. Add new libraries to `gradle/libs.versions.toml` first:
-   ```toml
-   [versions]
-   myLibrary = "1.0.0"
-
-   [libraries]
-   my-library = { group = "com.example", name = "mylib", version.ref = "myLibrary" }
-   ```
-3. Then reference them in `build.gradle.kts` using `libs.my.library`.
-
-## File Naming & Structure
-- Screen files: `*Screen.kt` (e.g., `HomeScreen.kt`, `DetailScreen.kt`)
-- ViewModel files: `*ViewModel.kt` (e.g., `HomeViewModel.kt`)
-- Component files: `*Card.kt`, `*Chip.kt`, etc.
-- Use descriptive names, avoid abbreviations like "Diary" for "Detail".
-
-## Package Structure (Clean Architecture)
-```
-com.example.hackathon/
-├── data/                    # 데이터 레이어
-│   ├── dto/                # Request/Response 모델
-│   ├── mapper/              # Entity <-> DTO 변환
-│   ├── repositoryimpl/     # Repository 구현
-│   └── service/            # API 인터페이스
-├── domain/                  # 도메인 레이어
-│   ├── entity/             # 비즈니스 엔티티
-│   └── repository/          # Repository 인터페이스
-├── presentation/            # 프레젠테이션 레이어
-│   ├── navigation/         # 네비게이션
-│   ├── route/              # 라우트 정의
-│   ├── screen/             # 화면 컴포저블
-│   └── viewmodel/          # ViewModel
-├── core/                    # 공통
-│   └── component/          # 공통 컴포넌트
-├── di/                      # 의존성 주입
-└── ui/theme/               # 테마 설정
+## 빌드 / 테스트 명령
+```bash
+./gradlew assembleDebug
+./gradlew testDebugUnitTest                 # 또는 ./gradlew :app:testDebugUnitTest
+./gradlew lintDebug                         # Android Lint (CI lint.yml). ktlint 은 CI(ScaCap/action-ktlint)로 실행 — 로컬 Gradle 태스크 없음
+./gradlew :app:connectedDebugAndroidTest    # 인스트루멘티드 테스트
 ```
 
-## Error Handling
-- Wrap network calls in `runCatching` or `try-catch` blocks within Repository.
-- Use `Result<T>` type for repository methods:
-  ```kotlin
-  suspend fun getData(): Result<List<Item>> {
-      return runCatching {
-          // API call
-      }
-  }
-  ```
-- Expose UI states as data classes with nullable error field:
-  ```kotlin
-  data class UiState(
-      val data: List<Item> = emptyList(),
-      val isLoading: Boolean = false,
-      val error: String? = null
-  )
-  ```
-- Handle errors in ViewModel using `fold()`:
-  ```kotlin
-  repository.getData().fold(
-      onSuccess = { data -> /* update state */ },
-      onFailure = { error -> /* set error state */ }
-  )
-  ```
-
-## Documentation
-- Write all comments and KDoc in Korean (한국어).
-- Explain 'Why' we did this, not just 'What' the code does.
-- Add KDoc for complex business logic.
-- Keep function names descriptive.
-- Add `// 담당자: 이름` comment at the top of files for hackathon collaboration.
-- Add `// TODO: 내용` for future improvements.
-
-## Testing Guidelines
-- **Testing Strategy**: Focus on ViewModel unit tests (business logic validation).
-  - ViewModel tests are fast and catch most bugs.
-  - UI tests are optional for hackathon (time-consuming).
-- **Testing Libraries**:
-  - **MockK**: Mocking dependencies (`io.mockk`)
-  - **Turbine**: Flow testing (`app.cash.turbine`)
-  - **Kotlinx Coroutines Test**: Coroutine testing (`kotlinx.coroutines.test`)
-- **Test Structure**:
-  - Test files: `*Test.kt` (e.g., `CreateCombinationViewModelTest.kt`)
-  - Test utilities: `util/` package (e.g., `MainDispatcherRule.kt`)
-  - Use `@get:Rule val mainDispatcherRule = MainDispatcherRule()` for coroutine tests.
-- **Test Naming**: Use descriptive test names with backticks:
-  ```kotlin
-  @Test
-  fun `updateTitle updates the title in uiState`() = runTest { ... }
-  ```
-- **Test Execution**:
-  - **Automatic**: Tests run automatically on commit (Git Hook) and code quality checks.
-  - **Manual**: `./gradlew test` or `.\scripts\run-tests.ps1`
-  - **Specific test**: `./gradlew test --tests "*ViewModelTest"`
-- **Test Best Practices**:
-  - Mock all external dependencies (Repository, API services).
-  - Test state changes using Turbine: `viewModel.uiState.test { ... }`
-  - Use `runTest` for coroutine-based tests.
-  - Test both success and failure scenarios.
-  - Keep tests fast and isolated (no shared state).
-
-# Project-Specific Rules
-- This is a hackathon project (2 days prep + 1 day event).
-- Focus on working code over perfect code.
-- Use dummy data when server API is not ready.
-- All team members work on both design and development.
-
-## Troubleshooting: File Lock Issues (Android Studio + Cursor)
-- **Problem**: `R.jar: The process cannot access the file because it is being used by another process`
-- **Cause**: Cursor's file indexing conflicts with Android Studio's Gradle build process.
-- **Solution**:
-  1. **Primary**: `.cursorignore` file already excludes `build/` folders (prevents indexing).
-  2. **If still occurs**: Run `./gradlew --stop` (or `.\gradlew.bat --stop` on Windows) to gracefully stop Gradle daemon.
-  3. **Alternative**: Use Android Studio's `Build > Clean Project` menu.
-  4. **Windows Defender**: Consider excluding project folder from real-time scanning (Settings > Virus & threat protection > Exclusions).
-- **Never**: Force-kill JDK processes via Task Manager (risks data corruption).
-
-## Hackathon Mindset
-- **Working code first**: `// TODO: Refactor later for hackathon` 주석을 적극 허용
-- **Speed over perfection**: 완벽한 클린 코드보다 작동하는 코드 우선
-- **Quick workarounds**: 복잡한 해결책보다 간단한 우회책 먼저 제시
-
-## Figma AI 프롬프트 작성 규칙
-- **중요**: Figma AI는 프로젝트 컨텍스트를 참조할 수 없습니다.
-  - 팀원 이름, 기존 디자인 스타일, 프로젝트 히스토리 등을 모릅니다.
-  - 프롬프트에 모든 필요한 정보를 명시적으로 포함해야 합니다.
-- **프롬프트 작성 시 필수 포함 사항**:
-  - 디자인 시스템 (색상, 타이포그래피, 간격 등)을 완전히 명시
-  - 화면 구성 요소를 구체적으로 설명 (위치, 크기, 스타일)
-  - 인터랙션 및 상태 관리 방법 설명
-  - 기존 화면과의 일관성을 위한 스타일 가이드 포함
-  - 컨텍스트 없이도 이해할 수 있도록 독립적으로 작성
-- **금지 사항**:
-  - "예원이 스타일", "기존 디자인 참고" 등 컨텍스트 의존적 표현 사용 금지
-  - 팀원 이름이나 프로젝트 히스토리 언급 금지
-  - 다른 파일이나 디자인 참조 없이 독립적으로 이해 가능하도록 작성
-
-# Git Branch Strategy
-- **CRITICAL**: Always work on your own branch, NOT on main branch.
-- **Branch naming**: Use your name as branch name (e.g., `ilhyuk`, `yewon`).
-- **Role-based branches**:
-  - **ilhyuk (일혁)**:
-    - CreateCombinationScreen (조합 등록 화면)
-    - MyScreen (마이페이지)
-    - Related ViewModels (CreateCombinationViewModel, MyPageViewModel)
-  - **yewon (예원)**:
-    - HomeScreen (홈 화면)
-    - DetailScreen (조합 상세 화면)
-    - Related ViewModels (HomeViewModel, DetailViewModel)
-- **MANDATORY: Check current branch before starting work**:
-  - **ALWAYS** check current branch with `git branch --show-current` or `git status` before making any code changes.
-  - If you're working on ilhyuk's tasks (CreateCombinationScreen, MyScreen), you MUST be on `ilhyuk` branch.
-  - If you're working on yewon's tasks (HomeScreen, DetailScreen), you MUST be on `yewon` branch.
-  - If on wrong branch, switch to correct branch first: `git checkout ilhyuk` or `git checkout yewon`.
-  - **NEVER** work on `main` branch for personal tasks.
-- **Workflow**:
-  1. **FIRST**: Check current branch with `git branch --show-current`
-  2. If wrong branch, switch: `git checkout ilhyuk` (or your branch name)
-  3. Pull latest changes: `git pull origin main` (if needed)
-  4. Make changes on your branch
-  5. Commit and push to your branch: `git push origin ilhyuk`
-  6. Merge to main only after review/approval
-- **NEVER commit directly to main branch** for personal work.
-- **Common code** (shared components, theme, navigation) can go to main after team discussion.
-- **Commit Policy (CRITICAL)**:
-  - **Documentation files only**: Only commit documentation files (`.md`, `.txt`, `.cursorrules`, etc.) automatically without user approval.
-  - **Documentation merge to main**: After committing documentation files, merge them to remote main branch automatically.
-  - **Code files**: NEVER commit code changes (`.kt`, `.kts`, `.xml`, etc.) without explicit user approval.
-  - **Always ask**: Before committing any non-documentation files, always ask the user for permission first.
-  - **Exception**: Documentation updates can be committed and merged to main automatically, but code changes require explicit confirmation.
+## 코드 변경 시 체크리스트
+- [ ] 새 라이브러리 좌표·버전을 검색으로 검증했는가
+- [ ] `libs.versions.toml`에 등록했는가
+- [ ] UI 상태가 단일 객체 + `StateFlow` + `collectAsStateWithLifecycle()` 패턴인가
+- [ ] Repository를 우회해 DataSource에 직접 의존하지 않는가
+- [ ] 새로 만든 UseCase가 위 3가지 조건 중 하나를 충족하는가

@@ -55,7 +55,7 @@ private val visibilityIcon: ImageVector =
         defaultWidth = 24.dp,
         defaultHeight = 24.dp,
         viewportWidth = 24f,
-        viewportHeight = 24f,
+        viewportHeight = 24f
     ).apply {
         // 닫힌 도형 3개로 눈 모양을 그린다 (moveTo~close 가 3쌍).
         path(fill = SolidColor(Color.Black)) {
@@ -90,7 +90,7 @@ private val visibilityOffIcon: ImageVector =
         defaultWidth = 24.dp,
         defaultHeight = 24.dp,
         viewportWidth = 24f,
-        viewportHeight = 24f,
+        viewportHeight = 24f
     ).apply {
         path(fill = SolidColor(Color.Black)) {
             moveTo(12.0f, 7.0f)
