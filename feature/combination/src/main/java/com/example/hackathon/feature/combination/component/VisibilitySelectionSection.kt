@@ -13,10 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.Primary
+import com.example.hackathon.feature.combination.R
 
 @Composable
 fun VisibilitySelectionSection(
@@ -43,7 +45,7 @@ fun VisibilitySelectionSection(
                             contentColor = Color.White
                         )
                 ) {
-                    Text("전체 공개")
+                    Text(stringResource(R.string.combination_visibility_public))
                 }
             } else {
                 OutlinedButton(
@@ -55,7 +57,7 @@ fun VisibilitySelectionSection(
                         ),
                     border = BorderStroke(1.dp, Gray700)
                 ) {
-                    Text("전체 공개")
+                    Text(stringResource(R.string.combination_visibility_public))
                 }
             }
             // 나만 보기 버튼
@@ -69,7 +71,7 @@ fun VisibilitySelectionSection(
                             contentColor = Color.White
                         )
                 ) {
-                    Text("나만 보기")
+                    Text(stringResource(R.string.combination_visibility_private))
                 }
             } else {
                 OutlinedButton(
@@ -81,7 +83,7 @@ fun VisibilitySelectionSection(
                         ),
                     border = BorderStroke(1.dp, Gray700)
                 ) {
-                    Text("나만 보기")
+                    Text(stringResource(R.string.combination_visibility_private))
                 }
             }
         }

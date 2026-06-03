@@ -36,12 +36,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.example.hackathon.core.designsystem.R
+import com.example.hackathon.core.designsystem.R as DesignSystemR
 import com.example.hackathon.core.designsystem.component.CombinationCard
 import com.example.hackathon.core.designsystem.theme.Gray50
 import com.example.hackathon.core.designsystem.theme.Gray700
@@ -105,7 +106,7 @@ fun MyScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_logo),
+                        painter = painterResource(id = DesignSystemR.drawable.ic_logo),
                         contentDescription = "logo",
                         modifier = Modifier.width(90.dp)
                     )
@@ -157,7 +158,9 @@ fun MyScreen(
                             if (user?.profileImageUrl != null) {
                                 AsyncImage(
                                     model = user.profileImageUrl,
-                                    contentDescription = "프로필 이미지",
+                                    contentDescription = stringResource(
+                                        R.string.profile_image_description
+                                    ),
                                     modifier = Modifier.fillMaxSize()
                                 )
                             } else {
@@ -173,12 +176,12 @@ fun MyScreen(
 
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = user?.nickname ?: "사용자",
+                                text = user?.nickname ?: stringResource(R.string.profile_user),
                                 style = HackathonTheme.typography.Head2_bold
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "로그아웃",
+                                text = stringResource(R.string.profile_logout),
                                 style = HackathonTheme.typography.Body_medium,
                                 color = Gray700,
                                 modifier = Modifier.clickable { viewModel.logout() }
@@ -194,7 +197,7 @@ fun MyScreen(
                                 ),
                             shape = RoundedCornerShape(15.dp)
                         ) {
-                            Text("닉네임 변경")
+                            Text(stringResource(R.string.profile_change_nickname))
                         }
                     }
                 }
@@ -209,12 +212,12 @@ fun MyScreen(
                         Tab(
                             selected = uiState.selectedTab == MyPageTab.MY_RECIPES,
                             onClick = { viewModel.selectTab(MyPageTab.MY_RECIPES) },
-                            text = { Text("나의 레시피") }
+                            text = { Text(stringResource(R.string.profile_tab_my_recipes)) }
                         )
                         Tab(
                             selected = uiState.selectedTab == MyPageTab.LIKED_COMBINATIONS,
                             onClick = { viewModel.selectTab(MyPageTab.LIKED_COMBINATIONS) },
-                            text = { Text("좋아요한 조합") }
+                            text = { Text(stringResource(R.string.profile_tab_liked)) }
                         )
                     }
                 }

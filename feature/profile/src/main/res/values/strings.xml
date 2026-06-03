@@ -1,0 +1,19 @@
+<resources>
+    <!-- 프로필 수정 화면 -->
+    <string name="profile_edit_title">프로필 수정</string>
+    <string name="profile_back">뒤로가기</string>
+    <string name="profile_image_description">프로필 이미지</string>
+    <string name="profile_load_failed">프로필을 불러올 수 없습니다</string>
+    <string name="profile_retry">다시 시도</string>
+    <string name="profile_nickname">닉네임</string>
+    <string name="profile_nickname_hint">닉네임을 입력하세요</string>
+    <string name="profile_saving">저장 중...</string>
+    <string name="profile_save">저장</string>
+
+    <!-- 마이페이지 -->
+    <string name="profile_user">사용자</string>
+    <string name="profile_logout">로그아웃</string>
+    <string name="profile_change_nickname">닉네임 변경</string>
+    <string name="profile_tab_my_recipes">나의 레시피</string>
+    <string name="profile_tab_liked">좋아요한 조합</string>
+</resources>

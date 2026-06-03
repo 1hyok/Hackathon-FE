@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,21 +41,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.hackathon.core.designsystem.R
-import com.example.hackathon.core.designsystem.component.TopAppLogoBar
 import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.designsystem.theme.Primary
-import com.example.hackathon.feature.combination.CreateCombinationViewModel
 import com.example.hackathon.feature.combination.component.HashTagInputSection
 import com.example.hackathon.feature.combination.component.ImageUploadSection
 import com.example.hackathon.feature.combination.component.IngredientInputSection
 import com.example.hackathon.feature.combination.component.VisibilitySelectionSection
+import com.example.hackathon.core.designsystem.R as DesignSystemR
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -103,7 +101,7 @@ fun CreateCombinationScreen(
                     ) {
                         Icon(
                             imageVector = HackathonIcons.ArrowBack,
-                            contentDescription = "뒤로가기"
+                            contentDescription = stringResource(R.string.combination_back)
                         )
                     }
 
@@ -112,7 +110,7 @@ fun CreateCombinationScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_logo),
+                            painter = painterResource(id = DesignSystemR.drawable.ic_logo),
                             contentDescription = "logo",
                             modifier = Modifier.width(90.dp)
                         )
@@ -150,7 +148,7 @@ fun CreateCombinationScreen(
             ) {
                 // 화면 제목
                 Text(
-                    text = "꿀조합 레시피 등록",
+                    text = stringResource(R.string.combination_create_title),
                     style = HackathonTheme.typography.Head2_semibold,
                     color = Color.Black
                 )
@@ -167,7 +165,7 @@ fun CreateCombinationScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "제목",
+                        text = stringResource(R.string.combination_field_title),
                         style = HackathonTheme.typography.Sub2_semibold,
                         color = Color.Black
                     )
@@ -176,7 +174,7 @@ fun CreateCombinationScreen(
                         onValueChange = viewModel::updateTitle,
                         placeholder = {
                             Text(
-                                text = "조합 이름을 적어주세요 (최대 15자)",
+                                text = stringResource(R.string.combination_title_hint),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = Gray700
                             )
@@ -197,7 +195,7 @@ fun CreateCombinationScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "카테고리",
+                        text = stringResource(R.string.combination_field_category),
                         style = HackathonTheme.typography.Sub2_semibold,
                         color = Color.Black
                     )
@@ -232,7 +230,7 @@ fun CreateCombinationScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "공개 여부",
+                        text = stringResource(R.string.combination_field_visibility),
                         style = HackathonTheme.typography.Sub2_semibold,
                         color = Color.Black
                     )
@@ -247,7 +245,7 @@ fun CreateCombinationScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "설명",
+                        text = stringResource(R.string.combination_field_description),
                         style = HackathonTheme.typography.Sub2_semibold,
                         color = Color.Black
                     )
@@ -256,7 +254,7 @@ fun CreateCombinationScreen(
                         onValueChange = viewModel::updateDescription,
                         placeholder = {
                             Text(
-                                text = "레시피에 대한 설명을 적어주세요 (최대 300자)",
+                                text = stringResource(R.string.combination_description_hint),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = Gray700
                             )
@@ -309,7 +307,7 @@ fun CreateCombinationScreen(
                         )
                     } else {
                         Text(
-                            text = "꿀조합 등록하기",
+                            text = stringResource(R.string.combination_submit),
                             style = MaterialTheme.typography.titleMedium
                         )
                     }

@@ -30,14 +30,16 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.example.hackathon.core.designsystem.R
+import com.example.hackathon.core.designsystem.R as DesignSystemR
 import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import com.example.hackathon.core.designsystem.theme.Gray50
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
+import com.example.hackathon.feature.combination.R
 
 @Composable
 fun ImageUploadSection(
@@ -88,13 +90,13 @@ fun ImageUploadSection(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_camera),
-                        contentDescription = "이미지 등록",
+                        painter = painterResource(DesignSystemR.drawable.ic_camera),
+                        contentDescription = stringResource(R.string.combination_image_upload_add),
                         tint = Gray700,
                         modifier = Modifier.size(32.dp)
                     )
                     Text(
-                        text = "사진 등록 (최대 5장)",
+                        text = stringResource(R.string.combination_image_upload_label),
                         style = MaterialTheme.typography.bodyMedium,
                         color = Gray700
                     )
@@ -110,7 +112,7 @@ fun ImageUploadSection(
             ) {
                 AsyncImage(
                     model = imageUris.first(),
-                    contentDescription = "선택한 이미지",
+                    contentDescription = stringResource(R.string.combination_image_selected),
                     modifier =
                         Modifier
                             .fillMaxWidth()
@@ -138,7 +140,7 @@ fun ImageUploadSection(
                     ) {
                         Icon(
                             imageVector = HackathonIcons.Close,
-                            contentDescription = "이미지 제거",
+                            contentDescription = stringResource(R.string.combination_image_remove),
                             tint = Color.White,
                             modifier = Modifier.size(20.dp)
                         )
@@ -162,7 +164,9 @@ fun ImageUploadSection(
                         ) {
                             AsyncImage(
                                 model = uri,
-                                contentDescription = "썸네일",
+                                contentDescription = stringResource(
+                                    R.string.combination_image_thumbnail
+                                ),
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Crop
                             )
@@ -175,7 +179,9 @@ fun ImageUploadSection(
                             ) {
                                 Icon(
                                     imageVector = HackathonIcons.Close,
-                                    contentDescription = "이미지 제거",
+                                    contentDescription = stringResource(
+                                        R.string.combination_image_remove
+                                    ),
                                     tint = Color.White,
                                     modifier =
                                         Modifier
@@ -206,7 +212,7 @@ fun ImageUploadSection(
                         ) {
                             Icon(
                                 imageVector = HackathonIcons.Add,
-                                contentDescription = "이미지 추가",
+                                contentDescription = stringResource(R.string.combination_image_add),
                                 tint = Gray700,
                                 modifier = Modifier.size(24.dp)
                             )
@@ -236,7 +242,7 @@ fun ImageUploadSection(
                         ) {
                             Icon(
                                 imageVector = HackathonIcons.Add,
-                                contentDescription = "이미지 추가",
+                                contentDescription = stringResource(R.string.combination_image_add),
                                 tint = Gray700,
                                 modifier = Modifier.size(24.dp)
                             )

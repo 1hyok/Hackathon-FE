@@ -1,0 +1,44 @@
+<resources>
+    <!-- 공통 -->
+    <string name="combination_back">뒤로가기</string>
+
+    <!-- 이미지 업로드 -->
+    <string name="combination_image_upload_add">이미지 등록</string>
+    <string name="combination_image_upload_label">사진 등록 (최대 5장)</string>
+    <string name="combination_image_selected">선택한 이미지</string>
+    <string name="combination_image_thumbnail">썸네일</string>
+    <string name="combination_image_remove">이미지 제거</string>
+    <string name="combination_image_add">이미지 추가</string>
+
+    <!-- 재료 입력 -->
+    <string name="combination_ingredient_label">재료</string>
+    <string name="combination_ingredient_name_hint_example">재료명 (예: 땅콩소스)</string>
+    <string name="combination_ingredient_name_hint">재료명</string>
+    <string name="combination_ingredient_amount_hint_example">용량 (예: 2스푼)</string>
+    <string name="combination_ingredient_amount_hint">용량</string>
+    <string name="combination_ingredient_add">재료추가</string>
+
+    <!-- 해시태그 -->
+    <string name="combination_hashtag_hint">띄어쓰기로 입력 (1개~5개)</string>
+    <string name="combination_hashtag_add">태그 추가</string>
+
+    <!-- 공개 여부 -->
+    <string name="combination_visibility_public">전체 공개</string>
+    <string name="combination_visibility_private">나만 보기</string>
+
+    <!-- 등록 화면 -->
+    <string name="combination_create_title">꿀조합 레시피 등록</string>
+    <string name="combination_field_title">제목</string>
+    <string name="combination_title_hint">조합 이름을 적어주세요 (최대 15자)</string>
+    <string name="combination_field_category">카테고리</string>
+    <string name="combination_field_visibility">공개 여부</string>
+    <string name="combination_field_description">설명</string>
+    <string name="combination_description_hint">레시피에 대한 설명을 적어주세요 (최대 300자)</string>
+    <string name="combination_submit">꿀조합 등록하기</string>
+
+    <!-- 상세 화면 -->
+    <string name="combination_error">오류가 발생했습니다</string>
+    <string name="combination_not_found">레시피를 찾을 수 없습니다</string>
+    <string name="combination_like">좋아요</string>
+    <string name="combination_author_recipe">%1$s님의 레시피</string>
+</resources>

@@ -11,13 +11,13 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.model.Category
 import com.example.hackathon.core.model.Combination
 import com.example.hackathon.core.model.User
-import com.example.hackathon.feature.home.HomeUiState
 import com.example.hackathon.feature.home.component.FilterBar
 
 @Composable
@@ -30,6 +30,8 @@ fun HomeContent(
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
+    // LazyListScope(비-Composable) 안에서 쓰려고 Composable 본문에서 미리 읽어 호이스팅
+    val homeErrorMessage = stringResource(R.string.home_error)
 
     // 스크롤이 마지막에 가까워지면 다음 페이지 로드
     val shouldLoadMore by remember {
@@ -67,7 +69,7 @@ fun HomeContent(
             }
 
             uiState.error != null -> {
-                HomeErrorState(error = uiState.error ?: "오류가 발생했습니다")
+                HomeErrorState(error = uiState.error ?: homeErrorMessage)
             }
 
             uiState.combinations.isEmpty() && !uiState.isLoading -> {

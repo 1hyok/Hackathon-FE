@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,14 +54,14 @@ fun RegistrationSuccessScreen(modifier: Modifier = Modifier, onNavigateToLogin: 
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "가입 완료",
+                    text = stringResource(R.string.auth_registration_success_title),
                     style = HackathonTheme.typography.Head1_bold,
                     color = Color.Black,
                     textAlign = TextAlign.Center
                 )
 
                 Text(
-                    text = "회원가입이 완료되었습니다.\n로그인 후 이용해주세요.",
+                    text = stringResource(R.string.auth_registration_success_description),
                     style = HackathonTheme.typography.Body_medium,
                     color = Gray700,
                     textAlign = TextAlign.Center
@@ -80,7 +81,7 @@ fun RegistrationSuccessScreen(modifier: Modifier = Modifier, onNavigateToLogin: 
                         )
                 ) {
                     Text(
-                        text = "로그인하기",
+                        text = stringResource(R.string.auth_go_to_login),
                         style = HackathonTheme.typography.Sub1_semibold
                     )
                 }

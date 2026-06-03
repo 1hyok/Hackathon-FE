@@ -14,10 +14,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.Primary
+import com.example.hackathon.feature.combination.R
 
 data class IngredientItem(val name: String, val quantity: String)
 
@@ -36,7 +38,7 @@ fun IngredientInputSection(
     ) {
         // 재료 레이블
         Text(
-            text = "재료",
+            text = stringResource(R.string.combination_ingredient_label),
             style = MaterialTheme.typography.titleMedium,
             color = Color.Black
         )
@@ -53,7 +55,14 @@ fun IngredientInputSection(
                     onValueChange = { onIngredientNameChange(index, it) },
                     placeholder = {
                         Text(
-                            text = if (index == 0) "재료명 (예: 땅콩소스)" else "재료명",
+                            text =
+                                if (index == 0) {
+                                    stringResource(
+                                        R.string.combination_ingredient_name_hint_example
+                                    )
+                                } else {
+                                    stringResource(R.string.combination_ingredient_name_hint)
+                                },
                             style = MaterialTheme.typography.bodyMedium,
                             color = Gray700
                         )
@@ -74,7 +83,14 @@ fun IngredientInputSection(
                     onValueChange = { onIngredientQuantityChange(index, it) },
                     placeholder = {
                         Text(
-                            text = if (index == 0) "용량 (예: 2스푼)" else "용량",
+                            text =
+                                if (index == 0) {
+                                    stringResource(
+                                        R.string.combination_ingredient_amount_hint_example
+                                    )
+                                } else {
+                                    stringResource(R.string.combination_ingredient_amount_hint)
+                                },
                             style = MaterialTheme.typography.bodyMedium,
                             color = Gray700
                         )
@@ -93,7 +109,7 @@ fun IngredientInputSection(
 
         // 재료 추가 버튼
         Text(
-            text = "재료추가",
+            text = stringResource(R.string.combination_ingredient_add),
             style = MaterialTheme.typography.bodyMedium,
             color = Primary,
             modifier =

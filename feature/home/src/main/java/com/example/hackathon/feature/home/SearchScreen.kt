@@ -31,13 +31,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.hackathon.core.designsystem.R
+import com.example.hackathon.core.designsystem.R as DesignSystemR
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.feature.home.component.CombinationList
@@ -73,7 +74,7 @@ fun SearchScreen(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.ic_logo_rec),
+                        painter = painterResource(DesignSystemR.drawable.ic_logo_rec),
                         contentDescription = "back",
                         modifier =
                             Modifier
@@ -97,7 +98,7 @@ fun SearchScreen(
                                 ),
                         trailingIcon = {
                             Icon(
-                                painter = painterResource(R.drawable.ic_search),
+                                painter = painterResource(DesignSystemR.drawable.ic_search),
                                 contentDescription = "search",
                                 tint = HackathonTheme.colors.iconUnselected,
                                 modifier =
@@ -145,7 +146,7 @@ fun SearchScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "쩝쩝박사님들의 레시피를 검색해보세요",
+                        text = stringResource(R.string.home_search_prompt),
                         style = HackathonTheme.typography.Body_medium,
                         color = HackathonTheme.colors.gray700
                     )
@@ -175,7 +176,7 @@ fun SearchScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = uiState.error ?: "검색 중 오류가 발생했습니다",
+                        text = uiState.error ?: stringResource(R.string.home_search_error),
                         style = HackathonTheme.typography.Body_medium,
                         color = Gray700,
                         textAlign = TextAlign.Center

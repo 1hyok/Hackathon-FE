@@ -16,10 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.hackathon.core.designsystem.R
+import com.example.hackathon.core.designsystem.R as DesignSystemR
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.designsystem.util.noRippleClickable
+import com.example.hackathon.feature.home.R
 
 @Composable
 fun SearchComponent(modifier: Modifier = Modifier, onSearchClick: () -> Unit) {
@@ -32,7 +34,7 @@ fun SearchComponent(modifier: Modifier = Modifier, onSearchClick: () -> Unit) {
             )
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_logo_rec),
+            painter = painterResource(DesignSystemR.drawable.ic_logo_rec),
             contentDescription = "logo",
             modifier = Modifier.size(width = 50.dp, height = 50.dp),
             contentScale = ContentScale.Fit
@@ -53,12 +55,12 @@ fun SearchComponent(modifier: Modifier = Modifier, onSearchClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_search),
+                painter = painterResource(DesignSystemR.drawable.ic_search),
                 contentDescription = "search component",
                 tint = HackathonTheme.colors.iconUnselected
             )
             Text(
-                text = "오늘은 어떤 꿀조합을 찾고 싶으신가요?",
+                text = stringResource(R.string.home_search_hint),
                 style = HackathonTheme.typography.Caption_medium,
                 color = HackathonTheme.colors.iconUnselected
             )

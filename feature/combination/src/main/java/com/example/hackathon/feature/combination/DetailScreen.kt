@@ -38,12 +38,13 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.example.hackathon.core.designsystem.R
+import com.example.hackathon.core.designsystem.R as DesignSystemR
 import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.designsystem.theme.Primary
@@ -84,7 +85,7 @@ fun DetailScreen(
             ) {
                 Icon(
                     imageVector = HackathonIcons.ArrowBack,
-                    contentDescription = "뒤로가기"
+                    contentDescription = stringResource(R.string.combination_back)
                 )
             }
 
@@ -93,7 +94,7 @@ fun DetailScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_logo),
+                    painter = painterResource(id = DesignSystemR.drawable.ic_logo),
                     contentDescription = "logo",
                     modifier = Modifier.width(90.dp)
                 )
@@ -135,7 +136,7 @@ fun DetailScreen(
 
                     uiState.error != null -> {
                         Text(
-                            text = uiState.error ?: "오류가 발생했습니다",
+                            text = uiState.error ?: stringResource(R.string.combination_error),
                             color = MaterialTheme.colorScheme.error,
                             modifier = Modifier.padding(20.dp)
                         )
@@ -143,7 +144,7 @@ fun DetailScreen(
 
                     recipe == null -> {
                         Text(
-                            text = "레시피를 찾을 수 없습니다",
+                            text = stringResource(R.string.combination_not_found),
                             modifier = Modifier.padding(20.dp)
                         )
                     }
@@ -228,7 +229,7 @@ fun DetailScreen(
                                     } else {
                                         HackathonIcons.FavoriteBorder
                                     },
-                                contentDescription = "좋아요",
+                                contentDescription = stringResource(R.string.combination_like),
                                 tint =
                                     if (recipe.userInteraction.isLiked) {
                                         HackathonTheme.colors.primary
@@ -324,8 +325,12 @@ fun DetailScreen(
                                         width = 1.dp
                                     ).padding(horizontal = 20.dp, vertical = 15.dp)
                         ) {
+                            // 포맷 리소스 "%1$s님의 레시피"의 %1$s(1번째 문자열 인자)에 authorText 치환
                             Text(
-                                text = authorText + "님의 레시피",
+                                text = stringResource(
+                                    R.string.combination_author_recipe,
+                                    authorText
+                                ),
                                 style = HackathonTheme.typography.Sub1_semibold,
                                 color = HackathonTheme.colors.black
                             )

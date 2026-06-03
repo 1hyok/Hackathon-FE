@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -68,7 +69,7 @@ fun EditProfileScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "프로필 수정",
+                        text = stringResource(R.string.profile_edit_title),
                         style = HackathonTheme.typography.Head2_bold,
                         color = Color.White
                     )
@@ -77,7 +78,7 @@ fun EditProfileScreen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = HackathonIcons.ArrowBack,
-                            contentDescription = "뒤로가기",
+                            contentDescription = stringResource(R.string.profile_back),
                             tint = Color.White
                         )
                     }
@@ -114,7 +115,7 @@ fun EditProfileScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = uiState.error ?: "프로필을 불러올 수 없습니다",
+                        text = uiState.error ?: stringResource(R.string.profile_load_failed),
                         style = HackathonTheme.typography.Body_medium,
                         color = androidx.compose.material3.MaterialTheme.colorScheme.error,
                         textAlign = TextAlign.Center
@@ -129,7 +130,7 @@ fun EditProfileScreen(
                             )
                     ) {
                         Text(
-                            text = "다시 시도",
+                            text = stringResource(R.string.profile_retry),
                             style = HackathonTheme.typography.Body_medium
                         )
                     }
@@ -166,7 +167,9 @@ fun EditProfileScreen(
                         if (uiState.profileImageUrl != null) {
                             AsyncImage(
                                 model = uiState.profileImageUrl,
-                                contentDescription = "프로필 이미지",
+                                contentDescription = stringResource(
+                                    R.string.profile_image_description
+                                ),
                                 modifier = Modifier.fillMaxSize()
                             )
                         } else {
@@ -189,7 +192,7 @@ fun EditProfileScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "닉네임",
+                            text = stringResource(R.string.profile_nickname),
                             style = HackathonTheme.typography.Body_medium,
                             color = Color.Black
                         )
@@ -199,7 +202,7 @@ fun EditProfileScreen(
                             enabled = !uiState.isSaving,
                             placeholder = {
                                 Text(
-                                    text = "닉네임을 입력하세요",
+                                    text = stringResource(R.string.profile_nickname_hint),
                                     style = HackathonTheme.typography.Body_medium,
                                     color = Gray700
                                 )
@@ -237,12 +240,12 @@ fun EditProfileScreen(
                             )
                             Spacer(modifier = Modifier.size(8.dp))
                             Text(
-                                text = "저장 중...",
+                                text = stringResource(R.string.profile_saving),
                                 style = HackathonTheme.typography.Body_medium
                             )
                         } else {
                             Text(
-                                text = "저장",
+                                text = stringResource(R.string.profile_save),
                                 style = HackathonTheme.typography.Body_medium
                             )
                         }
