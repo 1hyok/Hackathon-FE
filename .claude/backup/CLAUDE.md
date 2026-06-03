@@ -1,12 +1,12 @@
 # Android Project Conventions
 
 ## Project Context
-- 모듈 구조: **단일 `:app` 모듈**. Clean Architecture 를 패키지로 구성 — `data` / `domain` / `presentation` (+ `di`, `core`, `ui/theme`). 멀티모듈·`build-logic` 컨벤션 플러그인 없음.
+- 모듈 구조: **멀티모듈** — `:app` + `:core:*`(model·designsystem·datastore·network·domain·data) + `:feature:*`(auth·home·combination·onboarding·profile) + `build-logic` 컨벤션 플러그인. Clean Architecture + MVVM.
 - 패키지: `com.example.hackathon`.
 - minSdk / targetSdk / compileSdk: 모두 **36** (JVM 17). 정의 위치: `app/build.gradle.kts`.
-- 빌드 툴체인: AGP 8.13.2 + Kotlin 2.0.21 + KSP, Compose BOM 2024.09.00. Version Catalog(`gradle/libs.versions.toml`) 강제.
-- 정적 분석: **Detekt** (`config/detekt.yml`, baseline `config/detekt-baseline.xml`). ktlint 아님.
-- 핵심 도메인: 해커톤용 Android 앱. 서버 연동 전까지 `BuildConfig.USE_MOCK_API` 로 Mock/실 API 토글, `BuildConfig.BASE_URL` 로 엔드포인트 주입.
+- 빌드 툴체인: AGP 9.2.1 + Kotlin 2.3.21 + KSP 2.3.9, Compose BOM 2026.05.01. Version Catalog(`gradle/libs.versions.toml`) 강제.
+- 정적 분석: **ktlint** — CI `.github/workflows/lint.yml` 의 ScaCap/action-ktlint 1.8.0, `.editorconfig` 의 `ktlint_code_style=android_studio` (call-site trailing comma 미사용). + Android Lint(`./gradlew lintDebug`). (`config/detekt*` 은 미사용 잔재 — `detekt` Gradle 태스크 없음.)
+- 핵심 도메인: **음식 조합·레시피 공유 앱** — 사용자가 카테고리(하이디라오·서브웨이·편의점)별로 재료·사진·해시태그를 담은 '조합'을 등록·탐색·검색하고 좋아요·랭킹으로 큐레이션. 인증·온보딩·프로필 포함. 서버 연동 전까지 `BuildConfig.USE_MOCK_API` 로 Mock/실 API 토글, `BuildConfig.BASE_URL` 로 엔드포인트 주입.
 
 ## 작업 시작/마무리 규약 (위반 금지)
 - **이슈 우선 + 브랜치 링크**: 새 브랜치는 메타데이터 완비된 GitHub 이슈에 정식 링크된 상태여야 한다. 절차 자동화는 `android-issue-branch` skill 에 위임 — 사용자가 "브랜치 파"라고만 해도 skill 진입 후 이슈부터 작성. `git checkout -b` 직행은 `git-branch-guard.sh` 가 차단.
@@ -90,7 +90,7 @@
 ```bash
 ./gradlew assembleDebug
 ./gradlew testDebugUnitTest                 # 또는 ./gradlew :app:testDebugUnitTest
-./gradlew detekt                            # 정적 분석 (Detekt)
+./gradlew lintDebug                         # Android Lint (CI lint.yml). ktlint 은 CI(ScaCap/action-ktlint)로 실행 — 로컬 Gradle 태스크 없음
 ./gradlew :app:connectedDebugAndroidTest    # 인스트루멘티드 테스트
 ```
 
