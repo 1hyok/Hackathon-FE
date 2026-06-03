@@ -18,6 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.hackathon.core.designsystem.theme.Gray400
+import com.example.hackathon.core.designsystem.theme.Gray500
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.designsystem.util.noRippleClickable
 import kotlin.enums.EnumEntries
@@ -74,7 +76,7 @@ fun BottomNavBar(
                                 if (isSelected) {
                                     HackathonTheme.colors.black
                                 } else {
-                                    Color(0xFF8B91A1)
+                                    HackathonTheme.colors.iconUnselected
                                 }
                         )
                         Text(
@@ -84,7 +86,7 @@ fun BottomNavBar(
                                 if (isSelected) {
                                     HackathonTheme.colors.black
                                 } else {
-                                    Color(0xFF939DA9)
+                                    HackathonTheme.colors.labelUnselected
                                 }
                         )
                     }

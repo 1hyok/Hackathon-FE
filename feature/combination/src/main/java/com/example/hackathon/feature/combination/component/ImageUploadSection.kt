@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +26,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
@@ -36,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.hackathon.core.designsystem.R
+import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import com.example.hackathon.core.designsystem.theme.Gray50
 import com.example.hackathon.core.designsystem.theme.Gray700
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
@@ -47,6 +46,9 @@ fun ImageUploadSection(
     onRemoveImage: (Uri) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // drawBehind 는 비-Composable(DrawScope)이라 @Composable 게터인 HackathonTheme.colors 를 직접 못 쓴다.
+    // 색을 Composable 본문에서 미리 읽어 호이스팅한다.
+    val primaryColor = HackathonTheme.colors.primary
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -64,7 +66,7 @@ fun ImageUploadSection(
                             val dashGap = 6.dp.toPx()
 
                             drawRoundRect(
-                                color = Color(0xFFE10818).copy(alpha = 0.3f),
+                                color = primaryColor.copy(alpha = 0.3f),
                                 style =
                                     Stroke(
                                         width = strokeWidth,
@@ -76,7 +78,7 @@ fun ImageUploadSection(
                                 cornerRadius = CornerRadius(12.dp.toPx())
                             )
                         }.background(
-                            color = Color(0xFFFFF3F3),
+                            color = HackathonTheme.colors.primaryContainer,
                             shape = RoundedCornerShape(12.dp)
                         ).clickable { onImageClick() },
                 contentAlignment = Alignment.Center

@@ -34,7 +34,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -49,7 +48,6 @@ import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import com.example.hackathon.core.designsystem.theme.HackathonTheme
 import com.example.hackathon.core.designsystem.theme.Primary
 import com.example.hackathon.core.model.DummyData
-import com.example.hackathon.feature.combination.DetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -259,7 +257,7 @@ fun DetailScreen(
                         Text(
                             text = authorText,
                             style = HackathonTheme.typography.Body_medium,
-                            color = Color(0xFF555555),
+                            color = HackathonTheme.colors.textSecondary,
                             modifier = Modifier.padding(bottom = 10.dp)
                         )
 
@@ -318,11 +316,11 @@ fun DetailScreen(
                                 Modifier
                                     .fillMaxWidth()
                                     .background(
-                                        Color(0xFFF7F7F7),
+                                        HackathonTheme.colors.surfaceVariant,
                                         shape = RoundedCornerShape(10.dp)
                                     ).border(
                                         shape = RoundedCornerShape(10.dp),
-                                        color = Color(0xFFCCCCCC),
+                                        color = HackathonTheme.colors.outline,
                                         width = 1.dp
                                     ).padding(horizontal = 20.dp, vertical = 15.dp)
                         ) {
