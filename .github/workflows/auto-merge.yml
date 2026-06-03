@@ -1,0 +1,29 @@
+name: Auto-merge
+
+# main 브랜치 보호의 필수 체크(Ktlint·Android Lint·Unit Test)가 전부 green 이면 PR 을 자동 머지한다.
+# 사람/외부 개입 0 — PR 이 열리거나 ready 상태가 되면 GitHub 네이티브 auto-merge 를 켜고,
+# 실제 머지는 필수 체크가 모두 통과하는 순간 GitHub 가 수행한다(머지 후 브랜치 자동 삭제는 repo 설정).
+# 자동 머지를 원치 않는 PR 은 Draft 로 열면 된다 — ready_for_review 가 되기 전까지 제외된다.
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, ready_for_review, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    name: Enable auto-merge
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable native auto-merge for this PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" \
+            --auto --merge
