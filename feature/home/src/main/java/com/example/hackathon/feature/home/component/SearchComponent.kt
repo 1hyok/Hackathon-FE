@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -56,12 +55,12 @@ fun SearchComponent(modifier: Modifier = Modifier, onSearchClick: () -> Unit) {
             Icon(
                 painter = painterResource(R.drawable.ic_search),
                 contentDescription = "search component",
-                tint = Color(0xFF8B91A1)
+                tint = HackathonTheme.colors.iconUnselected
             )
             Text(
                 text = "오늘은 어떤 꿀조합을 찾고 싶으신가요?",
                 style = HackathonTheme.typography.Caption_medium,
-                color = Color(0xFF8B91A1)
+                color = HackathonTheme.colors.iconUnselected
             )
         }
     }

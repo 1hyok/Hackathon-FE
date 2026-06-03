@@ -121,7 +121,7 @@ fun LoginScreen(
                     lineHeight = 16.sp,
                     style = HackathonTheme.typography.Body_semibold,
                     fontWeight = FontWeight(500),
-                    color = Color(0xFF000000),
+                    color = HackathonTheme.colors.black,
                     textAlign = TextAlign.End
                 )
             }
