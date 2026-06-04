@@ -10,10 +10,6 @@ import androidx.compose.ui.unit.sp
 import com.example.hackathon.core.designsystem.R
 
 // Figma Design System Typography
-// TODO: Pretendard 폰트 파일 추가 후 FontFamily 적용
-// 예시: FontFamily(Font(R.font.pretendard_bold, FontWeight.Bold))
-// 현재는 시스템 기본 폰트 사용
-
 val FontBold = FontFamily(Font(R.font.pretendard_bold))
 val FontSemiBold = FontFamily(Font(R.font.pretendard_semibold))
 val FontMedium = FontFamily(Font(R.font.pretendard_medium))
@@ -78,7 +74,7 @@ val defaultHackathonTypography =
             ),
         Sub2_medium =
             TextStyle(
-                fontFamily = FontBold,
+                fontFamily = FontMedium,
                 fontSize = 16.sp,
                 lineHeight = 18.sp
             ),
