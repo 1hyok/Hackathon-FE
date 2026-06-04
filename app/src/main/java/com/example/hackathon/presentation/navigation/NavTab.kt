@@ -1,18 +1,20 @@
 package com.example.hackathon.presentation.navigation
 
-import com.example.hackathon.core.designsystem.R
+import androidx.annotation.StringRes
+import com.example.hackathon.R
+import com.example.hackathon.core.designsystem.R as DesignSystemR
 import com.example.hackathon.presentation.route.Route
 
-enum class NavTab(val route: String, val label: String, val icon: Int) {
-    Home(Route.Home.route, label = "홈", icon = R.drawable.ic_home),
+enum class NavTab(val route: String, @param:StringRes val label: Int, val icon: Int) {
+    Home(Route.Home.route, label = R.string.nav_home, icon = DesignSystemR.drawable.ic_home),
     Create(
         route = Route.Create.route,
-        label = "작성",
-        icon = R.drawable.ic_add
+        label = R.string.nav_create,
+        icon = DesignSystemR.drawable.ic_add
     ),
     My(
         route = Route.My.route,
-        label = "마이",
-        icon = R.drawable.ic_my
+        label = R.string.nav_my,
+        icon = DesignSystemR.drawable.ic_my
     )
 }

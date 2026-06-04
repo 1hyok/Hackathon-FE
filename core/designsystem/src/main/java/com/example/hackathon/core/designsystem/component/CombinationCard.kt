@@ -30,10 +30,12 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.example.hackathon.core.designsystem.R
 import com.example.hackathon.core.designsystem.icon.HackathonIcons
 import com.example.hackathon.core.designsystem.theme.Gray50
 import com.example.hackathon.core.designsystem.theme.Gray700
@@ -140,7 +142,7 @@ fun CombinationCard(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "이미지 없음",
+                                text = stringResource(R.string.designsystem_no_image),
                                 style = HackathonTheme.typography.Body_medium,
                                 color = Gray700.copy(alpha = 0.5f)
                             )
@@ -246,7 +248,7 @@ fun CombinationCard(
                                     } else {
                                         HackathonIcons.FavoriteBorder
                                     },
-                                contentDescription = "좋아요",
+                                contentDescription = stringResource(R.string.designsystem_like),
                                 tint = Primary,
                                 modifier = Modifier.size(18.dp)
                             )
