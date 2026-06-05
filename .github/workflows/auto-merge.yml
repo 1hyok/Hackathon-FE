@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
   pull-requests: write
 
 jobs:
@@ -37,7 +38,20 @@ jobs:
           # 모두 green 일 때만 머지.
           if gh pr checks "$num" --repo "$REPO"; then
             echo "PR #$num 모든 체크 통과 → 머지"
-            gh pr merge "$num" --repo "$REPO" --merge --delete-branch || echo "이미 머지됨/머지 실패"
+            # GITHUB_TOKEN 머지는 pull_request:closed 로 다른 워크플로(auto-close-issue)를
+            # 트리거하지 못한다(재귀 실행 방지) → linked 이슈를 이 job 에서 직접 close 한다.
+            issues=$(gh pr view "$num" --repo "$REPO" --json closingIssuesReferences \
+                       --jq '.closingIssuesReferences[].number')
+            if gh pr merge "$num" --repo "$REPO" --merge --delete-branch; then
+              echo "머지 완료 → linked 이슈 close: ${issues:-(none)}"
+              for i in $issues; do
+                gh issue close "$i" --repo "$REPO" \
+                  --comment "Auto-closed by merge of #$num (auto-merge)." \
+                  && echo "  closed #$i" || echo "  #$i close 실패(이미 닫힘 등)"
+              done
+            else
+              echo "이미 머지됨/머지 실패"
+            fi
           else
             echo "PR #$num 체크 아직 미통과 — 다음 CI 완료 시 재시도"
           fi
