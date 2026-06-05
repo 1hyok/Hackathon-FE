@@ -239,9 +239,7 @@ XmlUnusedNamespaceDeclaration.xml
 !inspection/
 !inspection/*.xml
 
-### Claude Code (개인 운영 환경) ###
-# 루트 CLAUDE.md 는 개인 컨벤션 파일 — git 추적 안 함. 복원 백업: .claude/backup/CLAUDE.md
-/CLAUDE.md
-
-# Claude Code 런타임 부산물 (추적 금지)
+### Claude Code (단독 프로젝트 — 추적함) ###
+# CLAUDE.md·.claude 설정/훅은 git 으로 추적한다(백업 메커니즘 폐기).
+# 런타임 부산물(lock)만 제외.
 .claude/scheduled_tasks.lock
