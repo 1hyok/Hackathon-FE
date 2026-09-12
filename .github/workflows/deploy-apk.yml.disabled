@@ -100,32 +100,3 @@ jobs:
             새 버전이 배포되었습니다!
             커밋: ${{ steps.commit.outputs.SHORT_SHA }}
             메시지: ${{ steps.commit.outputs.MESSAGE }}
-
-      - name: Send Discord notification
-        uses: rjstone/discord-webhook-notify@v1
-        if: success()
-        with:
-          severity: info
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-          text: |
-            🚀 새 APK가 배포되었습니다!
-            
-            **버전:** ${{ steps.commit.outputs.SHORT_SHA }}
-            **커밋:** ${{ steps.commit.outputs.MESSAGE }}
-            **작성자:** ${{ github.actor }}
-            
-            📥 **다운로드:**
-            Firebase 콘솔에서 최신 버전을 다운로드하세요:
-            https://console.firebase.google.com/project/drzubzub-594aa/appdistribution/app/1:1017615947344:android:9a6380798488227ca4e355/distributors
-            
-            또는 Firebase App Tester 앱을 설치하고 알림을 확인하세요.
-
-      - name: Send Discord notification on failure
-        uses: rjstone/discord-webhook-notify@v1
-        if: failure()
-        with:
-          severity: error
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-          text: |
-            APK 빌드 실패!
-            작성자: ${{ github.actor }}
