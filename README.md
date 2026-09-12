@@ -539,7 +539,6 @@ com.example.hackathon/
      - `GOOGLE_SERVICES_JSON`: Base64로 인코딩된 `google-services.json` 내용 (2단계에서 복사한 전체 문자열)
      - `FIREBASE_APP_ID`: Firebase App ID
      - `FIREBASE_TOKEN`: Firebase CLI 토큰
-     - `DISCORD_WEBHOOK`: Discord 웹훅 URL (선택사항)
 
 6. **Firebase 테스터 그룹 생성**
    - Firebase 콘솔 → App Distribution → 테스터 및 그룹
@@ -551,17 +550,9 @@ com.example.hackathon/
 
 #### 옵션 2: GitHub Releases (Firebase 없이)
 
-1. **GitHub Secrets 설정**
-   - `DISCORD_WEBHOOK`: Discord 웹훅 URL (선택사항)
-
-2. **워크플로우 활성화**
+1. **워크플로우 활성화**
    - `.github/workflows/deploy-apk-github-releases.yml` 파일 사용
    - `deploy-apk.yml` 파일을 비활성화하거나 삭제
-
-### Discord 웹훅 설정 (선택사항)
-
-1. Discord 채널 설정 → 연동 → 웹훅 생성
-2. 웹훅 URL을 GitHub Secrets에 `DISCORD_WEBHOOK`으로 저장
 
 ### 팀원 사용 방법
 
@@ -571,7 +562,6 @@ com.example.hackathon/
 3. 알림 클릭 → 원터치 설치
 
 #### GitHub Releases 사용 시:
-1. Discord 알림에서 링크 클릭
-2. GitHub Releases 페이지에서 APK 다운로드
-3. 안드로이드 기기에서 "출처를 알 수 없는 앱" 설치 권한 허용
-4. APK 설치
+1. GitHub Releases 페이지에서 APK 다운로드
+2. 안드로이드 기기에서 "출처를 알 수 없는 앱" 설치 권한 허용
+3. APK 설치
