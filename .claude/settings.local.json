@@ -37,11 +37,6 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/git-commit-guard.sh\"",
-            "timeout": 5
-          },
-          {
-            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/git-state-guard.sh\"",
             "timeout": 5
           },
